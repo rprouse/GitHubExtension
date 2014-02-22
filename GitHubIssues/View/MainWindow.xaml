@@ -1,0 +1,9 @@
+﻿<Window x:Class="Alteridem.GitHub.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:view1="clr-namespace:Alteridem.GitHub.View"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <view1:LoginControl />
+    </Grid>
+</Window>
