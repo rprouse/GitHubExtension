@@ -154,5 +154,7 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-packages/Octokit*
-packages/Rx-*
+
+#Nuget Packages
+packages/
+!packages/repositories.config

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Alteridem.GitHub.Model;
 
 namespace Alteridem.GitHub.View
 {
@@ -15,9 +16,8 @@ namespace Alteridem.GitHub.View
 
         private void OnLogon(object sender, RoutedEventArgs e)
         {
-            var app = App.Current as App;
-            if ( app != null )
-                app.GitHubApi.Login( Username.Text, Password.Password );
+            var api = Factory.Get<GitHubApi>();
+            api.Login( Username.Text, Password.Password );
         }
     }
 }
