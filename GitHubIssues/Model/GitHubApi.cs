@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Net.Http.Headers;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Threading;
+using Alteridem.GitHub.View;
 using Octokit;
 using Octokit.Reactive;
 
@@ -21,23 +25,18 @@ namespace Alteridem.GitHub.Model
 
             // TODO: Get user and token from settings and log in using them
 
-            if(!string.IsNullOrWhiteSpace(_token))
-            {
-                Login();
-            }
+            //if(!string.IsNullOrWhiteSpace(_token))
+            //{
+            //    Login();
+            //}
         }
 
-        public void Login()
+        public void Login(ILogonView view)
         {
-            Login(new Credentials(_token));
+            Login(new Credentials(view.Username, view.Password), view);
         }
 
-        public void Login(string login, string password)
-        {
-            Login(new Credentials(login, password));
-        }
-
-        private void Login(Credentials credentials)
+        private void Login(Credentials credentials, ILogonView view)
         {
             _github.Credentials = credentials;
             _token = null;
@@ -47,20 +46,17 @@ namespace Alteridem.GitHub.Model
                 Note = "GitHub Visual Studio Extension"
             };
 
+            view.OnLoggingIn();
             _observableGitHub.Authorization
                 .GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth)
-                .Subscribe(OnAuthorized, OnAuthorizationError, GetUser);
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(OnAuthorized, view.OnError, view.OnSuccess);
         }
 
         private void OnAuthorized(Authorization auth)
         {
             _token = auth.Token;
             // TODO: Persist token
-        }
-
-        private void OnAuthorizationError( Exception ex )
-        {
-            // TODO: Report the error
         }
 
         private void GetUser()
