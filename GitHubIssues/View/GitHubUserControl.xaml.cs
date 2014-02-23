@@ -8,9 +8,9 @@ namespace Alteridem.GitHub.View
     /// <summary>
     /// Interaction logic for GiHubUserControl.xaml
     /// </summary>
-    public partial class GiHubUserControl : UserControl
+    public partial class GitHubUserControl : UserControl
     {
-        public GiHubUserControl()
+        public GitHubUserControl()
         {
             InitializeComponent();
         }

@@ -2,13 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:Alteridem.GitHub.View"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="679" Width="1094">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
             <RowDefinition/>
+            <RowDefinition Height="120"/>
         </Grid.RowDefinitions>
-        <view:GiHubUserControl Grid.Row="0" />
+        <view:IssueListControl Grid.Row="0" />
         <view:LoginControl Grid.Row="1" />
     </Grid>
 </Window>

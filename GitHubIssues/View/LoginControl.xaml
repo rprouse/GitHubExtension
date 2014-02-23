@@ -13,12 +13,15 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="62"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="UserText" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Height="24" Margin="6"/>
-        <PasswordBox x:Name="PassText" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="Password" Height="24"  Margin="6" />
-        <TextBlock x:Name="Message" Grid.Column="0" Grid.Row="2" Margin="6" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFFD0000" />
-        <Button x:Name="Login" Grid.Column="1" Grid.Row="3" Content="Login" IsDefault="True" ToolTip="Login to GitHub" Height="24" Width="50" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6" Click="OnLogon"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Username:" VerticalAlignment="Center" Margin="6" />
+        <TextBox x:Name="UserText" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Height="24" Margin="6"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Password:" VerticalAlignment="Center" Margin="6" />
+        <PasswordBox x:Name="PassText" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="Password" Height="24"  Margin="6" />
+        <TextBlock x:Name="Message" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="6" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFFD0000" />
+        <Button x:Name="Login" Grid.Column="2" Grid.Row="3" Content="Login" IsDefault="True" ToolTip="Login to GitHub" Height="24" Width="50" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6" Click="OnLogon"/>
     </Grid>
 </UserControl>

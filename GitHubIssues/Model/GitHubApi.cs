@@ -29,10 +29,19 @@ namespace Alteridem.GitHub.Model
             }
         }
 
+        [NotNull]
+        public BindingList<Repository> Repositories { get; set; }
+
+        [NotNull]
+        public BindingList<Organization> Organizations { get; set; }
+
         public GitHubApi()
         {
             _github = new GitHubClient(new ProductHeaderValue("GitHubExtension"));
             _observableGitHub = new ObservableGitHubClient(_github);
+
+            Repositories = new BindingList<Repository>();
+            Organizations = new BindingList<Organization>();
 
             // TODO: Get user and token from settings and log in using them
 
@@ -77,6 +86,7 @@ namespace Alteridem.GitHub.Model
         private void LoadData()
         {
             GetUser();
+            GetRepositories();
         }
 
         private void GetUser()
@@ -88,6 +98,36 @@ namespace Alteridem.GitHub.Model
                 {
                     User = user;
                 }, exception => { } );
+        }
+
+        private void GetRepositories()
+        {
+            Repositories.Clear();
+            Organizations.Clear();
+            _observableGitHub.Repository
+                .GetAllForCurrent()
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(NextRepository, exception => { }, () => { /* Select default */ });
+
+            _observableGitHub.Organization
+                .GetAllForCurrent()
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(NextOrganization, exception => { }, () => { /* Select default */ });
+        }
+
+        private void NextRepository([NotNull] Repository repository)
+        {
+            Repositories.Add(repository);
+        }
+
+        private void NextOrganization([NotNull] Organization org)
+        {
+            Organizations.Add(org);
+
+            _observableGitHub.Repository
+                .GetAllForOrg(org.Login)
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(NextRepository, exception => { }, () => { /* Select default */ });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
