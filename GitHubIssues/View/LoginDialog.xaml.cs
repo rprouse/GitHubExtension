@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Model;
 
 namespace Alteridem.GitHub.View
 {
     /// <summary>
-    /// Interaction logic for LoginControl.xaml
+    /// Interaction logic for LoginDialog.xaml
     /// </summary>
-    public partial class LoginControl : UserControl, ILogonView
+    public partial class LoginDialog : Window, ILogonView
     {
-        public LoginControl()
+        public LoginDialog()
         {
             InitializeComponent();
         }
 
         private void OnLogon(object sender, RoutedEventArgs e)
         {
+            DialogResult = true;
             Message.Text = string.Empty;
             var api = Factory.Get<GitHubApi>();
             api.Login(this);
+        }
+
+        private void OnCancel(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
 
         [NotNull]
@@ -39,10 +45,10 @@ namespace Alteridem.GitHub.View
         {
             IsEnabled = true;
             Message.Text = "Success";
-            // TODO: Succeeded, close?
+            Close();
         }
 
-        public void OnError([NotNull] Exception ex)
+        public void OnError(Exception ex)
         {
             IsEnabled = true;
             Message.Text = ex.Message;

@@ -17,6 +17,13 @@ namespace Alteridem.GitHub.Model
         private string _token;
         private User _user;
 
+        #region Public Data
+
+        public bool LoggedIn
+        {
+            get { return !string.IsNullOrWhiteSpace(Token); }
+        }
+
         [CanBeNull]
         public User User
         {
@@ -35,6 +42,24 @@ namespace Alteridem.GitHub.Model
         [NotNull]
         public BindingList<Organization> Organizations { get; set; }
 
+        [NotNull]
+        public BindingList<Issue> Issues { get; set; }
+
+        [CanBeNull]
+        private string Token
+        {
+            get { return _token; }
+            set
+            {
+                if (Equals(value, _token)) return;
+                _token = value;
+                OnPropertyChanged();
+                OnPropertyChanged("LoggedIn");
+            }
+        }
+
+        #endregion
+
         public GitHubApi()
         {
             _github = new GitHubClient(new ProductHeaderValue("GitHubExtension"));
@@ -42,13 +67,72 @@ namespace Alteridem.GitHub.Model
 
             Repositories = new BindingList<Repository>();
             Organizations = new BindingList<Organization>();
+            Issues = new BindingList<Issue>();
 
             // TODO: Get user and token from settings and log in using them
 
-            //if(!string.IsNullOrWhiteSpace(_token))
-            //{
-            //    Login();
-            //}
+            if (!string.IsNullOrWhiteSpace(Token))
+            {
+                LoginWithToken();
+            }
+        }
+
+        public void ToggleLogin()
+        {
+            if (LoggedIn)
+                Logout();
+            else
+                Login();
+        }
+
+        public void Logout()
+        {
+            Token = null;
+            User = null;
+            Repositories.Clear();
+            Organizations.Clear();
+            Issues.Clear();
+        }
+
+        private class LogonWatcher : ILogonObservable
+        {
+            private readonly GitHubApi _parent;
+
+            public LogonWatcher([NotNull] GitHubApi parent)
+            {
+                _parent = parent;
+            }
+
+            public void OnLoggingIn() { }
+
+            public void OnSuccess() { }
+
+            public void OnError(Exception ex)
+            {
+                _parent.Token = null;
+                _parent.LoginWithDialog();
+            }
+        }
+
+        private void Login()
+        {
+            if (!String.IsNullOrWhiteSpace(Token))
+                LoginWithToken();
+            else
+                LoginWithDialog();
+
+        }
+
+        private void LoginWithToken()
+        {
+            var view = new LogonWatcher(this);
+            Login(new Credentials(Token), view);
+        }
+
+        private void LoginWithDialog()
+        {
+            var view = Factory.Get<ILogonView>();
+            view.ShowDialog();
         }
 
         public void Login([NotNull] ILogonView view)
@@ -56,10 +140,10 @@ namespace Alteridem.GitHub.Model
             Login(new Credentials(view.Username, view.Password), view);
         }
 
-        private void Login([NotNull] Credentials credentials, [NotNull] ILogonView view)
+        private void Login([NotNull] Credentials credentials, [NotNull] ILogonObservable view)
         {
             _github.Credentials = credentials;
-            _token = null;
+            Token = null;
             var newAuth = new NewAuthorization
             {
                 Scopes = new[] {"user", "repo"},
@@ -79,7 +163,7 @@ namespace Alteridem.GitHub.Model
 
         private void OnAuthorized([NotNull] Authorization auth)
         {
-            _token = auth.Token;
+            Token = auth.Token;
             // TODO: Persist token
         }
 
@@ -87,6 +171,7 @@ namespace Alteridem.GitHub.Model
         {
             GetUser();
             GetRepositories();
+            GetIssues();
         }
 
         private void GetUser()
@@ -128,6 +213,17 @@ namespace Alteridem.GitHub.Model
                 .GetAllForOrg(org.Login)
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(NextRepository, exception => { }, () => { /* Select default */ });
+        }
+
+        private async void GetIssues()
+        {
+            var request = new RepositoryIssueRequest();
+            var issues = await _github.Issue.GetForRepository("nunit", "nunit-framework");
+            Issues.Clear();
+            foreach (var issue in issues)
+            {
+                Issues.Add(issue);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

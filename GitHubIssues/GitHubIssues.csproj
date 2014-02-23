@@ -77,6 +77,7 @@
     </ApplicationDefinition>
     <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
+    <Compile Include="Model\ILogonObservable.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Page Include="View\GitHubUserControl.xaml">
       <SubType>Designer</SubType>
@@ -86,7 +87,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginControl.xaml">
+    <Page Include="View\LoginDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,6 +100,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\GitHubModule.cs" />
+    <Compile Include="Modules\ViewModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Model\ILogonView.cs" />
     <Compile Include="View\GitHubUserControl.xaml.cs">
@@ -107,8 +109,8 @@
     <Compile Include="View\IssueListControl.xaml.cs">
       <DependentUpon>IssueListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoginControl.xaml.cs">
-      <DependentUpon>LoginControl.xaml</DependentUpon>
+    <Compile Include="View\LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

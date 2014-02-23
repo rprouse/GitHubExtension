@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Model;
 using Octokit;
@@ -19,6 +20,11 @@ namespace Alteridem.GitHub.View
         public GitHubApi GitHubApi
         {
             get { return Factory.Get<GitHubApi>(); }
+        }
+
+        private void OnLogin(object sender, RoutedEventArgs e)
+        {
+            GitHubApi.ToggleLogin();
         }
     }
 }

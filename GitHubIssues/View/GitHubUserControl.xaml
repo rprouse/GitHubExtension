@@ -4,19 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             DataContext="{Binding ElementName=GitHubUser, Path=GitHubApi.User}"
-             d:DesignHeight="48" d:DesignWidth="200">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="24" />
-            <RowDefinition Height="24" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="48"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Image x:Name="Image" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Width="36" Height="36" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6" Source="{Binding AvatarUrl}"/>
-        <TextBlock x:Name="Name" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6,6,6,3" Text="{Binding Name}" />
-        <TextBlock x:Name="Location" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6,3,6,6" Text="{Binding Location}" />
-    </Grid>
+             DataContext="{Binding ElementName=GitHubUser, Path=GitHubApi}"
+             d:DesignHeight="32" d:DesignWidth="200">
+    <StackPanel Orientation="Horizontal">
+        <Rectangle RadiusX="4" RadiusY="4" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6,6,3,6">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="{Binding User.AvatarUrl}"></ImageBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,6,3,6" FontSize="14" Text="{Binding User.Login}" />
+        <Button x:Name="LoginOut" VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Margin="3,6,6,6" FontFamily="octicons" FontSize="18" Click="OnLogin">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="False">
+                            <Setter Property="Content" Value=""></Setter>
+                            <Setter Property="ToolTip" Value="Log In"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="True">
+                            <Setter Property="Content" Value=""></Setter>
+                            <Setter Property="ToolTip" Value="Log Out"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </StackPanel>
 </UserControl>

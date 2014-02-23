@@ -10,14 +10,45 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="180" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
+            <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <ComboBox x:Name="Repositories" Grid.Row="0" Grid.Column="0" Width="200" Height="23" Margin="6" HorizontalAlignment="Left" ItemsSource="{Binding Path=Repositories}" DisplayMemberPath="FullName" />
-        <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="200" />
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,0,6,0" />
+        <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                  Margin="6,0,6,6"
+                  AutoGenerateColumns="False" 
+                  ItemsSource="{Binding Path=Issues}"
+                  FontSize="12"
+                  IsReadOnly="True" >
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Margin" Value="2" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="12" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.RowHeaderStyle>
+                <Style TargetType="DataGridRowHeader">
+                    <Setter Property="SeparatorVisibility" Value="Visible" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Width" Value="4" />
+                </Style>
+            </DataGrid.RowHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Number}" Header="#" CanUserResize="False"/>
+                <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title" Width="400" />
+                <DataGridTextColumn Binding="{Binding Path=State}" Header="State" CanUserResize="False" />
+                <DataGridTextColumn Binding="{Binding Path=User.Login}" Header="Reported By" Width="120"/>
+                <DataGridTextColumn Binding="{Binding Path=Assignee.Login}" Header="Assigned To" Width="120"/>
+                <DataGridTextColumn Binding="{Binding Path=CreatedAt,StringFormat={}{0:dd/MM/yyyy}}" Header="Created" CanUserResize="False" />
+                <DataGridTextColumn Binding="{Binding Path=UpdatedAt,StringFormat={}{0:dd/MM/yyyy}}" Header="Updated" CanUserResize="False" />
+                <DataGridTextColumn Binding="{Binding Path=ClosedAt,StringFormat={}{0:dd/MM/yyyy}}" Header="Closed" CanUserResize="False" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

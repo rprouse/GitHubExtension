@@ -1,13 +1,14 @@
 using System;
+using Alteridem.GitHub.Annotations;
 
 namespace Alteridem.GitHub.Model
 {
-    public interface ILogonView
+    public interface ILogonView : ILogonObservable
     {
+        [CanBeNull]
         string Username { get; }
+        [CanBeNull]
         string Password { get; }
-        void OnLoggingIn();
-        void OnSuccess();
-        void OnError(Exception ex);
+        bool? ShowDialog();
     }
 }

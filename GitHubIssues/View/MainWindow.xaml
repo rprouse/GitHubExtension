@@ -4,14 +4,6 @@
         xmlns:view="clr-namespace:Alteridem.GitHub.View"
         Title="MainWindow" Height="679" Width="1094">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="120"/>
-        </Grid.RowDefinitions>
-        <view:IssueListControl Grid.Row="0" />
-        <view:LoginControl Grid.Row="1" />
+        <view:IssueListControl />
     </Grid>
 </Window>
