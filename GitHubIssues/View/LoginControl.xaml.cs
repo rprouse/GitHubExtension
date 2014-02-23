@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Model;
 
 namespace Alteridem.GitHub.View
 {
-    public interface ILogonView
-    {
-        string Username { get; }
-        string Password { get; }
-        void OnLoggingIn();
-        void OnSuccess();
-        void OnError(Exception ex);
-    }
-
     /// <summary>
     /// Interaction logic for LoginControl.xaml
     /// </summary>
@@ -31,8 +23,10 @@ namespace Alteridem.GitHub.View
             api.Login(this);
         }
 
+        [NotNull]
         public string Username { get { return UserText.Text; } }
 
+        [NotNull]
         public string Password { get { return PassText.Password; } }
 
         public void OnLoggingIn()
@@ -48,7 +42,7 @@ namespace Alteridem.GitHub.View
             // TODO: Succeeded, close?
         }
 
-        public void OnError(Exception ex)
+        public void OnError([NotNull] Exception ex)
         {
             IsEnabled = true;
             Message.Text = ex.Message;

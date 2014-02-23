@@ -78,6 +78,10 @@
     <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
     <Compile Include="Model\Secrets.cs" />
+    <Page Include="View\GiHubUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,6 +95,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\GitHubModule.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Model\ILogonView.cs" />
+    <Compile Include="View\GiHubUserControl.xaml.cs">
+      <DependentUpon>GiHubUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginControl.xaml.cs">
       <DependentUpon>LoginControl.xaml</DependentUpon>
     </Compile>
