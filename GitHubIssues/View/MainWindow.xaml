@@ -2,7 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:Alteridem.GitHub.View"
-        Title="MainWindow" Height="679" Width="1094">
+        Title="GitHub Issues"
+        Height="679"
+        Width="1094" Icon="/GitHubIssues;component/GitHub.ico">
     <Grid>
         <view:IssueListControl />
     </Grid>
