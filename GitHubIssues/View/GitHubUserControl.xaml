@@ -13,7 +13,7 @@
             </Rectangle.Fill>
         </Rectangle>
         <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,6,3,6" FontSize="14" Text="{Binding User.Login}" />
-        <Button x:Name="LoginOut" VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Margin="3,6,6,6" FontSize="18" Click="OnLogin">
+        <Button x:Name="LoginOut" VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Margin="3,6,6,6" FontSize="18" FocusVisualStyle="{x:Null}" Click="OnLogin">
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <ContentPresenter />
