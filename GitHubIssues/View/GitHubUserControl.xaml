@@ -13,21 +13,21 @@
             </Rectangle.Fill>
         </Rectangle>
         <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,6,3,6" FontSize="14" Text="{Binding User.Login}" />
-        <Button x:Name="LoginOut" VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Margin="3,6,6,6" FontFamily="octicons" FontSize="18" Click="OnLogin">
+        <Button x:Name="LoginOut" VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Margin="3,6,6,6" FontSize="18" Click="OnLogin">
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <ContentPresenter />
                 </ControlTemplate>
             </Button.Template>
             <Button.Style>
-                <Style TargetType="Button">
+                <Style TargetType="Button" BasedOn="{StaticResource FontAwesome}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding LoggedIn}" Value="False">
-                            <Setter Property="Content" Value=""></Setter>
+                            <Setter Property="Content" Value="&#xf090;"></Setter>
                             <Setter Property="ToolTip" Value="Log In"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding LoggedIn}" Value="True">
-                            <Setter Property="Content" Value=""></Setter>
+                            <Setter Property="Content" Value="&#xf08b;"></Setter>
                             <Setter Property="ToolTip" Value="Log Out"></Setter>
                         </DataTrigger>
                     </Style.Triggers>

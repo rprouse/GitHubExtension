@@ -16,7 +16,7 @@
             <ColumnDefinition Width="62"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="12,0,12,6" FontFamily="octicons" FontSize="36" Text=" " Height="43" />
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="12,0,12,6" Style="{StaticResource FontAwesome}" FontSize="36" Text="&#xf09b;" Height="43" />
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Username:" VerticalAlignment="Center" Margin="6,10" Height="16" />
         <TextBox x:Name="UserText" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Margin="6"/>
@@ -24,11 +24,11 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password:" VerticalAlignment="Center" Margin="6,10" Height="16" />
         <PasswordBox x:Name="PassText" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ToolTip="Password"  Margin="6" />
 
-        <TextBlock x:Name="Message" Grid.Column="0" Grid.Row="3" Margin="6,6,0,0" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFFD0000" Width="0" />
+        <TextBlock x:Name="Message" Grid.Column="0" Grid.Row="3" Margin="6,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFFD0000" Width="0" />
 
         <DockPanel Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Right">
-            <Button x:Name="Login" Content="Login" IsDefault="True" ToolTip="Login to GitHub" Height="24" Width="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,3,6" Click="OnLogon"/>
-            <Button x:Name="Cancel" Content="Cancel" IsDefault="True" Height="24" Width="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3,6,6,6" Click="OnCancel"/>
+            <Button x:Name="Login" Content="Login" IsDefault="True" ToolTip="Login to GitHub" Padding="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,3,6" Click="OnLogon"/>
+            <Button x:Name="Cancel" Content="Cancel" IsDefault="True" Padding="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3,6,6,6" Click="OnCancel"/>
         </DockPanel>
     </Grid>
 </Window>

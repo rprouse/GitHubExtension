@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="View\MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="FontAwesome">
+            <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/fonts/#FontAwesome" />
+        </Style>
     </Application.Resources>
 </Application>
