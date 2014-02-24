@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Alteridem.GitHub.Annotations;
+using NLog;
 using Octokit;
 using Octokit.Reactive;
 
@@ -12,6 +13,7 @@ namespace Alteridem.GitHub.Model
 {
     public class GitHubApi : INotifyPropertyChanged
     {
+        private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
         private readonly IObservableGitHubClient _observableGitHub;
         private string _token;
@@ -53,6 +55,7 @@ namespace Alteridem.GitHub.Model
             {
                 if (Equals(value, _token)) return;
                 _token = value;
+                Settings.Token = _token;
                 OnPropertyChanged();
                 OnPropertyChanged("LoggedIn");
             }
@@ -69,7 +72,8 @@ namespace Alteridem.GitHub.Model
             Organizations = new BindingList<Organization>();
             Issues = new BindingList<Issue>();
 
-            // TODO: Get user and token from settings and log in using them
+            // Get user and token from settings and log in using them
+            _token = Settings.Token;
             if (!string.IsNullOrWhiteSpace(Token))
             {
                 LoginWithToken();
@@ -78,7 +82,8 @@ namespace Alteridem.GitHub.Model
 
         public void Logout()
         {
-            Token = null;
+            log.Info( "Logging out of GitHub" );
+            Token = string.Empty;
             User = null;
             Repositories.Clear();
             Organizations.Clear();
@@ -94,13 +99,20 @@ namespace Alteridem.GitHub.Model
                 _parent = parent;
             }
 
-            public void OnLoggingIn() { }
+            public void OnLoggingIn()
+            {
+                log.Info( "Logging in with authentication token" );
+            }
 
-            public void OnSuccess() { }
+            public void OnSuccess()
+            {
+                log.Info( "Successfully logged in with authentication token" );
+            }
 
             public void OnError(Exception ex)
             {
-                _parent.Token = null;
+                log.ErrorException( "Failed to login to GitHub using token", ex );
+                _parent.Token = String.Empty;
             }
         }
 
@@ -117,12 +129,14 @@ namespace Alteridem.GitHub.Model
 
         private void Login([NotNull] Credentials credentials, [NotNull] ILogonObservable view)
         {
+            log.Info("Logging in with credentials");
             _github.Credentials = credentials;
-            Token = null;
+            Token = string.Empty;
             var newAuth = new NewAuthorization
             {
                 Scopes = new[] {"user", "repo"},
-                Note = "GitHub Visual Studio Extension"
+                Note = "GitHub Visual Studio Extension",
+                NoteUrl = "http://www.alteridem.net"
             };
 
             view.OnLoggingIn();
@@ -138,45 +152,54 @@ namespace Alteridem.GitHub.Model
 
         private void OnAuthorized([NotNull] Authorization auth)
         {
+            log.Info( "Successfully logged in to GitHub" );
             Token = auth.Token;
-            // TODO: Persist token
         }
 
         private void LoadData()
         {
             GetUser();
             GetRepositories();
-            GetIssues();
+            GetIssues("nunit", "nunit-framework");
         }
 
         private void GetUser()
         {
+            log.Info("Fetching current user");
             _observableGitHub.User
                 .Current()
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(user =>
                 {
+                    log.Info("Finished fetching current user");
                     User = user;
-                }, exception => { } );
+                }, exception => log.ErrorException("Failed to fetch current user", exception) );
         }
 
         private void GetRepositories()
         {
+            log.Info("Fetching repositories for current user");
             Repositories.Clear();
             Organizations.Clear();
             _observableGitHub.Repository
                 .GetAllForCurrent()
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(NextRepository, exception => { }, () => { /* Select default */ });
+                .Subscribe(NextRepository, 
+                    exception => log.ErrorException("Failed to fetch repositories for current user", exception),
+                    () => log.Info("Finished fetching repositories for current user"));
 
+            log.Info("Fetching organizations for current user");
             _observableGitHub.Organization
                 .GetAllForCurrent()
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(NextOrganization, exception => { }, () => { /* Select default */ });
+                .Subscribe(NextOrganization,
+                    exception => log.ErrorException("Failed to fetch organizations for current user", exception),
+                    () => log.Info("Finished fetching organizations for current user"));
         }
 
         private void NextRepository([NotNull] Repository repository)
         {
+            log.Debug( "Fetched repository {0}", repository.FullName );
             Repositories.Add(repository);
         }
 
@@ -184,20 +207,31 @@ namespace Alteridem.GitHub.Model
         {
             Organizations.Add(org);
 
+            log.Info("Fetching repositories for {0}", org.Login);
             _observableGitHub.Repository
                 .GetAllForOrg(org.Login)
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(NextRepository, exception => { }, () => { /* Select default */ });
+                .Subscribe(NextRepository,
+                    exception => log.ErrorException("Failed to fetch repositories for " + org.Login, exception),
+                    () => log.Info("Finished fetching repositories for " + org.Login));
         }
 
-        private async void GetIssues()
+        private async void GetIssues(string owner, string name)
         {
-            var request = new RepositoryIssueRequest();
-            var issues = await _github.Issue.GetForRepository("nunit", "nunit-framework");
-            Issues.Clear();
-            foreach (var issue in issues)
+            log.Info("Fetching repositories for {0}/{1}", owner, name);
+            try
             {
-                Issues.Add(issue);
+                var request = new RepositoryIssueRequest();
+                var issues = await _github.Issue.GetForRepository(owner, name);
+                Issues.Clear();
+                foreach(var issue in issues)
+                {
+                    Issues.Add(issue);
+                }
+            }
+            catch ( Exception ex )
+            {
+                log.ErrorException( "Failed to fetch issues", ex );
             }
         }
 
