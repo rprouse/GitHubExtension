@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Extensions;
 using Alteridem.GitHub.Model;
-using Octokit;
 
 namespace Alteridem.GitHub.View
 {
@@ -24,7 +24,14 @@ namespace Alteridem.GitHub.View
 
         private void OnLogin(object sender, RoutedEventArgs e)
         {
-            GitHubApi.ToggleLogin();
+            if(GitHubApi.LoggedIn)
+            {
+                GitHubApi.Logout();
+                return;
+            }
+            var view = Factory.Get<ILogonView>();
+            view.Owner = this.GetParentWindow();
+            view.ShowDialog();
         }
     }
 }

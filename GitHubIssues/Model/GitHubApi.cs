@@ -70,19 +70,10 @@ namespace Alteridem.GitHub.Model
             Issues = new BindingList<Issue>();
 
             // TODO: Get user and token from settings and log in using them
-
             if (!string.IsNullOrWhiteSpace(Token))
             {
                 LoginWithToken();
             }
-        }
-
-        public void ToggleLogin()
-        {
-            if (LoggedIn)
-                Logout();
-            else
-                Login();
         }
 
         public void Logout()
@@ -110,29 +101,13 @@ namespace Alteridem.GitHub.Model
             public void OnError(Exception ex)
             {
                 _parent.Token = null;
-                _parent.LoginWithDialog();
             }
-        }
-
-        private void Login()
-        {
-            if (!String.IsNullOrWhiteSpace(Token))
-                LoginWithToken();
-            else
-                LoginWithDialog();
-
         }
 
         private void LoginWithToken()
         {
             var view = new LogonWatcher(this);
             Login(new Credentials(Token), view);
-        }
-
-        private void LoginWithDialog()
-        {
-            var view = Factory.Get<ILogonView>();
-            view.ShowDialog();
         }
 
         public void Login([NotNull] ILogonView view)

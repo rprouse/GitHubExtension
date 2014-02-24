@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Model;
 
@@ -13,20 +14,6 @@ namespace Alteridem.GitHub.View
         public LoginDialog()
         {
             InitializeComponent();
-        }
-
-        private void OnLogon(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Message.Text = string.Empty;
-            var api = Factory.Get<GitHubApi>();
-            api.Login(this);
-        }
-
-        private void OnCancel(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            Close();
         }
 
         [NotNull]
@@ -52,6 +39,19 @@ namespace Alteridem.GitHub.View
         {
             IsEnabled = true;
             Message.Text = ex.Message;
+        }
+
+        private void Logon_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            DialogResult = true;
+            Message.Text = string.Empty;
+            var api = Factory.Get<GitHubApi>();
+            api.Login(this);
+        }
+
+        private void Logon_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
         }
     }
 }
