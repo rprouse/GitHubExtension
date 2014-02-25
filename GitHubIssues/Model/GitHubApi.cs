@@ -28,15 +28,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Headers;
-using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Akavache;
 using Alteridem.GitHub.Annotations;
 using NLog;
 using Octokit;
-using Octokit.Reactive;
 
 #endregion
 
@@ -46,7 +41,6 @@ namespace Alteridem.GitHub.Model
     {
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
-        private readonly IObservableGitHubClient _observableGitHub;
         private string _token;
         private User _user;
         private RepositoryWrapper _repository;
@@ -147,7 +141,6 @@ namespace Alteridem.GitHub.Model
         public GitHubApi()
         {
             _github = new GitHubClient(new ProductHeaderValue("GitHubExtension"));
-            _observableGitHub = new ObservableGitHubClient(_github);
 
             Repositories = new BindingList<RepositoryWrapper>();
             Organizations = new BindingList<Organization>();
@@ -183,7 +176,7 @@ namespace Alteridem.GitHub.Model
             Login(new Credentials(view.Username, view.Password), view);
         }
 
-        private void Login([NotNull] Credentials credentials, [NotNull] ILogonObservable view)
+        private async void Login([NotNull] Credentials credentials, [NotNull] ILogonObservable view)
         {
             log.Info("Logging in with credentials");
             _github.Credentials = credentials;
@@ -196,24 +189,20 @@ namespace Alteridem.GitHub.Model
             };
 
             view.OnLoggingIn();
-            _observableGitHub.Authorization
-                .GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth)
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(OnAuthorized, ex =>
-                {
-                    Logout();
-                    view.OnError(ex);
-                }, () =>
-                {
-                    view.OnSuccess();
-                    LoadData();
-                });
-        }
-
-        private void OnAuthorized([NotNull] Authorization auth)
-        {
-            log.Info("Successfully logged in to GitHub");
-            Token = auth.Token;
+            try
+            {
+                var auth = await _github.Authorization.GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth);
+                log.Info("Successfully logged in to GitHub");
+                Token = auth.Token;
+                view.OnSuccess();
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                log.WarnException("Failed to login", ex);
+                Logout();
+                view.OnError(ex);
+            }
         }
 
         private void LoadData()
@@ -222,17 +211,18 @@ namespace Alteridem.GitHub.Model
             GetRepositories();
         }
 
-        private void GetUser()
+        private async void GetUser()
         {
             log.Info("Fetching current user");
-            _observableGitHub.User
-                .Current()
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(user =>
-                {
+            try
+            {
+                User = await _github.User.Current();
                     log.Info("Finished fetching current user");
-                    User = user;
-                }, exception => log.ErrorException("Failed to fetch current user", exception));
+            }
+            catch (Exception ex)
+            {
+                log.ErrorException("Failed to fetch current user", ex);
+            }
         }
 
         private async void GetRepositories()
@@ -269,11 +259,11 @@ namespace Alteridem.GitHub.Model
                  .Subscribe(r =>
                  {
                      var wrapper = new RepositoryWrapper(r);
-                     if ( Repositories.Contains(wrapper) )
-                        Repository = wrapper;
+                     if (Repositories.Contains(wrapper))
+                         Repository = wrapper;
                      else
                          SetDefaultRepository();
-                 }, ex => SetDefaultRepository() );
+                 }, ex => SetDefaultRepository());
         }
 
         private void SetDefaultRepository()
