@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Akavache;
 using Alteridem.GitHub.Annotations;
 using NLog;
 using Octokit;
@@ -13,6 +14,13 @@ namespace Alteridem.GitHub.Model
 {
     public class GitHubApi : INotifyPropertyChanged
     {
+        private class UserCache
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+        }
+
+        private const string UserCacheKey = "UserCache";
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
         private readonly IObservableGitHubClient _observableGitHub;
@@ -55,7 +63,6 @@ namespace Alteridem.GitHub.Model
             {
                 if (Equals(value, _token)) return;
                 _token = value;
-                Settings.Token = _token;
                 OnPropertyChanged();
                 OnPropertyChanged("LoggedIn");
             }
@@ -73,17 +80,14 @@ namespace Alteridem.GitHub.Model
             Issues = new BindingList<Issue>();
 
             // Get user and token from settings and log in using them
-            _token = Settings.Token;
-            if (!string.IsNullOrWhiteSpace(Token))
-            {
-                LoginWithToken();
-            }
+            LoginFromCache();
         }
 
         public void Logout()
         {
             log.Info( "Logging out of GitHub" );
             Token = string.Empty;
+            BlobCache.Secure.Invalidate(UserCacheKey);
             User = null;
             Repositories.Clear();
             Organizations.Clear();
@@ -112,14 +116,21 @@ namespace Alteridem.GitHub.Model
             public void OnError(Exception ex)
             {
                 log.ErrorException( "Failed to login to GitHub using token", ex );
-                _parent.Token = String.Empty;
+                _parent.Logout();
             }
         }
 
-        private void LoginWithToken()
+        private void LoginFromCache()
         {
-            var view = new LogonWatcher(this);
-            Login(new Credentials(Token), view);
+            BlobCache.Secure.GetObjectAsync<UserCache>(UserCacheKey)
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(c =>
+                {
+                    var view = new LogonWatcher(this);
+                    Login(new Credentials(c.Username, c.Password), view);
+                },
+                ex => log.Info("User was not saved in the cache")
+                );
         }
 
         public void Login([NotNull] ILogonView view)
@@ -131,7 +142,7 @@ namespace Alteridem.GitHub.Model
         {
             log.Info("Logging in with credentials");
             _github.Credentials = credentials;
-            Token = string.Empty;
+            BlobCache.Secure.InsertObject(UserCacheKey, new UserCache {Username = credentials.Login, Password = credentials.Password});
             var newAuth = new NewAuthorization
             {
                 Scopes = new[] {"user", "repo"},
@@ -143,7 +154,11 @@ namespace Alteridem.GitHub.Model
             _observableGitHub.Authorization
                 .GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth)
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(OnAuthorized, view.OnError, () =>
+                .Subscribe(OnAuthorized, ex =>
+                {
+                    Logout();
+                    view.OnError(ex);
+                }, () => 
                 {
                     view.OnSuccess();
                     LoadData();

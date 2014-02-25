@@ -1,7 +1,5 @@
-﻿using System.Reflection;
-using System.Windows;
-using Alteridem.GitHub.Model;
-using Ninject;
+﻿using System.Windows;
+using Akavache;
 
 namespace Alteridem.GitHub
 {
@@ -10,5 +8,9 @@ namespace Alteridem.GitHub
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            BlobCache.ApplicationName = "GitHubExtension";
+        }
     }
 }
