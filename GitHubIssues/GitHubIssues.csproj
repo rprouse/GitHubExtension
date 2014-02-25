@@ -95,6 +95,7 @@
     <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
     <Compile Include="Model\ILogonObservable.cs" />
+    <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Page Include="View\GitHubUserControl.xaml">
       <SubType>Designer</SubType>

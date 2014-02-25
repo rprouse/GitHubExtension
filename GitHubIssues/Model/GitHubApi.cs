@@ -25,11 +25,13 @@
 #region Using Directives
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Akavache;
 using Alteridem.GitHub.Annotations;
 using NLog;
@@ -47,73 +49,9 @@ namespace Alteridem.GitHub.Model
         private readonly IObservableGitHubClient _observableGitHub;
         private string _token;
         private User _user;
+        private RepositoryWrapper _repository;
 
-        #region Public Data
-
-        public bool LoggedIn
-        {
-            get { return !string.IsNullOrWhiteSpace(Token); }
-        }
-
-        [CanBeNull]
-        public User User
-        {
-            get { return _user; }
-            private set
-            {
-                if (Equals(value, _user)) return;
-                _user = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [NotNull]
-        public BindingList<Repository> Repositories { get; set; }
-
-        [NotNull]
-        public BindingList<Organization> Organizations { get; set; }
-
-        [NotNull]
-        public BindingList<Issue> Issues { get; set; }
-
-        [CanBeNull]
-        private string Token
-        {
-            get { return _token; }
-            set
-            {
-                if (Equals(value, _token)) return;
-                _token = value;
-                OnPropertyChanged();
-                OnPropertyChanged("LoggedIn");
-            }
-        }
-
-        #endregion
-
-        public GitHubApi()
-        {
-            _github = new GitHubClient(new ProductHeaderValue("GitHubExtension"));
-            _observableGitHub = new ObservableGitHubClient(_github);
-
-            Repositories = new BindingList<Repository>();
-            Organizations = new BindingList<Organization>();
-            Issues = new BindingList<Issue>();
-
-            // Get user and token from settings and log in using them
-            LoginFromCache();
-        }
-
-        public void Logout()
-        {
-            log.Info("Logging out of GitHub");
-            Token = string.Empty;
-            Cache.ClearCredentials();
-            User = null;
-            Repositories.Clear();
-            Organizations.Clear();
-            Issues.Clear();
-        }
+        #region LogonWatcher Class
 
         private class LogonWatcher : ILogonObservable
         {
@@ -141,14 +79,103 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        private async void LoginFromCache()
+        #endregion
+
+        #region Public Data
+
+        public bool LoggedIn
         {
-            var credentials = await Cache.GetCredentials();
-            if ( credentials != null )
+            get { return !string.IsNullOrWhiteSpace(Token); }
+        }
+
+        [CanBeNull]
+        public User User
+        {
+            get { return _user; }
+            private set
             {
-                var view = new LogonWatcher(this);
-                Login(new Credentials(credentials.Logon, credentials.Password), view);
+                if (Equals(value, _user)) return;
+                _user = value;
+                OnPropertyChanged();
             }
+        }
+
+        /// <summary>
+        /// The currently selected repository.
+        /// </summary>
+        [CanBeNull]
+        public RepositoryWrapper Repository
+        {
+            get { return _repository; }
+            set
+            {
+                if (Equals(value, _repository)) return;
+                if (value != null)
+                    Cache.SaveRepository(value.Repository);
+                else
+                    Cache.DeleteRepository();
+                _repository = value;
+                GetIssues();
+                OnPropertyChanged();
+            }
+        }
+
+        [NotNull]
+        public BindingList<RepositoryWrapper> Repositories { get; set; }
+
+        [NotNull]
+        public BindingList<Organization> Organizations { get; set; }
+
+        [NotNull]
+        public BindingList<Issue> Issues { get; set; }
+
+        [CanBeNull]
+        private string Token
+        {
+            get { return _token; }
+            set
+            {
+                if (Equals(value, _token)) return;
+                _token = value;
+                OnPropertyChanged();
+                OnPropertyChanged("LoggedIn");
+            }
+        }
+
+        #endregion
+
+        public GitHubApi()
+        {
+            _github = new GitHubClient(new ProductHeaderValue("GitHubExtension"));
+            _observableGitHub = new ObservableGitHubClient(_github);
+
+            Repositories = new BindingList<RepositoryWrapper>();
+            Organizations = new BindingList<Organization>();
+            Issues = new BindingList<Issue>();
+
+            // Get user and token from settings and log in using them
+            LoginFromCache();
+        }
+
+        public void Logout()
+        {
+            log.Info("Logging out of GitHub");
+            Token = string.Empty;
+            Cache.DeleteCredentials();
+            User = null;
+            Repositories.Clear();
+            Organizations.Clear();
+            Issues.Clear();
+        }
+
+        private void LoginFromCache()
+        {
+            Cache.GetCredentials()
+                .Subscribe(credentials =>
+                {
+                    var view = new LogonWatcher(this);
+                    Login(new Credentials(credentials.Logon, credentials.Password), view);
+                });
         }
 
         public void Login([NotNull] ILogonView view)
@@ -193,7 +220,6 @@ namespace Alteridem.GitHub.Model
         {
             GetUser();
             GetRepositories();
-            GetIssues("nunit", "nunit-framework");
         }
 
         private void GetUser()
@@ -209,54 +235,72 @@ namespace Alteridem.GitHub.Model
                 }, exception => log.ErrorException("Failed to fetch current user", exception));
         }
 
-        private void GetRepositories()
+        private async void GetRepositories()
         {
             log.Info("Fetching repositories for current user");
             Repositories.Clear();
             Organizations.Clear();
-            _observableGitHub.Repository
-                .GetAllForCurrent()
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(NextRepository,
-                    exception => log.ErrorException("Failed to fetch repositories for current user", exception),
-                    () => log.Info("Finished fetching repositories for current user"));
 
-            log.Info("Fetching organizations for current user");
-            _observableGitHub.Organization
-                .GetAllForCurrent()
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(NextOrganization,
-                    exception => log.ErrorException("Failed to fetch organizations for current user", exception),
-                    () => log.Info("Finished fetching organizations for current user"));
+            var repositories = await _github.Repository.GetAllForCurrent();
+            AddRepositories(repositories);
+            var organizations = await _github.Organization.GetAllForCurrent();
+            foreach (var organization in organizations)
+            {
+                repositories = await _github.Repository.GetAllForOrg(organization.Login);
+                AddRepositories(repositories);
+            }
+            OnRepositoriesComplete();
         }
 
-        private void NextRepository([NotNull] Repository repository)
+        private void AddRepositories([NotNull] IEnumerable<Repository> repositories)
         {
-            log.Debug("Fetched repository {0}", repository.FullName);
-            Repositories.Add(repository);
+            foreach (var repository in repositories)
+            {
+                log.Debug("Fetched repository {0}", repository.FullName);
+                if (repository.HasIssues)
+                    Repositories.Add(new RepositoryWrapper(repository));
+            }
         }
 
-        private void NextOrganization([NotNull] Organization org)
+        private void OnRepositoriesComplete()
         {
-            Organizations.Add(org);
-
-            log.Info("Fetching repositories for {0}", org.Login);
-            _observableGitHub.Repository
-                .GetAllForOrg(org.Login)
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(NextRepository,
-                    exception => log.ErrorException("Failed to fetch repositories for " + org.Login, exception),
-                    () => log.Info("Finished fetching repositories for " + org.Login));
+            log.Info("Finished fetching organizations for current user");
+            Cache.GetRepository()
+                 .Subscribe(r =>
+                 {
+                     var wrapper = new RepositoryWrapper(r);
+                     if ( Repositories.Contains(wrapper) )
+                        Repository = wrapper;
+                     else
+                         SetDefaultRepository();
+                 }, ex => SetDefaultRepository() );
         }
 
-        private async void GetIssues(string owner, string name)
+        private void SetDefaultRepository()
+        {
+            Repository = Repositories.Count > 0 ? Repositories[0] : null;
+        }
+
+        private void GetIssues()
+        {
+            Issues.Clear();
+            var wrapper = Repository;
+            if (wrapper != null && wrapper.Repository != null)
+            {
+                var repository = wrapper.Repository;
+                // TODO: Filter issues
+                var request = new RepositoryIssueRequest();
+                request.State = ItemState.Open;
+                GetIssues(repository.Owner.Login, repository.Name, request);
+            }
+        }
+
+        private async void GetIssues(string owner, string name, RepositoryIssueRequest request)
         {
             log.Info("Fetching repositories for {0}/{1}", owner, name);
             try
             {
-                var request = new RepositoryIssueRequest();
-                var issues = await _github.Issue.GetForRepository(owner, name);
-                Issues.Clear();
+                var issues = await _github.Issue.GetForRepository(owner, name, request);
                 foreach (var issue in issues)
                 {
                     Issues.Add(issue);

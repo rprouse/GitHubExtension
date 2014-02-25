@@ -16,7 +16,7 @@
             <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="Repositories" Grid.Row="0" Grid.Column="0" Width="200" Height="23" Margin="6" HorizontalAlignment="Left" ItemsSource="{Binding Path=Repositories}" DisplayMemberPath="FullName" />
+        <ComboBox x:Name="Repositories" Grid.Row="0" Grid.Column="0" Width="200" Height="23" Margin="6" HorizontalAlignment="Left" ItemsSource="{Binding Path=Repositories}" SelectedItem="{Binding Path=Repository}" DisplayMemberPath="Repository.FullName" />
         <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                   Margin="6,0,6,6"
