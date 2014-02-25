@@ -90,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Cache.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
@@ -115,6 +116,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\CredentialCache.cs" />
     <Compile Include="Modules\GitHubModule.cs" />
     <Compile Include="Modules\ViewModule.cs" />
     <Compile Include="Properties\Annotations.cs" />

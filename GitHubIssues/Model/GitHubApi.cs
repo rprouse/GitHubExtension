@@ -42,13 +42,6 @@ namespace Alteridem.GitHub.Model
 {
     public class GitHubApi : INotifyPropertyChanged
     {
-        private class UserCache
-        {
-            public string Username { get; set; }
-            public string Password { get; set; }
-        }
-
-        private const string UserCacheKey = "UserCache";
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
         private readonly IObservableGitHubClient _observableGitHub;
@@ -113,9 +106,9 @@ namespace Alteridem.GitHub.Model
 
         public void Logout()
         {
-            log.Info( "Logging out of GitHub" );
+            log.Info("Logging out of GitHub");
             Token = string.Empty;
-            BlobCache.Secure.Invalidate(UserCacheKey);
+            Cache.ClearCredentials();
             User = null;
             Repositories.Clear();
             Organizations.Clear();
@@ -133,32 +126,29 @@ namespace Alteridem.GitHub.Model
 
             public void OnLoggingIn()
             {
-                log.Info( "Logging in with authentication token" );
+                log.Info("Logging in with authentication token");
             }
 
             public void OnSuccess()
             {
-                log.Info( "Successfully logged in with authentication token" );
+                log.Info("Successfully logged in with authentication token");
             }
 
             public void OnError(Exception ex)
             {
-                log.ErrorException( "Failed to login to GitHub using token", ex );
+                log.ErrorException("Failed to login to GitHub using token", ex);
                 _parent.Logout();
             }
         }
 
-        private void LoginFromCache()
+        private async void LoginFromCache()
         {
-            BlobCache.Secure.GetObjectAsync<UserCache>(UserCacheKey)
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(c =>
-                {
-                    var view = new LogonWatcher(this);
-                    Login(new Credentials(c.Username, c.Password), view);
-                },
-                ex => log.Info("User was not saved in the cache")
-                );
+            var credentials = await Cache.GetCredentials();
+            if ( credentials != null )
+            {
+                var view = new LogonWatcher(this);
+                Login(new Credentials(credentials.Logon, credentials.Password), view);
+            }
         }
 
         public void Login([NotNull] ILogonView view)
@@ -170,10 +160,10 @@ namespace Alteridem.GitHub.Model
         {
             log.Info("Logging in with credentials");
             _github.Credentials = credentials;
-            BlobCache.Secure.InsertObject(UserCacheKey, new UserCache {Username = credentials.Login, Password = credentials.Password});
+            Cache.SaveCredentials(credentials.Login, credentials.Password);
             var newAuth = new NewAuthorization
             {
-                Scopes = new[] {"user", "repo"},
+                Scopes = new[] { "user", "repo" },
                 Note = "GitHub Visual Studio Extension",
                 NoteUrl = "http://www.alteridem.net"
             };
@@ -186,7 +176,7 @@ namespace Alteridem.GitHub.Model
                 {
                     Logout();
                     view.OnError(ex);
-                }, () => 
+                }, () =>
                 {
                     view.OnSuccess();
                     LoadData();
@@ -195,7 +185,7 @@ namespace Alteridem.GitHub.Model
 
         private void OnAuthorized([NotNull] Authorization auth)
         {
-            log.Info( "Successfully logged in to GitHub" );
+            log.Info("Successfully logged in to GitHub");
             Token = auth.Token;
         }
 
@@ -216,7 +206,7 @@ namespace Alteridem.GitHub.Model
                 {
                     log.Info("Finished fetching current user");
                     User = user;
-                }, exception => log.ErrorException("Failed to fetch current user", exception) );
+                }, exception => log.ErrorException("Failed to fetch current user", exception));
         }
 
         private void GetRepositories()
@@ -227,7 +217,7 @@ namespace Alteridem.GitHub.Model
             _observableGitHub.Repository
                 .GetAllForCurrent()
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(NextRepository, 
+                .Subscribe(NextRepository,
                     exception => log.ErrorException("Failed to fetch repositories for current user", exception),
                     () => log.Info("Finished fetching repositories for current user"));
 
@@ -242,7 +232,7 @@ namespace Alteridem.GitHub.Model
 
         private void NextRepository([NotNull] Repository repository)
         {
-            log.Debug( "Fetched repository {0}", repository.FullName );
+            log.Debug("Fetched repository {0}", repository.FullName);
             Repositories.Add(repository);
         }
 
@@ -267,21 +257,21 @@ namespace Alteridem.GitHub.Model
                 var request = new RepositoryIssueRequest();
                 var issues = await _github.Issue.GetForRepository(owner, name);
                 Issues.Clear();
-                foreach(var issue in issues)
+                foreach (var issue in issues)
                 {
                     Issues.Add(issue);
                 }
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
-                log.ErrorException( "Failed to fetch issues", ex );
+                log.ErrorException("Failed to fetch issues", ex);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CanBeNull,CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CanBeNull, CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
