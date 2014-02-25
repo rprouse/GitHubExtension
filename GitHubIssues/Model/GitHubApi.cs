@@ -138,9 +138,9 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApi()
+        public GitHubApi(GitHubClient github)
         {
-            _github = new GitHubClient(new ProductHeaderValue("GitHubExtension"));
+            _github = github;
 
             Repositories = new BindingList<RepositoryWrapper>();
             Organizations = new BindingList<Organization>();
