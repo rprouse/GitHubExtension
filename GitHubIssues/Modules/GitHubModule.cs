@@ -9,14 +9,13 @@ namespace Alteridem.GitHub.Modules
     {
         public override void Load()
         {
-            Bind<IGitHubClient>()
+            Bind<GitHubClient>()
                 .To<GitHubClient>()
                 .WithConstructorArgument("productInformation", c => new ProductHeaderValue("GitHubExtension"));
 
             Bind<GitHubApi>()
                 .To<GitHubApi>()
-                .InSingletonScope()
-                .WithConstructorArgument("github", c => Factory.Get<IGitHubClient>());
+                .InSingletonScope();
         }
     }
 }
