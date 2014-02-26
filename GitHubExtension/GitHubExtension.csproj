@@ -178,6 +178,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Fonts\fontawesome-webfont.ttf" />
+    <None Include="app.config" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -238,6 +239,14 @@
     <ProjectReference Include="..\GitHubIssues\GitHubIssues.csproj">
       <Project>{64740ce5-68c6-4b63-b607-831bf8c205f0}</Project>
       <Name>GitHubIssues</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Octokit.net\Octokit\Octokit.csproj">
+      <Project>{08dd4305-7787-4823-a53f-4d0f725a07f3}</Project>
+      <Name>Octokit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Splat\Splat\Splat-Net45.csproj">
+      <Project>{252ce1c2-027a-4445-a3c2-e4d6c80a935a}</Project>
+      <Name>Splat-Net45</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
