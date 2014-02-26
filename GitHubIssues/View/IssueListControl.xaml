@@ -6,17 +6,38 @@
              xmlns:view="clr-namespace:Alteridem.GitHub.View" 
              DataContext="{Binding ElementName=IssueList, Path=GitHubApi}"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             Foreground="#FF333333"
+             d:DesignHeight="500" 
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="RepositoryTemplate">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Repository.FullName}" />
+                <Border Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#FFEEEEEE" BorderBrush="#FFE3E3E3" CornerRadius="2" BorderThickness="1" >
+                    <TextBlock Text="{Binding Path=Repository.OpenIssuesCount}" Margin="2" FontSize="10" />
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="180" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="38"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="Repositories" Grid.Row="0" Grid.Column="0" Width="200" Height="23" Margin="6" HorizontalAlignment="Left" ItemsSource="{Binding Path=Repositories}" SelectedItem="{Binding Path=Repository}" DisplayMemberPath="Repository.FullName" />
+        <ComboBox x:Name="Repositories" Grid.Row="0" Grid.Column="0" Width="200" Height="26" Margin="6" 
+                  HorizontalContentAlignment="Stretch"
+                  HorizontalAlignment="Left" 
+                  ItemsSource="{Binding Path=Repositories}" 
+                  SelectedItem="{Binding Path=Repository}" 
+                  ItemTemplate="{StaticResource RepositoryTemplate}"/>
         <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                   Margin="6,0,6,6"
