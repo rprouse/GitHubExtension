@@ -1,0 +1,10 @@
+[submodule "Octokit.net"]
+    path = Octokit.net
+    url = git@github.com:rprouse/octokit.net.git
+[submodule "Akavache"]
+    path = Akavache
+    url = git@github.com:rprouse/Akavache.git
+[submodule "Splat"]
+    path = Splat
+    url = git@github.com:rprouse/splat.git
+    

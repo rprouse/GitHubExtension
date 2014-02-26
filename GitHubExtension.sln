@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubExtension_UnitTests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubIssues", "GitHubIssues\GitHubIssues.csproj", "{64740CE5-68C6-4B63-B607-831BF8C205F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit", "Octokit.net\Octokit\Octokit.csproj", "{08DD4305-7787-4823-A53F-4D0F725A07F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akavache_Net45", "Akavache\Akavache\Akavache_Net45.csproj", "{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{64740CE5-68C6-4B63-B607-831BF8C205F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64740CE5-68C6-4B63-B607-831BF8C205F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64740CE5-68C6-4B63-B607-831BF8C205F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08DD4305-7787-4823-A53F-4D0F725A07F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08DD4305-7787-4823-A53F-4D0F725A07F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08DD4305-7787-4823-A53F-4D0F725A07F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08DD4305-7787-4823-A53F-4D0F725A07F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
