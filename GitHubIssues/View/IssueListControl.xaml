@@ -6,12 +6,14 @@
              xmlns:view="clr-namespace:Alteridem.GitHub.View"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
+             xmlns:converters="clr-namespace:Alteridem.GitHub.Converters"
              DataContext="{Binding ElementName=IssueList, Path=GitHubApi}"
              mc:Ignorable="d" 
              Foreground="#FF333333"
              d:DesignHeight="500" 
              d:DesignWidth="800">
     <UserControl.Resources>
+        <converters:StringToColorConverter x:Key="ColorConverter" />
         <DataTemplate x:Key="RepositoryTemplate">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -23,6 +25,12 @@
                     <TextBlock Text="{Binding Path=Repository.OpenIssuesCount}" Margin="2" FontSize="10" />
                 </Border>
             </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LabelTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border Background="{Binding Path=Color, Converter={StaticResource ColorConverter}}" CornerRadius="2" Width="6" Height="16" Margin="3,0" />
+                <TextBlock Margin="3,0" Text="{Binding Path=Name}"/>
+            </StackPanel>
         </DataTemplate>
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="IssueFilterDataProvider">
             <ObjectDataProvider.MethodParameters>
@@ -56,14 +64,12 @@
                       Width="120" Height="26"
                       ItemsSource="{Binding Path=Labels}"
                       SelectedItem="{Binding Path=Label}"
-                      DisplayMemberPath="Name">
-            </ComboBox>
+                      ItemTemplate="{StaticResource LabelTemplate}" />
             <ComboBox x:Name="Milestone" Margin="3,6"
                       Width="120" Height="26"
                       ItemsSource="{Binding Path=Milestones}"
                       SelectedItem="{Binding Path=Milestone}"
-                      DisplayMemberPath="Title">
-            </ComboBox>
+                      DisplayMemberPath="Title" />
         </StackPanel>
         <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
