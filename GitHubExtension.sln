@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit", "Octokit.net\Octo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akavache_Net45", "Akavache\Akavache\Akavache_Net45.csproj", "{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Splat-Net45", "Splat\Splat\Splat-Net45.csproj", "{252CE1C2-027A-4445-A3C2-E4D6C80A935A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
