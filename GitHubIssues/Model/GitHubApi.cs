@@ -44,6 +44,7 @@ namespace Alteridem.GitHub.Model
         private string _token;
         private User _user;
         private RepositoryWrapper _repository;
+        private IssueFilter _filter;
 
         #region LogonWatcher Class
 
@@ -109,7 +110,7 @@ namespace Alteridem.GitHub.Model
                 else
                     Cache.DeleteRepository();
                 _repository = value;
-                GetIssues();
+                GetRepositoryInfo();
                 OnPropertyChanged();
             }
         }
@@ -122,6 +123,21 @@ namespace Alteridem.GitHub.Model
 
         [NotNull]
         public BindingList<Issue> Issues { get; set; }
+
+        /// <summary>
+        /// Should we fetch open, closed, assigned, etc issues
+        /// </summary>
+        public IssueFilter Filter
+        {
+            get { return _filter; }
+            set
+            {
+                if (Equals(value, _filter)) return;
+                _filter = value;
+                GetIssues();
+                OnPropertyChanged();
+            }
+        }
 
         [CanBeNull]
         private string Token
@@ -142,6 +158,7 @@ namespace Alteridem.GitHub.Model
         {
             _github = github;
 
+            _filter = IssueFilter.Assigned;
             Repositories = new BindingList<RepositoryWrapper>();
             Organizations = new BindingList<Organization>();
             Issues = new BindingList<Issue>();
@@ -271,6 +288,12 @@ namespace Alteridem.GitHub.Model
             Repository = Repositories.Count > 0 ? Repositories[0] : null;
         }
 
+        private void GetRepositoryInfo()
+        {
+            // TODO: Fetch the milestones and labels
+            GetIssues();
+        }
+
         private void GetIssues()
         {
             Issues.Clear();
@@ -281,6 +304,7 @@ namespace Alteridem.GitHub.Model
                 // TODO: Filter issues
                 var request = new RepositoryIssueRequest();
                 request.State = ItemState.Open;
+                request.Filter = Filter;
                 GetIssues(repository.Owner.Login, repository.Name, request);
             }
         }

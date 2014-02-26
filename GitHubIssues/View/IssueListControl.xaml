@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:view="clr-namespace:Alteridem.GitHub.View" 
+             xmlns:view="clr-namespace:Alteridem.GitHub.View"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
              DataContext="{Binding ElementName=IssueList, Path=GitHubApi}"
              mc:Ignorable="d" 
              Foreground="#FF333333"
@@ -22,6 +24,11 @@
                 </Border>
             </Grid>
         </DataTemplate>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="IssueFilterDataProvider">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="octokit:IssueFilter" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,12 +39,20 @@
             <RowDefinition Height="38"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="Repositories" Grid.Row="0" Grid.Column="0" Width="200" Height="26" Margin="6" 
-                  HorizontalContentAlignment="Stretch"
-                  HorizontalAlignment="Left" 
-                  ItemsSource="{Binding Path=Repositories}" 
-                  SelectedItem="{Binding Path=Repository}" 
-                  ItemTemplate="{StaticResource RepositoryTemplate}"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <ComboBox x:Name="Repositories"  Width="200" Height="26" Margin="6,6,3,6" 
+                      HorizontalContentAlignment="Stretch"
+                      ItemsSource="{Binding Path=Repositories}" 
+                      SelectedItem="{Binding Path=Repository}" 
+                      ItemTemplate="{StaticResource RepositoryTemplate}"/>
+            <!--
+            <ComboBox x:Name="Filter" Margin="3,6"
+                      Width="120" Height="26"
+                      ItemsSource="{Binding Source={StaticResource IssueFilterDataProvider}}"
+                      SelectedItem="{Binding Path=Filter}" >
+            </ComboBox>
+            -->
+        </StackPanel>
         <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                   Margin="6,0,6,6"
