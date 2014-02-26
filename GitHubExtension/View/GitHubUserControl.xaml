@@ -6,6 +6,13 @@
              mc:Ignorable="d" 
              DataContext="{Binding ElementName=GitHubUser, Path=GitHubApi}"
              d:DesignHeight="32" d:DesignWidth="200">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
         <Rectangle RadiusX="4" RadiusY="4" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6,6,3,6">
             <Rectangle.Fill>

@@ -132,11 +132,13 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factory.cs" />
     <Compile Include="IssuesControl.xaml.cs">
       <DependentUpon>IssuesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="IssuesToolWindows.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="Modules\GitHubModule.cs" />
     <Compile Include="Modules\ViewModule.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>

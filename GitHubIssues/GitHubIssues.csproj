@@ -91,13 +91,11 @@
     <Compile Include="Cache.cs" />
     <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
-    <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
     <Compile Include="Model\ILogonObservable.cs" />
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />
-    <Compile Include="Modules\GitHubModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Model\ILogonView.cs" />
   </ItemGroup>
