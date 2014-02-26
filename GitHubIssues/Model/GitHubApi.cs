@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -45,6 +46,8 @@ namespace Alteridem.GitHub.Model
         private User _user;
         private RepositoryWrapper _repository;
         private IssueFilter _filter;
+        private Label _label;
+        private Milestone _milestone;
 
         #region LogonWatcher Class
 
@@ -115,9 +118,39 @@ namespace Alteridem.GitHub.Model
             }
         }
 
+        public Label Label
+        {
+            get { return _label; }
+            set
+            {
+                if (Equals(value, _label)) return;
+                _label = value;
+                GetIssues();
+                OnPropertyChanged();
+            }
+        }
+
+        public Milestone Milestone
+        {
+            get { return _milestone; }
+            set
+            {
+                if (Equals(value, _milestone)) return;
+                _milestone = value;
+                GetIssues();
+                OnPropertyChanged();
+            }
+        }
+
         [NotNull]
         public BindingList<RepositoryWrapper> Repositories { get; set; }
 
+        [NotNull]
+        public BindingList<Label> Labels { get; set; }
+
+        [NotNull]
+        public BindingList<Milestone> Milestones { get; set; }
+            
         [NotNull]
         public BindingList<Organization> Organizations { get; set; }
 
@@ -162,6 +195,8 @@ namespace Alteridem.GitHub.Model
             Repositories = new BindingList<RepositoryWrapper>();
             Organizations = new BindingList<Organization>();
             Issues = new BindingList<Issue>();
+            Labels = new BindingList<Label>();
+            Milestones = new BindingList<Milestone>();
 
             // Get user and token from settings and log in using them
             LoginFromCache();
@@ -290,8 +325,33 @@ namespace Alteridem.GitHub.Model
 
         private void GetRepositoryInfo()
         {
-            // TODO: Fetch the milestones and labels
+            GetLabels();
+            GetMilestones();
             GetIssues();
+        }
+
+        private async void GetLabels()
+        {
+            Labels.Clear();
+            Label = null;
+            if (Repository != null && Repository.Repository != null)
+            {
+                var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
+                foreach (var label in labels)
+                    Labels.Add(label);
+            }
+        }
+
+        private async void GetMilestones()
+        {
+            Milestones.Clear();
+            Milestone = null;
+            if (Repository != null && Repository.Repository != null)
+            {
+                var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
+                foreach (var milestone in milestones)
+                    Milestones.Add(milestone);
+            }
         }
 
         private void GetIssues()
@@ -305,6 +365,11 @@ namespace Alteridem.GitHub.Model
                 var request = new RepositoryIssueRequest();
                 request.State = ItemState.Open;
                 request.Filter = Filter;
+                if (Label != null)
+                    request.Labels.Add(Label.Name);
+                if (Milestone != null)
+                    request.Milestone = Milestone.Title;
+
                 GetIssues(repository.Owner.Login, repository.Name, request);
             }
         }

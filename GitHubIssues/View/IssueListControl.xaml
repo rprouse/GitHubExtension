@@ -52,6 +52,18 @@
                       SelectedItem="{Binding Path=Filter}" >
             </ComboBox>
             -->
+            <ComboBox x:Name="Label" Margin="3,6"
+                      Width="120" Height="26"
+                      ItemsSource="{Binding Path=Labels}"
+                      SelectedItem="{Binding Path=Label}"
+                      DisplayMemberPath="Name">
+            </ComboBox>
+            <ComboBox x:Name="Milestone" Margin="3,6"
+                      Width="120" Height="26"
+                      ItemsSource="{Binding Path=Milestones}"
+                      SelectedItem="{Binding Path=Milestone}"
+                      DisplayMemberPath="Title">
+            </ComboBox>
         </StackPanel>
         <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
