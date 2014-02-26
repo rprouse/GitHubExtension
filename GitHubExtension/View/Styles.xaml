@@ -4,7 +4,7 @@
 
 
     <Style x:Key="FontAwesome">
-        <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/fonts/#FontAwesome" />
+        <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
     </Style>
 
     <Style x:Key="FocusVisualStyle" TargetType="{x:Type Control}">
