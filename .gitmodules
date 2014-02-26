@@ -4,7 +4,3 @@
 [submodule "Akavache"]
     path = Akavache
     url = git@github.com:rprouse/Akavache.git
-[submodule "Splat"]
-    path = Splat
-    url = git@github.com:rprouse/splat.git
-    
