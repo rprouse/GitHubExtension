@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		Akavache\Akavache\Akavache_Net45.csproj = Akavache\Akavache\Akavache_Net45.csproj
 		IntegrationTests.testsettings = IntegrationTests.testsettings
 		LICENSE = LICENSE
 		README.md = README.md
@@ -22,10 +23,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubIssues", "GitHubIssues\GitHubIssues.csproj", "{64740CE5-68C6-4B63-B607-831BF8C205F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octokit", "Octokit.net\Octokit\Octokit.csproj", "{08DD4305-7787-4823-A53F-4D0F725A07F3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akavache_Net45", "Akavache\Akavache\Akavache_Net45.csproj", "{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Splat-Net45", "Splat\Splat\Splat-Net45.csproj", "{252CE1C2-027A-4445-A3C2-E4D6C80A935A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,14 +50,6 @@ Global
 		{08DD4305-7787-4823-A53F-4D0F725A07F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08DD4305-7787-4823-A53F-4D0F725A07F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08DD4305-7787-4823-A53F-4D0F725A07F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4E665E5-6CAF-4414-A6E2-8DE1C3BCF203}.Release|Any CPU.Build.0 = Release|Any CPU
-		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{252CE1C2-027A-4445-A3C2-E4D6C80A935A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

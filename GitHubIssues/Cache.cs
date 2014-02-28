@@ -25,7 +25,7 @@
 using System;
 using System.Reactive.Linq;
 using System.Threading;
-using Akavache;
+using Alteridem.GitHub.Akavache;
 using Alteridem.GitHub.Model;
 using NLog;
 using Octokit;

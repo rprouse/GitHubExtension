@@ -2,8 +2,9 @@
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using Akavache;
+using Alteridem.GitHub.Akavache;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -41,8 +42,9 @@ namespace Alteridem.GitHub.Extension
         /// </summary>
         public GitHubExtensionPackage()
         {
+            Factory.AddAssembly(Assembly.GetExecutingAssembly());
             BlobCache.ApplicationName = "GitHubExtension";
-            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
+            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this));
         }
 
         /// <summary>

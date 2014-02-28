@@ -47,6 +47,10 @@
     <AssemblyOriginatorKeyFile>..\GitHubExtension\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -75,6 +79,7 @@
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\packages\Rx-XAML.2.2.2\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -88,14 +93,30 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Akavache\JsonSerializationMixin.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="Akavache\BlobCache.cs" />
+    <Compile Include="Akavache\CacheIndexEntry.cs" />
+    <Compile Include="Akavache\EncryptedBlobCache.cs" />
+    <Compile Include="Akavache\IBlobCache.cs" />
+    <Compile Include="Akavache\IFilesystemProvider.cs" />
+    <Compile Include="Akavache\MD5.cs" />
+    <Compile Include="Akavache\MD5Managed.cs" />
+    <Compile Include="Akavache\MemoizingMRUCache.cs" />
+    <Compile Include="Akavache\PersistentBlobCache.cs" />
+    <Compile Include="Akavache\SimpleFilesystemProvider.cs" />
+    <Compile Include="Akavache\Utility.cs" />
     <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
+    <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
     <Compile Include="Model\ILogonObservable.cs" />
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />
+    <Compile Include="Modules\CacheModule.cs" />
+    <Compile Include="Modules\GitHubModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Model\ILogonView.cs" />
   </ItemGroup>
@@ -135,14 +156,13 @@
     <Resource Include="GitHub.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Akavache\Akavache\Akavache_Net45.csproj">
-      <Project>{b4e665e5-6caf-4414-a6e2-8de1c3bcf203}</Project>
-      <Name>Akavache_Net45</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Octokit.net\Octokit\Octokit.csproj">
       <Project>{08dd4305-7787-4823-a53f-4d0f725a07f3}</Project>
       <Name>Octokit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Akavache\Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
