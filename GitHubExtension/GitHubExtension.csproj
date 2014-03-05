@@ -157,6 +157,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IIssueViewer.cs" />
     <Compile Include="IssueListToolWindow.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IssueToolWindow.cs" />

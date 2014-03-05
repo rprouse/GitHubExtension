@@ -59,6 +59,7 @@ namespace Alteridem.GitHub.Extension
     // This attribute registers a tool window exposed by this package.
     [ProvideToolWindow(typeof(IssueListToolWindow))]
     [ProvideToolWindow(typeof(IssueToolWindow))]
+    [ProvideService(typeof(IIssueViewer))]
     [Guid(GuidList.guidGitHubExtensionPkgString)]
     public sealed class GitHubExtensionPackage : Package
     {
@@ -74,6 +75,15 @@ namespace Alteridem.GitHub.Extension
             Factory.AddAssembly(Assembly.GetExecutingAssembly());
             BlobCache.ApplicationName = "GitHubExtension";
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this));
+            
+            var container = this as IServiceContainer;
+            var callback = new ServiceCreatorCallback(CreateIssueViewer);
+            container.AddService(typeof(IIssueViewer), callback, true);
+        }
+
+        private object CreateIssueViewer(IServiceContainer container, Type servicetype)
+        {
+            return ShowIssueToolWindow();
         }
 
         /// <summary>
@@ -83,16 +93,22 @@ namespace Alteridem.GitHub.Extension
         /// </summary>
         private void ShowIssueListToolWindow(object sender, EventArgs e)
         {
+            ShowIssueListToolWindow( );
+        }
+
+        private IssueListToolWindow ShowIssueListToolWindow()
+        {
             // Get the instance number 0 of this tool window. This window is single instance so this instance
             // is actually the only one.
             // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = FindToolWindow(typeof(IssueListToolWindow), 0, true);
-            if ((null == window) || (null == window.Frame))
+            var window = FindToolWindow(typeof(IssueListToolWindow), 0, true) as IssueListToolWindow;
+            if ( ( null == window ) || ( null == window.Frame ) )
             {
-                throw new NotSupportedException(Resources.CanNotCreateWindow);
+                throw new NotSupportedException( Resources.CanNotCreateWindow );
             }
-            var windowFrame = (IVsWindowFrame)window.Frame;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+            var windowFrame = ( IVsWindowFrame )window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure( windowFrame.Show( ) );
+            return window;
         }
 
         /// <summary>
@@ -102,18 +118,23 @@ namespace Alteridem.GitHub.Extension
         /// </summary>
         private void ShowIssueToolWindow(object sender, EventArgs e)
         {
+            ShowIssueToolWindow( );
+        }
+
+        private IssueToolWindow ShowIssueToolWindow()
+        {
             // Get the instance number 0 of this tool window. This window is single instance so this instance
             // is actually the only one.
             // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = FindToolWindow(typeof(IssueToolWindow), 0, true);
-            if((null == window) || (null == window.Frame))
+            var window = FindToolWindow(typeof(IssueToolWindow), 0, true) as IssueToolWindow;
+            if ( ( null == window ) || ( null == window.Frame ) )
             {
-                throw new NotSupportedException(Resources.CanNotCreateWindow);
+                throw new NotSupportedException( Resources.CanNotCreateWindow );
             }
-            var windowFrame = (IVsWindowFrame)window.Frame;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+            var windowFrame = ( IVsWindowFrame )window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure( windowFrame.Show( ) );
+            return window;
         }
-
 
         /////////////////////////////////////////////////////////////////////////////
         // Overridden Package Implementation

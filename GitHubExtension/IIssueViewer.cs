@@ -22,48 +22,14 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
-using System.Windows.Controls;
-using System.Windows.Input;
-using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Model;
-using Microsoft.VisualStudio.Shell;
 using Octokit;
 
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension
 {
-    /// <summary>
-    /// Interaction logic for IssueListControl.xaml
-    /// </summary>
-    public partial class IssueListControl : UserControl
+    public interface IIssueViewer
     {
-        public IssueListControl()
-        {
-            InitializeComponent();
-        }
-
-        [NotNull]
-        public GitHubApi GitHubApi
-        {
-            get { return Factory.Get<GitHubApi>(); }
-        }
-
-        private void OnOpenIssue( object sender, MouseButtonEventArgs e )
-        {
-            var issue = Issues.SelectedItem as Issue;
-            if(issue != null)
-            {
-                var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueViewer)) as IIssueViewer;
-
-                if(viewer != null)
-                {
-                    viewer.Show();
-                    viewer.LoadIssue(issue);
-                }
-            }
-        }
+        void LoadIssue(Issue issue);
+        //void InsertComment();
+        void Show();
     }
 }

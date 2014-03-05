@@ -102,12 +102,14 @@
         </StackPanel>
         <wpf:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                  Name="Issues"
                   Margin="6,0,6,6"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding Path=Issues}"
                   FontSize="12"
                   IsReadOnly="True"
-                  RowHeaderWidth="0"
+                  RowHeaderWidth="0" 
+                  MouseDoubleClick="OnOpenIssue"
                   Background="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}"
                   Foreground="{DynamicResource {x:Static wpf:Theme.ForegroundKey}}"
                   RowBackground="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}"

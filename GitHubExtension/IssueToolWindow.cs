@@ -24,9 +24,14 @@
 
 #region Using Directives
 
+using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Alteridem.GitHub.Extension.View;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Octokit;
 
 #endregion
 
@@ -42,8 +47,10 @@ namespace Alteridem.GitHub.Extension
     /// implementation of the IVsUIElementPane interface.
     /// </summary>
     [Guid("05AF9426-E44E-404C-9653-0ADE833D1EAD")]
-    public class IssueToolWindow : ToolWindowPane
+    public class IssueToolWindow : ToolWindowPane, IIssueViewer
     {
+        private readonly IssueControl _issueControl;
+
         /// <summary>
         /// Standard constructor for the tool window.
         /// </summary>
@@ -63,7 +70,28 @@ namespace Alteridem.GitHub.Extension
             // This is the user control hosted by the tool window; Note that, even if this class implements IDisposable,
             // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on 
             // the object returned by the Content property.
-            base.Content = new IssueControl();
+            _issueControl = new IssueControl();
+            base.Content = _issueControl;
         }
+
+        #region Implementation of IIssueViewer
+
+        public void LoadIssue( Issue issue )
+        {
+            // TODO: Load the issue into the control
+            Debug.WriteLine( "Loading issue {0}", issue.Number );
+        }
+
+        public void Show()
+        {
+            if(null == Frame)
+            {
+                throw new NotSupportedException(Resources.CanNotCreateWindow);
+            }
+            var windowFrame = (IVsWindowFrame)Frame;
+            ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
+        #endregion
     }
 }
