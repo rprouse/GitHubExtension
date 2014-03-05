@@ -157,9 +157,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IssuesControl.xaml.cs">
-      <DependentUpon>IssuesControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="IssuesToolWindows.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Modules\ViewModule.cs" />
@@ -233,10 +230,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="IssuesControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\LoginDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

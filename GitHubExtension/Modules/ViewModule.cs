@@ -1,8 +1,8 @@
-﻿using Alteridem.GitHub.Model;
-using Alteridem.GitHub.View;
+﻿using Alteridem.GitHub.Extension.View;
+using Alteridem.GitHub.Model;
 using Ninject.Modules;
 
-namespace Alteridem.GitHub.Modules
+namespace Alteridem.GitHub.Extension.Modules
 {
     public class ViewModule : NinjectModule
     {
