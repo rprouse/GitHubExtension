@@ -1,3 +1,0 @@
-[submodule "Octokit.net"]
-    path = Octokit.net
-    url = git@github.com:rprouse/octokit.net.git
