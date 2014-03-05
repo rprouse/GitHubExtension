@@ -20,7 +20,7 @@
                 <ImageBrush ImageSource="{Binding User.AvatarUrl}"></ImageBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,6,3,6" FontSize="14" Text="{Binding User.Login}" />
+        <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,0,3,6" FontSize="14" Text="{Binding User.Login}" />
         <Button x:Name="LoginOut" 
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Right"
