@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Model;
 
 namespace Alteridem.GitHub.View
@@ -14,6 +15,8 @@ namespace Alteridem.GitHub.View
         public LoginDialog()
         {
             InitializeComponent();
+            LogonCommand = new RelayCommand( p => Logon(), p => CanLogon() );
+            DataContext = this;
         }
 
         [NotNull]
@@ -22,16 +25,17 @@ namespace Alteridem.GitHub.View
         [NotNull]
         public string Password { get { return PassText.Password; } }
 
+        public ICommand LogonCommand { get; private set; }
+
         public void OnLoggingIn()
         {
             IsEnabled = false;
+            Message.Text = "Logging in...";
             // TODO: Display progress
         }
 
         public void OnSuccess()
         {
-            IsEnabled = true;
-            Message.Text = "Success";
             Close();
         }
 
@@ -41,17 +45,16 @@ namespace Alteridem.GitHub.View
             Message.Text = ex.Message;
         }
 
-        private void Logon_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        private bool CanLogon()
         {
-            DialogResult = true;
-            Message.Text = string.Empty;
-            var api = Factory.Get<GitHubApi>();
-            api.Login(this);
+            return !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
         }
 
-        private void Logon_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void Logon()
         {
-            e.CanExecute = !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
+            Message.Text = string.Empty;
+            var api = Factory.Get<GitHubApi>( );
+            api.Login( this );
         }
     }
 }

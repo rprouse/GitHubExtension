@@ -172,6 +172,7 @@
     <Compile Include="GitHubExtensionPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="View\RelayCommand.cs" />
     <Compile Include="View\Theme.cs" />
     <Compile Include="View\GitHubUserControl.xaml.cs">
       <DependentUpon>GitHubUserControl.xaml</DependentUpon>
