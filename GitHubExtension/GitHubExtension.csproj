@@ -157,8 +157,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IssuesToolWindows.cs" />
+    <Compile Include="IssueListToolWindow.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="IssueToolWindow.cs" />
     <Compile Include="Modules\ViewModule.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -169,6 +170,9 @@
     <Compile Include="GitHubExtensionPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="View\IssueControl.xaml.cs">
+      <DependentUpon>IssueControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RelayCommand.cs" />
     <Compile Include="View\Theme.cs" />
     <Compile Include="View\GitHubUserControl.xaml.cs">
@@ -230,6 +234,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\IssueControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

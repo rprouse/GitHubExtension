@@ -36,7 +36,7 @@ namespace GitHubExtension_UnitTests.MyToolWindowTest
         public void MyToolWindowConstructorTest()
         {
 
-            IssuesToolWindows target = new IssuesToolWindows();
+            IssueListToolWindow target = new IssueListToolWindow();
             Assert.IsNotNull(target, "Failed to create an instance of MyToolWindow");
 
             MethodInfo method = target.GetType().GetMethod("get_Content", BindingFlags.Public | BindingFlags.Instance);
@@ -50,7 +50,7 @@ namespace GitHubExtension_UnitTests.MyToolWindowTest
         [TestMethod()]
         public void WindowPropertyTest()
         {
-            IssuesToolWindows target = new IssuesToolWindows();
+            IssueListToolWindow target = new IssueListToolWindow();
             Assert.IsNotNull(target.Content, "Content property was null");
         }
 

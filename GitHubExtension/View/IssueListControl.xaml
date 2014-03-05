@@ -9,8 +9,6 @@
              xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
              DataContext="{Binding ElementName=IssueList, Path=GitHubApi}"
              mc:Ignorable="d" 
-             Background="{x:Static wpf:Theme.BackgroundAccentKey}"
-             Foreground="{x:Static wpf:Theme.ForegroundKey}"
              d:DesignHeight="500" 
              d:DesignWidth="800">
     <UserControl.Resources>

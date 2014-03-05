@@ -48,7 +48,7 @@ namespace GitHubExtension_IntegrationTests
                 TestUtils testUtils = new TestUtils();
                 testUtils.ExecuteCommand(toolWindowCmd);
 
-                Assert.IsTrue(testUtils.CanFindToolwindow(new Guid(GuidList.guidToolWindowPersistanceString)));
+                Assert.IsTrue(testUtils.CanFindToolwindow(new Guid(GuidList.guidIssueListWindowPersistanceString)));
 
             });
         }

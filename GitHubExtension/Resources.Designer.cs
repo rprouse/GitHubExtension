@@ -70,11 +70,20 @@ namespace Alteridem.GitHub.Extension {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GitHub Issues.
+        ///   Looks up a localized string similar to GitHub Issue List.
         /// </summary>
-        internal static string ToolWindowTitle {
+        internal static string IssueListWindowTitle {
             get {
-                return ResourceManager.GetString("ToolWindowTitle", resourceCulture);
+                return ResourceManager.GetString("IssueListWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GitHub Issue.
+        /// </summary>
+        internal static string IssueWindowTitle {
+            get {
+                return ResourceManager.GetString("IssueWindowTitle", resourceCulture);
             }
         }
     }

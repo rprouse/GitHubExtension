@@ -62,11 +62,19 @@
         </Strings>
       </Button>
 
-      <Button guid="guidGitHubExtensionCmdSet" id="cmdidIssues" priority="0x0100" type="Button">
+      <Button guid="guidGitHubExtensionCmdSet" id="cmdidIssues" priority="0x0110" type="Button">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
         <Icon guid="guidImages" id="bmpGitHub" />
         <Strings>
-          <ButtonText>GitHub Issues</ButtonText>
+          <ButtonText>GitHub Issue List</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidGitHubExtensionCmdSet" id="cmdidIssueWindow" priority="0x0111" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
+        <Icon guid="guidImages" id="bmpBug" />
+        <Strings>
+          <ButtonText>GitHub Issue Window</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -82,6 +90,12 @@
     </Bitmaps>
   </Commands>
 
+  <KeyBindings>
+    <KeyBinding guid="guidGitHubExtensionCmdSet" id="cmdidNewIssue" key1="W" mod1="Control" key2="I" mod2="Control" editor="guidVSStd97" />
+    <KeyBinding guid="guidGitHubExtensionCmdSet" id="cmdidIssues" key1="W" mod1="Control" key2="G" mod2="Control" editor="guidVSStd97" />
+    <KeyBinding guid="guidGitHubExtensionCmdSet" id="cmdidIssueWindow" key1="W" mod1="Control" key2="H" mod2="Control" editor="guidVSStd97" />
+  </KeyBindings>
+
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidGitHubExtensionPkg" value="{dae607b6-043f-400a-bd24-ffda143b13f4}" />
@@ -92,6 +106,7 @@
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="cmdidNewIssue" value="0x0100" />
       <IDSymbol name="cmdidIssues" value="0x0101" />
+      <IDSymbol name="cmdidIssueWindow" value="0x0102" />
     </GuidSymbol>
     
     <GuidSymbol name="guidImages" value="{fef0a023-8647-476e-99dd-5448f066f4ea}" >

@@ -1,6 +1,34 @@
-﻿using System.Runtime.InteropServices;
+﻿// **********************************************************************************
+// The MIT License (MIT)
+// 
+// Copyright (c) 2014 Rob Prouse
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// 
+// **********************************************************************************
+
+#region Using Directives
+
+using System.Runtime.InteropServices;
 using Alteridem.GitHub.Extension.View;
 using Microsoft.VisualStudio.Shell;
+
+#endregion
 
 namespace Alteridem.GitHub.Extension
 {
@@ -14,16 +42,16 @@ namespace Alteridem.GitHub.Extension
     /// implementation of the IVsUIElementPane interface.
     /// </summary>
     [Guid("04baf945-0cc3-4594-87ca-1656d83fdcfe")]
-    public class IssuesToolWindows : ToolWindowPane
+    public class IssueListToolWindow : ToolWindowPane
     {
         /// <summary>
         /// Standard constructor for the tool window.
         /// </summary>
-        public IssuesToolWindows() :
+        public IssueListToolWindow() :
             base(null)
         {
             // Set the window title reading it from the resources.
-            Caption = Resources.ToolWindowTitle;
+            Caption = Resources.IssueListWindowTitle;
             // Set the image that will appear on the tab of the window frame
             // when docked with an other window
             // The resource ID correspond to the one defined in the resx file
