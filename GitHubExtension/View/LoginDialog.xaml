@@ -10,11 +10,9 @@
         Background="Transparent"
         AllowsTransparency="True">
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <Style x:Key="FontAwesome">
+            <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
+        </Style>
     </Window.Resources>
     <Border Background="White" CornerRadius="12">
         <Grid Margin="0,0,0,-5">

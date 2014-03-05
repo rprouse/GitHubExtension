@@ -7,9 +7,11 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
              xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub"
+             xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
              DataContext="{Binding ElementName=IssueList, Path=GitHubApi}"
              mc:Ignorable="d" 
-             Foreground="#FF333333"
+             Background="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}"
+             Foreground="{DynamicResource {x:Static wpf:Theme.ForegroundKey}}"
              d:DesignHeight="500" 
              d:DesignWidth="800">
     <UserControl.Resources>
@@ -21,7 +23,14 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Repository.FullName}" />
-                <Border Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#FFEEEEEE" BorderBrush="#FFE3E3E3" CornerRadius="2" BorderThickness="1" >
+                <Border 
+                    Grid.Column="1" 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center" 
+                    Background="{DynamicResource {x:Static wpf:Theme.BackgroundAccentKey}}"
+                    BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}"
+                    CornerRadius="2" 
+                    BorderThickness="1" >
                     <TextBlock Text="{Binding Path=Repository.OpenIssuesCount}" Margin="2" FontSize="10" />
                 </Border>
             </Grid>
@@ -39,7 +48,14 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Title}" />
-                <Border Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#FFEEEEEE" BorderBrush="#FFE3E3E3" CornerRadius="2" BorderThickness="1" >
+                <Border 
+                    Grid.Column="1" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center"
+                    Background="{DynamicResource {x:Static wpf:Theme.BackgroundAccentKey}}"
+                    BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}"
+                    CornerRadius="2" 
+                    BorderThickness="1" >
                     <TextBlock Text="{Binding Path=OpenIssues}" Margin="2" FontSize="10" />
                 </Border>
             </Grid>
@@ -51,6 +67,9 @@
         </ObjectDataProvider>
     </UserControl.Resources>
     <Grid>
+        <Grid.Resources>
+            <ResourceDictionary Source="Theme.xaml" />
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="180" />
@@ -90,9 +109,17 @@
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding Path=Issues}"
                   FontSize="12"
-                  IsReadOnly="True" >
+                  IsReadOnly="True"
+                  Background="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}"
+                  Foreground="{DynamicResource {x:Static wpf:Theme.ForegroundKey}}"
+                  RowBackground="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}"
+                  AlternatingRowBackground="{DynamicResource {x:Static wpf:Theme.BackgroundAccentKey}}" 
+                  HorizontalGridLinesBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}"
+                  VerticalGridLinesBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}"
+                  BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" >
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}" />
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="FontWeight" Value="Bold" />
                     <Setter Property="FontSize" Value="12" />
@@ -100,6 +127,8 @@
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.RowHeaderStyle>
                 <Style TargetType="DataGridRowHeader">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}" />
+                    <Setter Property="SeparatorBrush" Value="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" />
                     <Setter Property="SeparatorVisibility" Value="Visible" />
                     <Setter Property="FontWeight" Value="Bold" />
                     <Setter Property="FontSize" Value="12" />
