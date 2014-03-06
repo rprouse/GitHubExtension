@@ -141,7 +141,8 @@
                 <DataGridTextColumn Binding="{Binding Path=Number}" Header="" CanUserResize="False">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Margin" Value="5,0,0,0" />
+                            <Setter Property="Margin" Value="5,0,5,0" />
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
