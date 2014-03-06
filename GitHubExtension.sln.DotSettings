@@ -110,6 +110,16 @@ public class $TEST_CLASS$&#xD;
 		$END$&#xD;
 	}&#xD;
 }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Description/@EntryValue">NLog Logger</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Scope/=B68999B9D6B43E47A02B22C12A54C3CC/Type/@EntryValue">InCSharpTypeMember</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Shortcut/@EntryValue">nlog</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=80B6818A1F26A5499D9D019A1BC8DF39/Text/@EntryValue">private static readonly Logger log = LogManager.GetCurrentClassLogger( );</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8DB051565EE336439784EE0FE0DE0FB7/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8DB051565EE336439784EE0FE0DE0FB7/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8DB051565EE336439784EE0FE0DE0FB7/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>
