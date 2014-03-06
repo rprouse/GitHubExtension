@@ -52,6 +52,9 @@ namespace Alteridem.GitHub.Model
         private Milestone _milestone;
         private Issue _issue;
         private string _markdown = string.Empty;
+        private Label _emptyLabel;
+        private Milestone _noMilestone;
+        private Milestone _allMilestones;
 
         #region LogonWatcher Class
 
@@ -230,6 +233,9 @@ namespace Alteridem.GitHub.Model
             Issues = new BindingList<Issue>();
             Labels = new BindingList<Label>();
             Milestones = new BindingList<Milestone>();
+            _emptyLabel = new Label {Color = "00000000", Name = "(none)"};
+            _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
+            _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
 
             // Get user and token from settings and log in using them
             LoginFromCache();
@@ -399,8 +405,11 @@ namespace Alteridem.GitHub.Model
             if (Repository != null && Repository.Repository != null)
             {
                 var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
+                Labels.Add( _emptyLabel );
                 foreach (var label in labels)
                     Labels.Add(label);
+
+                Label = _emptyLabel;
             }
         }
 
@@ -410,9 +419,13 @@ namespace Alteridem.GitHub.Model
             Milestone = null;
             if (Repository != null && Repository.Repository != null)
             {
+                Milestones.Add( _allMilestones );
+                Milestones.Add( _noMilestone );
                 var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
                 foreach (var milestone in milestones)
                     Milestones.Add(milestone);
+
+                Milestone = _allMilestones;
             }
         }
 
@@ -427,9 +440,14 @@ namespace Alteridem.GitHub.Model
                 var request = new RepositoryIssueRequest();
                 request.State = ItemState.Open;
                 request.Filter = Filter;
-                if (Label != null)
+                if (Label != null && Label != _emptyLabel)
                     request.Labels.Add(Label.Name);
-                if (Milestone != null)
+
+                if ( Milestone == _noMilestone )
+                    request.Milestone = "none";
+                else if ( Milestone == _allMilestones )
+                    request.Milestone = "*";
+                else if (Milestone != null)
                     request.Milestone = Milestone.Number.ToString();
 
                 GetIssues(repository.Owner.Login, repository.Name, request);
