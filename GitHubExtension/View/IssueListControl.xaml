@@ -66,13 +66,11 @@
                       ItemsSource="{Binding Path=Repositories}" 
                       SelectedItem="{Binding Path=Repository}" 
                       ItemTemplate="{StaticResource RepositoryTemplate}"/>
-            <!--
-            <ComboBox x:Name="Filter" Margin="3,6"
+            <!--<ComboBox x:Name="Filter" Margin="3,6"
                       Width="120" Height="26"
                       ItemsSource="{Binding Source={StaticResource IssueFilterDataProvider}}"
                       SelectedItem="{Binding Path=Filter}" >
-            </ComboBox>
-            -->
+            </ComboBox>-->
             <ComboBox x:Name="Label" Margin="3,6"
                       Width="120" Height="26"
                       ItemsSource="{Binding Path=Labels}"
