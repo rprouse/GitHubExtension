@@ -136,7 +136,7 @@
                 </Style>
             </DataGrid.RowHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Number}" Header=" #" CanUserResize="False">
+                <DataGridTextColumn Binding="{Binding Path=Number}" Header="" CanUserResize="False">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Margin" Value="5,0,0,0" />
@@ -145,11 +145,11 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title" Width="400" />
                 <DataGridTextColumn Binding="{Binding Path=State}" Header="State" CanUserResize="False" />
+                <DataGridTextColumn Binding="{Binding Path=Milestone.Title}" Header="Milestone" CanUserResize="False" />
                 <DataGridTextColumn Binding="{Binding Path=User.Login}" Header="Reported By" Width="120"/>
                 <DataGridTextColumn Binding="{Binding Path=Assignee.Login}" Header="Assigned To" Width="120"/>
-                <DataGridTextColumn Binding="{Binding Path=CreatedAt,StringFormat={}{0:dd/MM/yyyy}}" Header="Created" CanUserResize="False" />
-                <DataGridTextColumn Binding="{Binding Path=UpdatedAt,StringFormat={}{0:dd/MM/yyyy}}" Header="Updated" CanUserResize="False" />
-                <DataGridTextColumn Binding="{Binding Path=ClosedAt,StringFormat={}{0:dd/MM/yyyy}}" Header="Closed" CanUserResize="False" />
+                <DataGridTextColumn Binding="{Binding Path=CreatedAt,StringFormat=d}" Header="Created" CanUserResize="False" />
+                <DataGridTextColumn Binding="{Binding Path=UpdatedAt,StringFormat=d}" Header="Updated" CanUserResize="False" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
