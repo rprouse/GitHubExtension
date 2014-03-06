@@ -216,7 +216,7 @@ namespace Alteridem.GitHub.Akavache
                     } catch (Exception) {
 #pragma warning disable 4014
                         if (shouldInvalidateOnError) This.InvalidateObject<T>(key);
-#pragma warning enable 4014
+#pragma warning restore 4014
                         throw;
                     }
 
