@@ -1,12 +1,14 @@
-﻿<UserControl x:Class="Alteridem.GitHub.Extension.View.IssueControl"
+﻿<UserControl x:Name="Issue"
+             x:Class="Alteridem.GitHub.Extension.View.IssueControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
-             xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
+             xmlns:model="clr-namespace:Alteridem.GitHub.Model;assembly=Alteridem.GitHub"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance octokit:Issue}"
+             d:DataContext="{d:DesignInstance model:GitHubApi}"
+             DataContext="{Binding ElementName=Issue, Path=GitHubApi}"
              d:DesignHeight="500" d:DesignWidth="600">
     <UserControl.Resources>
         <ResourceDictionary Source="Theme.xaml" />
@@ -28,28 +30,28 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding Path=Title}" FontWeight="Bold" />
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding Path=Issue.Title}" FontWeight="Bold" />
 
         <Label Grid.Row="1" Grid.Column="0" Content="Number:" />
-        <Label Grid.Row="1" Grid.Column="1" Content="{Binding Path=Number}" />
+        <Label Grid.Row="1" Grid.Column="1" Content="{Binding Path=Issue.Number}" />
 
         <Label Grid.Row="2" Grid.Column="0" Content="State:" />
-        <Label Grid.Row="2" Grid.Column="1" Content="{Binding Path=State}" />
+        <Label Grid.Row="2" Grid.Column="1" Content="{Binding Path=Issue.State}" />
 
         <Label Grid.Row="1" Grid.Column="2" Content="Assigned To:" />
-        <Label Grid.Row="1" Grid.Column="3" Content="{Binding Path=Assignee.Login}" />
+        <Label Grid.Row="1" Grid.Column="3" Content="{Binding Path=Issue.Assignee.Login}" />
 
         <Label Grid.Row="2" Grid.Column="2" Content="Reported By:" />
-        <Label Grid.Row="2" Grid.Column="3" Content="{Binding Path=User.Login}" />
+        <Label Grid.Row="2" Grid.Column="3" Content="{Binding Path=Issue.User.Login}" />
 
         <Label Grid.Row="4" Grid.Column="0" Content="Milestone:" />
-        <Label Grid.Row="4" Grid.Column="1" Content="{Binding Path=Milestone.Title}" />
+        <Label Grid.Row="4" Grid.Column="1" Content="{Binding Path=Issue.Milestone.Title}" />
 
         <Label Grid.Row="4" Grid.Column="2" Content="Entered:" />
-        <Label Grid.Row="4" Grid.Column="3" Content="{Binding Path=CreatedAt.Date,StringFormat=d}" />
+        <Label Grid.Row="4" Grid.Column="3" Content="{Binding Path=Issue.CreatedAt.Date,StringFormat=d}" />
 
         <Border x:Name="_htmlView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
-            <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" wpf:WebBrowserBehavior.Html="{Binding Path=Body, Converter={StaticResource MarkdownConverter}}" />
+            <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" wpf:WebBrowserBehavior.Html="{Binding Path=IssueMarkdown, Converter={StaticResource MarkdownConverter}}" />
         </Border>
 
         <!--

@@ -25,11 +25,15 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
+using NLog;
+using Octokit;
 
 namespace Alteridem.GitHub.Converters
 {
     public class MarkdownConverter : IValueConverter
     {
+        private static readonly Logger log = LogManager.GetCurrentClassLogger( );
+
         /// <summary>
         /// Converts a value. 
         /// </summary>
@@ -46,11 +50,14 @@ namespace Alteridem.GitHub.Converters
                 {
                     var md = new MarkdownDeep.Markdown();
                     md.ExtraMode = true;
-                    return md.Transform(markdown);
+                    var body = md.Transform( markdown );
+                    var html = Properties.Resources.IssueHtmlHeader + body + Properties.Resources.IssueHtmlFooter;
+                    return html;
                 }
             }
-            catch (FormatException)
+            catch (FormatException e)
             {
+                log.ErrorException( "Failed to create HTML", e );
             }
             return string.Empty;
         }

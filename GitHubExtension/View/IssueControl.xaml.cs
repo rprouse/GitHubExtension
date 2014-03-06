@@ -25,6 +25,8 @@
 #region Using Directives
 
 using System.Windows.Controls;
+using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Model;
 using Octokit;
 
 #endregion
@@ -41,10 +43,10 @@ namespace Alteridem.GitHub.Extension.View
             InitializeComponent();
         }
 
-        public void LoadIssue( Issue issue )
+        [NotNull]
+        public GitHubApi GitHubApi
         {
-            DataContext = issue;
-            // TODO: Load all of the comments for the issue
+            get { return Factory.Get<GitHubApi>(); }
         }
     }
 }

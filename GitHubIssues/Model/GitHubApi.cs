@@ -30,6 +30,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
 using NLog;
 using Octokit;
@@ -48,6 +50,8 @@ namespace Alteridem.GitHub.Model
         private IssueFilter _filter;
         private Label _label;
         private Milestone _milestone;
+        private Issue _issue;
+        private string _markdown = string.Empty;
 
         #region LogonWatcher Class
 
@@ -172,6 +176,35 @@ namespace Alteridem.GitHub.Model
             }
         }
 
+        /// <summary>
+        /// Gets or sets the markdown text for an issue.
+        /// </summary>
+        public string IssueMarkdown
+        {
+            get { return _markdown; }
+            set
+            {
+                if(Equals(value, _markdown)) return;
+                _markdown = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// The currently selected issue
+        /// </summary>
+        public Issue Issue
+        {
+            get { return _issue; }
+            set
+            {
+                if(Equals(value, _issue)) return;
+                _issue = value;
+                GetComments( _issue );
+                OnPropertyChanged();
+            }
+        }
+
         [CanBeNull]
         private string Token
         {
@@ -255,6 +288,35 @@ namespace Alteridem.GitHub.Model
                 Logout();
                 view.OnError(ex);
             }
+        }
+
+        public async void GetComments( Issue issue )
+        {
+            IssueMarkdown = issue.Body;
+
+            if ( issue.Comments == 0 )
+                return;
+
+            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number );
+            var builder = new StringBuilder( _markdown );
+            foreach ( var comment in comments )
+            {
+                string gravatar =
+                    string.Format(
+                        "https://www.gravatar.com/avatar/{0}?s={1}&r=x",
+                        comment.User.GravatarId,
+                        22 );
+
+                builder.AppendFormat(
+                        "{0}<div class=\"header\">{0}<div class=\"user\"><img align=\"left\" alt=\"{1}\" src=\"{2}\">&nbsp; {1}</div><div class=\"date\">{3:d}</div>{0}</div>{0}{0}{4}",
+                        Environment.NewLine,
+                        comment.User.Login,
+                        gravatar,
+                        comment.CreatedAt,
+                        comment.Body
+                         );
+            }
+            IssueMarkdown = builder.ToString( );
         }
 
         private void LoadData()

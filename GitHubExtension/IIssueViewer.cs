@@ -22,13 +22,10 @@
 // 
 // **********************************************************************************
 
-using Octokit;
-
 namespace Alteridem.GitHub.Extension
 {
     public interface IIssueViewer
     {
-        void LoadIssue(Issue issue);
         //void InsertComment();
         void Show();
     }

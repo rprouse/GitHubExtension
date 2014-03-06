@@ -59,5 +59,33 @@ namespace Alteridem.GitHub.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;/body&gt;
+        ///&lt;/html&gt;.
+        /// </summary>
+        internal static string IssueHtmlFooter {
+            get {
+                return ResourceManager.GetString("IssueHtmlFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;title&gt;GitHub Issue&lt;/title&gt;
+        ///&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+        ///&lt;style type=&quot;text/css&quot;&gt;
+        ////* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+        ////* Author: Nicolas Hery - http://nicolashery.com */
+        ////* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+        ////* Source:  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string IssueHtmlHeader {
+            get {
+                return ResourceManager.GetString("IssueHtmlHeader", resourceCulture);
+            }
+        }
     }
 }

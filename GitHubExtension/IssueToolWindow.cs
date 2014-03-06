@@ -76,12 +76,6 @@ namespace Alteridem.GitHub.Extension
 
         #region Implementation of IIssueViewer
 
-        public void LoadIssue( Issue issue )
-        {
-            _issueControl.LoadIssue(issue);
-            Debug.WriteLine( "Loading issue {0}", issue.Number );
-        }
-
         public void Show()
         {
             if(null == Frame)
