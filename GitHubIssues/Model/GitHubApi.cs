@@ -368,7 +368,7 @@ namespace Alteridem.GitHub.Model
                 if (Label != null)
                     request.Labels.Add(Label.Name);
                 if (Milestone != null)
-                    request.Milestone = Milestone.Title;
+                    request.Milestone = Milestone.Number.ToString();
 
                 GetIssues(repository.Owner.Login, repository.Name, request);
             }
