@@ -30,7 +30,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Alteridem.GitHub.Akavache;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -73,7 +72,7 @@ namespace Alteridem.GitHub.Extension
         public GitHubExtensionPackage()
         {
             Factory.AddAssembly(Assembly.GetExecutingAssembly());
-            BlobCache.ApplicationName = "GitHubExtension";
+            Cache.ApplicationName = "GitHubExtension";
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this));
             
             var container = this as IServiceContainer;

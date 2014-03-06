@@ -39,19 +39,28 @@ namespace Alteridem.GitHub
         private const string CredentialCache = "CredentialCache";
         private const string Repository = "Repository";
 
+        /// <summary>
+        /// Gets or sets the name of the application. This must be set before using the cache.
+        /// </summary>
+        public static string ApplicationName
+        {
+            get { return BlobCache.ApplicationName; }
+            set { BlobCache.ApplicationName = value; }
+        }
+
         public static void DeleteCredentials()
         {
-            DeleteObject(CredentialCache);
+            DeleteSecureObject(CredentialCache);
         }
 
         public static void SaveCredentials(string logon, string password)
         {
-            SaveObject(CredentialCache, new CredentialCache { Logon = logon, Password = password });
+            SaveSecureObject(CredentialCache, new CredentialCache { Logon = logon, Password = password });
         }
 
         public static IObservable<CredentialCache> GetCredentials()
         {
-            return GetObjectAsync<CredentialCache>(CredentialCache);
+            return GetSecureObjectAsync<CredentialCache>(CredentialCache);
         }
 
         public static void SaveRepository(Repository repository)
@@ -73,21 +82,36 @@ namespace Alteridem.GitHub
 
         private static IObservable<T> GetObjectAsync<T>(string key)
         {
-            return BlobCache.Secure.GetObjectAsync<T>(key)
+            return BlobCache.LocalMachine.GetObjectAsync<T>(key)
                 .ObserveOn(SynchronizationContext.Current);
         }
 
         private static void SaveObject<T>(string key, T obj)
         {
-            BlobCache.Secure.InsertObject(key, obj);
+            BlobCache.LocalMachine.InsertObject(key, obj);
         }
 
         private static void DeleteObject(string key)
+        {
+            BlobCache.LocalMachine.Invalidate(key);
+        }
+
+        private static IObservable<T> GetSecureObjectAsync<T>(string key)
+        {
+            return BlobCache.Secure.GetObjectAsync<T>(key)
+                .ObserveOn(SynchronizationContext.Current);
+        }
+
+        private static void SaveSecureObject<T>(string key, T obj)
+        {
+            BlobCache.Secure.InsertObject(key, obj);
+        }
+
+        private static void DeleteSecureObject(string key)
         {
             BlobCache.Secure.Invalidate(key);
         }
 
         #endregion
-
     }
 }
