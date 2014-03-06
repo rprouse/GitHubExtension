@@ -3,9 +3,75 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
+             xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DataContext="{d:DesignInstance octokit:Issue}"
+             d:DesignHeight="500" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary Source="Theme.xaml" />
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding Path=Title}" FontWeight="Bold" />
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Number:" />
+        <Label Grid.Row="1" Grid.Column="1" Content="{Binding Path=Number}" />
+
+        <Label Grid.Row="2" Grid.Column="0" Content="State:" />
+        <Label Grid.Row="2" Grid.Column="1" Content="{Binding Path=State}" />
+
+        <Label Grid.Row="1" Grid.Column="2" Content="Assigned To:" />
+        <Label Grid.Row="1" Grid.Column="3" Content="{Binding Path=Assignee.Login}" />
+
+        <Label Grid.Row="2" Grid.Column="2" Content="Reported By:" />
+        <Label Grid.Row="2" Grid.Column="3" Content="{Binding Path=User.Login}" />
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Milestone:" />
+        <Label Grid.Row="4" Grid.Column="1" Content="{Binding Path=Milestone.Title}" />
+
+        <Label Grid.Row="4" Grid.Column="2" Content="Entered:" />
+        <Label Grid.Row="4" Grid.Column="3" Content="{Binding Path=CreatedAt.Date,StringFormat=d}" />
+
+        <Border x:Name="_htmlView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0" Visibility="Hidden">
+            <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </Border>
+
+        <Border x:Name="_textView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
+            <ScrollViewer Background="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="5" Text="{Binding Path=Body}"/>
+            </ScrollViewer>
+        </Border>
+
+        <!--
+        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
+            <TextBox x:Name="_searchTxt" Width="120" HorizontalAlignment="Left" TextChanged="OnSearchTextChanged" KeyDown="OnSearchKeyDown" ToolTip="Enter an issue number" />
+            <Button x:Name="_searchBtn" Width="30" HorizontalAlignment="Left" IsEnabled="False" Click="OnSearch" ToolTip="Search for Issue">
+                <Image Source="/UserCenterExtension;component/Images/Search.png" Stretch="None" />
+            </Button>
+            <Button x:Name="_insertComment" Width="30" HorizontalAlignment="Left" IsEnabled="False" Click="OnInsertComment" ToolTip="Insert comment for current issue">
+                <Image Source="/UserCenterExtension;component/Resources/comment.png" Stretch="None" />
+            </Button>
+            <Button x:Name="_refresh" Width="30" HorizontalAlignment="Left" IsEnabled="False" Click="OnRefresh" ToolTip="Refresh the current issue">
+                <Image Source="/UserCenterExtension;component/Images/Refresh.png" Stretch="None" />
+            </Button>
+        </StackPanel>
+        <Button x:Name="_openIssue" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Content="Open Issue" Width="Auto" Click="OnOpenIssue" HorizontalAlignment="Right" IsDefault="True" IsEnabled="False" />
+        -->
     </Grid>
 </UserControl>

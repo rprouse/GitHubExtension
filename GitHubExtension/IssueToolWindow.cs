@@ -78,7 +78,7 @@ namespace Alteridem.GitHub.Extension
 
         public void LoadIssue( Issue issue )
         {
-            // TODO: Load the issue into the control
+            _issueControl.LoadIssue(issue);
             Debug.WriteLine( "Loading issue {0}", issue.Number );
         }
 

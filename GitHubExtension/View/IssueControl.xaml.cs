@@ -43,6 +43,7 @@ namespace Alteridem.GitHub.Extension.View
 
         public void LoadIssue( Issue issue )
         {
+            DataContext = issue;
             // TODO: Load all of the comments for the issue
         }
     }
