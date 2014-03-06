@@ -52,12 +52,6 @@
             <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" wpf:WebBrowserBehavior.Html="{Binding Path=Body, Converter={StaticResource MarkdownConverter}}" />
         </Border>
 
-        <Border x:Name="_textView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0" Visibility="Hidden">
-            <ScrollViewer Background="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}">
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="5" Text="{Binding Path=Body}"/>
-            </ScrollViewer>
-        </Border>
-
         <!--
         <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
             <TextBox x:Name="_searchTxt" Width="120" HorizontalAlignment="Left" TextChanged="OnSearchTextChanged" KeyDown="OnSearchKeyDown" ToolTip="Enter an issue number" />
