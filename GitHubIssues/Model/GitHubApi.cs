@@ -439,7 +439,7 @@ namespace Alteridem.GitHub.Model
                 // TODO: Filter issues
                 var request = new RepositoryIssueRequest();
                 request.State = ItemState.Open;
-                request.Filter = Filter;
+                request.Filter = IssueFilter.All;
                 if (Label != null && Label != _emptyLabel)
                     request.Labels.Add(Label.Name);
 
