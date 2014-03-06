@@ -1,8 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View">
+                    xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
+                    xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub">
 
-
+    <converters:StringToColorConverter x:Key="ColorConverter" />
+    <converters:MarkdownConverter x:Key="MarkdownConverter" />
     <Style x:Key="FontAwesome">
         <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
     </Style>

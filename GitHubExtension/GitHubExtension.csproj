@@ -185,6 +185,7 @@
     <Compile Include="View\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WebBrowserBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

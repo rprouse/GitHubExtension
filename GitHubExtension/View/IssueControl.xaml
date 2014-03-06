@@ -48,11 +48,11 @@
         <Label Grid.Row="4" Grid.Column="2" Content="Entered:" />
         <Label Grid.Row="4" Grid.Column="3" Content="{Binding Path=CreatedAt.Date,StringFormat=d}" />
 
-        <Border x:Name="_htmlView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0" Visibility="Hidden">
-            <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        <Border x:Name="_htmlView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
+            <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" wpf:WebBrowserBehavior.Html="{Binding Path=Body, Converter={StaticResource MarkdownConverter}}" />
         </Border>
 
-        <Border x:Name="_textView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
+        <Border x:Name="_textView" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static wpf:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0" Visibility="Hidden">
             <ScrollViewer Background="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}">
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="5" Text="{Binding Path=Body}"/>
             </ScrollViewer>
