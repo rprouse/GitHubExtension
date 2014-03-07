@@ -403,7 +403,7 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        private async void GetIssues()
+        public async void GetIssues()
         {
             if (_gettingIssues)
                 return;

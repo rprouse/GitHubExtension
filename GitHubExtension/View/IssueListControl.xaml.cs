@@ -42,7 +42,10 @@ namespace Alteridem.GitHub.Extension.View
         public IssueListControl()
         {
             InitializeComponent();
+            RefreshCommand = new RelayCommand(p => Refresh(), p => CanRefresh());
         }
+
+        public ICommand RefreshCommand { get; private set; }
 
         [NotNull]
         public GitHubApi GitHubApi
@@ -57,6 +60,16 @@ namespace Alteridem.GitHub.Extension.View
             {
                 viewer.Show();
             }
+        }
+
+        private void Refresh()
+        {
+            GitHubApi.GetIssues();
+        }
+
+        private bool CanRefresh()
+        {
+            return true;
         }
     }
 }

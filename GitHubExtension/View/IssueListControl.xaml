@@ -82,6 +82,16 @@
                       ItemsSource="{Binding Path=Milestones}"
                       SelectedItem="{Binding Path=Milestone}"
                       ItemTemplate="{StaticResource MilestoneTemplate}" />
+            <Button 
+                Command="{Binding Path=RefreshCommand, RelativeSource={RelativeSource AncestorType={x:Type wpf:IssueListControl}}}"
+                Content="&#xf021;"
+                FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
+                FontSize="14" 
+                Width="26" Height="26" 
+                Margin="3,6" 
+                ToolTip="Refresh List" 
+                HorizontalAlignment="Right"
+                IsEnabled="True" />
         </StackPanel>
         <wpf:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
