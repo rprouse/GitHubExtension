@@ -9,9 +9,7 @@
         Title="Add Comment"
         Height="500" Width="500" 
         Foreground="#FF333333" 
-        WindowStyle="None" 
-        WindowStartupLocation="CenterOwner" 
-        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance octokit:Issue}">
     <Window.Resources>
@@ -64,14 +62,6 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Margin="3,6,3,6" />
-            <Button
-                x:Name="Cancel" 
-                Content="Cancel"
-                IsCancel="True"
-                Padding="3" 
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Margin="3,6,6,6" />
         </DockPanel>
     </Grid>
 </Window>

@@ -59,7 +59,7 @@ namespace Alteridem.GitHub.Extension.View
         {
             var view = new AddComment();
             view.Owner = this.GetParentWindow();
-            view.ShowDialog();
+            view.Show();
         }
 
         private bool CanAddComment()
