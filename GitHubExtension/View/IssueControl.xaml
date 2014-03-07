@@ -54,20 +54,17 @@
             <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" wpf:WebBrowserBehavior.Html="{Binding Path=IssueMarkdown, Converter={StaticResource MarkdownConverter}}" />
         </Border>
 
-        <!--
-        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal">
-            <TextBox x:Name="_searchTxt" Width="120" HorizontalAlignment="Left" TextChanged="OnSearchTextChanged" KeyDown="OnSearchKeyDown" ToolTip="Enter an issue number" />
-            <Button x:Name="_searchBtn" Width="30" HorizontalAlignment="Left" IsEnabled="False" Click="OnSearch" ToolTip="Search for Issue">
-                <Image Source="/UserCenterExtension;component/Images/Search.png" Stretch="None" />
-            </Button>
-            <Button x:Name="_insertComment" Width="30" HorizontalAlignment="Left" IsEnabled="False" Click="OnInsertComment" ToolTip="Insert comment for current issue">
-                <Image Source="/UserCenterExtension;component/Resources/comment.png" Stretch="None" />
-            </Button>
-            <Button x:Name="_refresh" Width="30" HorizontalAlignment="Left" IsEnabled="False" Click="OnRefresh" ToolTip="Refresh the current issue">
-                <Image Source="/UserCenterExtension;component/Images/Refresh.png" Stretch="None" />
-            </Button>
-        </StackPanel>
-        <Button x:Name="_openIssue" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Content="Open Issue" Width="Auto" Click="OnOpenIssue" HorizontalAlignment="Right" IsDefault="True" IsEnabled="False" />
-        -->
+        <DockPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4">
+            <Button 
+                Content="&#xf075;"
+                FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
+                FontSize="16" 
+                Width="30" Height="30" 
+                Margin="6px" 
+                ToolTip="Add Comment" 
+                Click="OnAddComment"
+                HorizontalAlignment="Right"
+                IsEnabled="True" />
+        </DockPanel>
     </Grid>
 </UserControl>

@@ -25,24 +25,22 @@
 #region Using Directives
 
 using System.Windows;
-using System.Windows.Controls;
 using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Extensions;
 using Alteridem.GitHub.Model;
-using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for IssueControl.xaml
+    /// Interaction logic for AddComment.xaml
     /// </summary>
-    public partial class IssueControl : UserControl
+    public partial class AddComment : Window
     {
-        public IssueControl()
+        public AddComment()
         {
             InitializeComponent();
+            DataContext = GitHubApi.Issue;
         }
 
         [NotNull]
@@ -51,11 +49,9 @@ namespace Alteridem.GitHub.Extension.View
             get { return Factory.Get<GitHubApi>(); }
         }
 
-        private void OnAddComment(object sender, RoutedEventArgs e)
+        private void OnClose(object sender, RoutedEventArgs e)
         {
-            var view = new AddComment();
-            view.Owner = this.GetParentWindow();
-            view.ShowDialog();
+            Close();
         }
     }
 }

@@ -171,6 +171,9 @@
     <Compile Include="GitHubExtensionPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="View\AddComment.xaml.cs">
+      <DependentUpon>AddComment.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\IssueControl.xaml.cs">
       <DependentUpon>IssueControl.xaml</DependentUpon>
     </Compile>
@@ -236,6 +239,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\AddComment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\IssueControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
