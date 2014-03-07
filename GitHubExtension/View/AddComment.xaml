@@ -33,7 +33,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource FontAwesome}" FontSize="36" Text="&#xf09b;" />
-        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="24" Text="{Binding Path=Title}" />
+        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="20" Text="{Binding Path=Title}" Margin="0,0,6,0" TextTrimming="CharacterEllipsis" />
 
         <TabControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="6">
             <TabItem Header="Write">
