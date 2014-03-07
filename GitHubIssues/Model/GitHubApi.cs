@@ -32,6 +32,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Alteridem.GitHub.Akavache;
 using Alteridem.GitHub.Annotations;
 using NLog;
 using Octokit;
@@ -296,35 +297,6 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        public async void GetComments( Issue issue )
-        {
-            IssueMarkdown = issue.Body;
-
-            if ( issue.Comments == 0 )
-                return;
-
-            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number );
-            var builder = new StringBuilder( _markdown );
-            foreach ( var comment in comments )
-            {
-                string gravatar =
-                    string.Format(
-                        "https://www.gravatar.com/avatar/{0}?s={1}&r=x",
-                        comment.User.GravatarId,
-                        22 );
-
-                builder.AppendFormat(
-                        "{0}<div class=\"header\">{0}<div class=\"user\"><img align=\"left\" alt=\"{1}\" src=\"{2}\">&nbsp; {1}</div><div class=\"date\">{3:d}</div>{0}</div>{0}{0}{4}",
-                        Environment.NewLine,
-                        comment.User.Login,
-                        gravatar,
-                        comment.CreatedAt,
-                        comment.Body
-                         );
-            }
-            IssueMarkdown = builder.ToString( );
-        }
-
         private void LoadData()
         {
             GetUser();
@@ -468,6 +440,67 @@ namespace Alteridem.GitHub.Model
             catch (Exception ex)
             {
                 log.ErrorException("Failed to fetch issues", ex);
+            }
+        }
+
+        public async void GetComments( Issue issue )
+        {
+            if (issue == null)
+                return;
+
+            IssueMarkdown = issue.Body;
+
+            if ( issue.Comments == 0 )
+                return;
+
+            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number );
+            AppendComments(comments);
+        }
+
+        private void AppendComments(IEnumerable<IssueComment> comments)
+        {
+            var builder = new StringBuilder(_markdown);
+            foreach (var comment in comments)
+            {
+                string gravatar =
+                    string.Format(
+                        "https://www.gravatar.com/avatar/{0}?s={1}&r=x",
+                        comment.User.GravatarId,
+                        22);
+
+                builder.AppendFormat(
+                    "{0}<div class=\"header\">{0}<div class=\"user\"><img align=\"left\" alt=\"{1}\" src=\"{2}\">&nbsp; {1}</div><div class=\"date\">{3:d}</div>{0}</div>{0}{0}{4}",
+                    Environment.NewLine,
+                    comment.User.Login,
+                    gravatar,
+                    comment.CreatedAt,
+                    comment.Body
+                    );
+            }
+            IssueMarkdown = builder.ToString();
+        }
+
+        public async void AddComment(Issue issue, string comment)
+        {
+            var newComment = await _github.Issue.Comment.Create( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, comment );
+
+            // Append the current comment
+            AppendComments(new []{ newComment });
+        }
+
+        public async void CloseIssue(Issue issue, string comment)
+        {
+            if ( !string.IsNullOrWhiteSpace(comment))
+                AddComment(issue, comment);
+
+            var update = new IssueUpdate();
+            update.State = ItemState.Closed;
+            var updatedIssue = await _github.Issue.Update(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, update);
+            if (updatedIssue.State == ItemState.Closed)
+            {
+                Issue = null;
+                Issues.Remove(issue);
+                IssueMarkdown = string.Empty;
             }
         }
 

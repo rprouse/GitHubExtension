@@ -56,13 +56,13 @@
 
         <DockPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4">
             <Button 
+                Command="{Binding Path=AddCommentCommand, RelativeSource={RelativeSource AncestorType={x:Type wpf:IssueControl}}}"
                 Content="&#xf075;"
                 FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
                 FontSize="16" 
                 Width="30" Height="30" 
                 Margin="6px" 
                 ToolTip="Add Comment" 
-                Click="OnAddComment"
                 HorizontalAlignment="Right"
                 IsEnabled="True" />
         </DockPanel>

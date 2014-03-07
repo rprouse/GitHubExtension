@@ -50,6 +50,8 @@ namespace Alteridem.GitHub.Converters
                 {
                     var md = new MarkdownDeep.Markdown();
                     md.ExtraMode = true;
+                    md.NewWindowForExternalLinks = true;
+                    md.NewWindowForLocalLinks = true;
                     var body = md.Transform( markdown );
                     var html = Properties.Resources.IssueHtmlHeader + body + Properties.Resources.IssueHtmlFooter;
                     return html;

@@ -12,8 +12,6 @@
         WindowStyle="None" 
         WindowStartupLocation="CenterOwner" 
         ResizeMode="NoResize"
-        Background="Transparent"
-        AllowsTransparency="false"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance octokit:Issue}">
     <Window.Resources>
@@ -22,37 +20,58 @@
             <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
         </Style>
     </Window.Resources>
-    <Border Background="White" CornerRadius="12">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="62" />
-                <RowDefinition/>
-                <RowDefinition Height="40"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="72"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="62"/>
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="62" />
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="72"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="62"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource FontAwesome}" FontSize="36" Text="&#xf09b;" />
-            <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="24" Text="{Binding Path=Title}" />
+        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource FontAwesome}" FontSize="36" Text="&#xf09b;" />
+        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="24" Text="{Binding Path=Title}" />
 
-            <TabControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="6">
-                <TabItem Header="Write">
-                    <TextBox x:Name="Comment" TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" />
-                </TabItem>
-                <TabItem Header="Preview" HorizontalAlignment="Left" Width="53">
-                    <Border x:Name="_htmlView" BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
-                        <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Text, ElementName=Comment, Converter={StaticResource MarkdownConverter}}" />
-                    </Border>
-                </TabItem>
-            </TabControl>
+        <TabControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="6">
+            <TabItem Header="Write">
+                <TextBox x:Name="Comment" TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" />
+            </TabItem>
+            <TabItem Header="Preview" HorizontalAlignment="Left" Width="53">
+                <Border x:Name="_htmlView" BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
+                    <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Text, ElementName=Comment, Converter={StaticResource MarkdownConverter}}" />
+                </Border>
+            </TabItem>
+        </TabControl>
 
-            <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right">
-                <Button x:Name="CloseIssue" Content="Close" Click="OnClose" Padding="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,3,6" />
-                <Button x:Name="CommentOnIssue" Content="Comment" Padding="3" IsDefault="True" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3,6,6,6" />
-            </DockPanel>
-        </Grid>
-    </Border>
+        <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+            <Button 
+                x:Name="CloseIssue" 
+                Command="{Binding Path=CloseIssueCommand, RelativeSource={RelativeSource AncestorType={x:Type view:AddComment}}}"
+                Content="Close Issue"
+                Padding="3" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Margin="0,6,3,6" />
+            <Button 
+                x:Name="CommentOnIssue" 
+                Command="{Binding Path=CommentCommand, RelativeSource={RelativeSource AncestorType={x:Type view:AddComment}}}"
+                Content="Add Comment"
+                Padding="3" 
+                IsDefault="True" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Margin="3,6,3,6" />
+            <Button
+                x:Name="Cancel" 
+                Content="Cancel"
+                IsCancel="True"
+                Padding="3" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Margin="3,6,6,6" />
+        </DockPanel>
+    </Grid>
 </Window>

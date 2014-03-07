@@ -26,6 +26,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extensions;
 using Alteridem.GitHub.Model;
@@ -43,7 +44,10 @@ namespace Alteridem.GitHub.Extension.View
         public IssueControl()
         {
             InitializeComponent();
+            AddCommentCommand = new RelayCommand(p => AddComment(), p => CanAddComment());
         }
+
+        public ICommand AddCommentCommand { get; private set; }
 
         [NotNull]
         public GitHubApi GitHubApi
@@ -51,11 +55,16 @@ namespace Alteridem.GitHub.Extension.View
             get { return Factory.Get<GitHubApi>(); }
         }
 
-        private void OnAddComment(object sender, RoutedEventArgs e)
+        private void AddComment()
         {
             var view = new AddComment();
             view.Owner = this.GetParentWindow();
             view.ShowDialog();
+        }
+
+        private bool CanAddComment()
+        {
+            return GitHubApi.Issue != null;
         }
     }
 }

@@ -25,6 +25,7 @@
 #region Using Directives
 
 using System.Windows;
+using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Model;
 
@@ -41,17 +42,40 @@ namespace Alteridem.GitHub.Extension.View
         {
             InitializeComponent();
             DataContext = GitHubApi.Issue;
+
+            CloseIssueCommand = new RelayCommand(p => OnCloseIssue(), p => CanCloseIssue());
+            CommentCommand = new RelayCommand(p => OnCommentOnIssue(), p => CanCommentOnIssue());
+        }
+
+        public ICommand CloseIssueCommand { get; private set; }
+        public ICommand CommentCommand { get; private set; }
+
+        private void OnCloseIssue()
+        {
+            GitHubApi.CloseIssue(GitHubApi.Issue, Comment.Text);
+            Close();
+        }
+
+        private bool CanCloseIssue()
+        {
+            return GitHubApi.Issue != null;
+        }
+
+        private void OnCommentOnIssue()
+        {
+            GitHubApi.AddComment(GitHubApi.Issue, Comment.Text);
+            Close();
+        }
+
+        private bool CanCommentOnIssue()
+        {
+            return GitHubApi != null && !string.IsNullOrWhiteSpace(Comment.Text);
         }
 
         [NotNull]
         public GitHubApi GitHubApi
         {
             get { return Factory.Get<GitHubApi>(); }
-        }
-
-        private void OnClose(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }
