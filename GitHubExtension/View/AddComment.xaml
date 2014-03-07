@@ -37,7 +37,7 @@
             <TabItem Header="Write">
                 <TextBox x:Name="Comment" TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" />
             </TabItem>
-            <TabItem Header="Preview" HorizontalAlignment="Left" Width="53">
+            <TabItem Header="Preview">
                 <Border x:Name="_htmlView" BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
                     <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Text, ElementName=Comment, Converter={StaticResource MarkdownConverter}}" />
                 </Border>
