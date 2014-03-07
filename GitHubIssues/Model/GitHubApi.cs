@@ -26,13 +26,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Alteridem.GitHub.Akavache;
 using Alteridem.GitHub.Annotations;
 using NLog;
 using Octokit;
@@ -46,6 +43,7 @@ namespace Alteridem.GitHub.Model
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
         private string _token;
+        private bool _gettingIssues;
         private User _user;
         private RepositoryWrapper _repository;
         private IssueFilter _filter;
@@ -53,9 +51,9 @@ namespace Alteridem.GitHub.Model
         private Milestone _milestone;
         private Issue _issue;
         private string _markdown = string.Empty;
-        private Label _emptyLabel;
-        private Milestone _noMilestone;
-        private Milestone _allMilestones;
+        private readonly Label _emptyLabel;
+        private readonly Milestone _noMilestone;
+        private readonly Milestone _allMilestones;
 
         #region LogonWatcher Class
 
@@ -401,8 +399,12 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        private void GetIssues()
+        private async void GetIssues()
         {
+            if (_gettingIssues)
+                return;
+
+            _gettingIssues = true;
             Issues.Clear();
             var wrapper = Repository;
             if (wrapper != null && wrapper.Repository != null)
@@ -422,11 +424,12 @@ namespace Alteridem.GitHub.Model
                 else if (Milestone != null)
                     request.Milestone = Milestone.Number.ToString();
 
-                GetIssues(repository.Owner.Login, repository.Name, request);
+                await GetIssues(repository.Owner.Login, repository.Name, request);
             }
+            _gettingIssues = false;
         }
 
-        private async void GetIssues(string owner, string name, RepositoryIssueRequest request)
+        private async Task GetIssues(string owner, string name, RepositoryIssueRequest request)
         {
             log.Info("Fetching repositories for {0}/{1}", owner, name);
             try
