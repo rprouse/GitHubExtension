@@ -391,7 +391,11 @@ namespace Alteridem.GitHub.Model
             {
                 Milestones.Add( _allMilestones );
                 Milestones.Add( _noMilestone );
-                var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
+                var request = new MilestoneRequest();
+                request.State = ItemState.Open;
+                request.SortProperty = MilestoneSort.DueDate;
+                request.SortDirection = SortDirection.Ascending;
+                var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name, request);
                 foreach (var milestone in milestones)
                     Milestones.Add(milestone);
 
