@@ -477,6 +477,11 @@ namespace Alteridem.GitHub.Model
             }
         }
 
+        public async Task<IReadOnlyList<User>> GetAssignees(Repository repository)
+        {
+            return await _github.Issue.Assignee.GetForRepository(repository.Owner.Login, repository.Name);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

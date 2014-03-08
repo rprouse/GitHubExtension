@@ -22,18 +22,23 @@
 // 
 // **********************************************************************************
 
+#region Using Directives
+
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Octokit;
 
+#endregion
+
 namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class EditIssueViewModel : BaseViewModel
     {
         private readonly IIssueEditor _editor;
-        private readonly Repository _repository;
+        private Repository _repository;
         private Issue _issue;
         private BindingList<Label> _labels;
 
@@ -41,7 +46,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
         {
             _editor = editor;
             if (GitHubApi.Repository != null)
+            {
                 _repository = GitHubApi.Repository.Repository;
+            }
+
+            Assignees = new BindingList<User>();
+            LoadAssignees();
 
             Labels = new BindingList<Label>(GitHubApi.Labels);
             Milestones = new BindingList<Milestone>(GitHubApi.Milestones);
@@ -53,6 +63,18 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
             SaveCommand = new RelayCommand(p => Save(), p => CanSave());
             CancelCommand = new RelayCommand(p => _editor.Close(), p => true);
+        }
+
+        private async void LoadAssignees()
+        {
+            if (GitHubApi.Repository != null)
+            {
+                IReadOnlyList<User> assignees = await GitHubApi.GetAssignees(_repository);
+                foreach (var assignee in assignees)
+                {
+                    Assignees.Add(assignee);
+                }
+            }
         }
 
         public ICommand SaveCommand { get; private set; }
@@ -78,6 +100,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
         /// All Milestones available
         /// </summary>
         public BindingList<Milestone> Milestones { get; set; }
+
+        /// <summary>
+        /// All people that can be assigned to this issue
+        /// </summary>
+        public BindingList<User> Assignees { get; set; } 
 
         public void Save()
         {

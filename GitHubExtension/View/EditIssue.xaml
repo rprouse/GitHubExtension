@@ -34,7 +34,12 @@
         </xctk:CheckComboBox>
 
         <Label DockPanel.Dock="Top" Content="Assignee" Style="{StaticResource Label}"/>
-        <ComboBox DockPanel.Dock="Top" Style="{StaticResource ComboBox}" />
+        <ComboBox 
+            DockPanel.Dock="Top" 
+            Style="{StaticResource ComboBox}" 
+            DisplayMemberPath="Login"
+            ItemsSource="{Binding Path=Assignees}"
+            SelectedValue="{Binding Path=Issue.Assignee}" />
 
         <Label DockPanel.Dock="Top" Content="Milestone" Style="{StaticResource Label}"/>
         <ComboBox 
