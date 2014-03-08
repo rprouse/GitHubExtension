@@ -101,7 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Akavache\JsonSerializationMixin.cs" />
-    <Compile Include="Cache.cs" />
+    <Compile Include="Model\Cache.cs" />
     <Compile Include="Akavache\BlobCache.cs" />
     <Compile Include="Akavache\CacheIndexEntry.cs" />
     <Compile Include="Akavache\EncryptedBlobCache.cs" />

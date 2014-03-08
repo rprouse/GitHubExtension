@@ -22,15 +22,18 @@
 // 
 // **********************************************************************************
 
+#region Using Directives
+
 using System;
 using System.Reactive.Linq;
 using System.Threading;
 using Alteridem.GitHub.Akavache;
-using Alteridem.GitHub.Model;
 using NLog;
 using Octokit;
 
-namespace Alteridem.GitHub
+#endregion
+
+namespace Alteridem.GitHub.Model
 {
     public static class Cache
     {
@@ -55,7 +58,7 @@ namespace Alteridem.GitHub
 
         public static void SaveCredentials(string logon, string password)
         {
-            SaveSecureObject(CredentialCache, new CredentialCache { Logon = logon, Password = password });
+            SaveSecureObject(CredentialCache, new CredentialCache { Logon = logon, Password = password }, DateTimeOffset.Now.AddDays(30));
         }
 
         public static IObservable<CredentialCache> GetCredentials()
@@ -65,7 +68,7 @@ namespace Alteridem.GitHub
 
         public static void SaveRepository(Repository repository)
         {
-            SaveObject(Repository, repository);
+            SaveObject(Repository, repository, DateTimeOffset.Now.AddDays(30));
         }
 
         public static IObservable<Repository> GetRepository()
@@ -86,9 +89,9 @@ namespace Alteridem.GitHub
                 .ObserveOn(SynchronizationContext.Current);
         }
 
-        private static void SaveObject<T>(string key, T obj)
+        private static void SaveObject<T>(string key, T obj, DateTimeOffset? absoluteExpiration = null)
         {
-            BlobCache.LocalMachine.InsertObject(key, obj);
+            BlobCache.LocalMachine.InsertObject(key, obj, absoluteExpiration);
         }
 
         private static void DeleteObject(string key)
@@ -102,9 +105,9 @@ namespace Alteridem.GitHub
                 .ObserveOn(SynchronizationContext.Current);
         }
 
-        private static void SaveSecureObject<T>(string key, T obj)
+        private static void SaveSecureObject<T>(string key, T obj, DateTimeOffset? absoluteExpiration = null)
         {
-            BlobCache.Secure.InsertObject(key, obj);
+            BlobCache.Secure.InsertObject(key, obj, absoluteExpiration);
         }
 
         private static void DeleteSecureObject(string key)

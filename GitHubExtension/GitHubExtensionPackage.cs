@@ -31,6 +31,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Model;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
