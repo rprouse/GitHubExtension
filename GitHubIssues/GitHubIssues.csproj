@@ -119,14 +119,12 @@
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Model\GitHubApi.cs" />
-    <Compile Include="Model\ILogonObservable.cs" />
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />
     <Compile Include="Modules\CacheModule.cs" />
     <Compile Include="Modules\GitHubModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Model\ILogonView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

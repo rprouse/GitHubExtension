@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,36 +55,6 @@ namespace Alteridem.GitHub.Model
         private readonly Label _emptyLabel;
         private readonly Milestone _noMilestone;
         private readonly Milestone _allMilestones;
-
-        #region LogonWatcher Class
-
-        private class LogonWatcher : ILogonObservable
-        {
-            private readonly GitHubApi _parent;
-
-            public LogonWatcher([NotNull] GitHubApi parent)
-            {
-                _parent = parent;
-            }
-
-            public void OnLoggingIn()
-            {
-                log.Info("Logging in with authentication token");
-            }
-
-            public void OnSuccess()
-            {
-                log.Info("Successfully logged in with authentication token");
-            }
-
-            public void OnError(Exception ex)
-            {
-                log.ErrorException("Failed to login to GitHub using token", ex);
-                _parent.Logout();
-            }
-        }
-
-        #endregion
 
         #region Public Data
 
@@ -254,19 +225,15 @@ namespace Alteridem.GitHub.Model
         private void LoginFromCache()
         {
             Cache.GetCredentials()
-                .Subscribe(credentials =>
-                {
-                    var view = new LogonWatcher(this);
-                    Login(new Credentials(credentials.Logon, credentials.Password), view);
-                });
+                .Subscribe(credentials => Login(new Credentials(credentials.Logon, credentials.Password)) );
         }
 
-        public void Login([NotNull] ILogonView view)
+        public async Task<bool> Login(string username, string password)
         {
-            Login(new Credentials(view.Username, view.Password), view);
+            return await Login(new Credentials(username, password));
         }
 
-        private async void Login([NotNull] Credentials credentials, [NotNull] ILogonObservable view)
+        private async Task<bool> Login([NotNull] Credentials credentials)
         {
             log.Info("Logging in with credentials");
             _github.Credentials = credentials;
@@ -278,20 +245,19 @@ namespace Alteridem.GitHub.Model
                 NoteUrl = "http://www.alteridem.net"
             };
 
-            view.OnLoggingIn();
             try
             {
                 var auth = await _github.Authorization.GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth);
                 log.Info("Successfully logged in to GitHub");
                 Token = auth.Token;
-                view.OnSuccess();
                 LoadData();
+                return true;
             }
             catch (Exception ex)
             {
                 log.WarnException("Failed to login", ex);
                 Logout();
-                view.OnError(ex);
+                throw;
             }
         }
 
@@ -307,7 +273,7 @@ namespace Alteridem.GitHub.Model
             try
             {
                 User = await _github.User.Current();
-                    log.Info("Finished fetching current user");
+                log.Info("Finished fetching current user");
             }
             catch (Exception ex)
             {

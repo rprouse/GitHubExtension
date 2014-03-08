@@ -171,6 +171,7 @@
     <Compile Include="GitHubExtensionPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="View\AddComment.xaml.cs">
       <DependentUpon>AddComment.xaml</DependentUpon>
     </Compile>

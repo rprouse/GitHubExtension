@@ -57,7 +57,7 @@ namespace Alteridem.GitHub.Extension.View
                 GitHubApi.Logout();
                 return;
             }
-            var view = Factory.Get<ILogonView>();
+            var view = Factory.Get<LoginDialog>();
             view.Owner = this.GetParentWindow();
             view.ShowDialog();
         }
