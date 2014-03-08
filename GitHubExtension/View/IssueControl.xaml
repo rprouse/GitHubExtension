@@ -5,10 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
-             xmlns:model="clr-namespace:Alteridem.GitHub.Model;assembly=Alteridem.GitHub"
+             xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance model:GitHubApi}"
-             DataContext="{Binding ElementName=Issue, Path=GitHubApi}"
+             d:DataContext="{d:DesignInstance viewModel:IssueViewModel}"
              d:DesignHeight="500" d:DesignWidth="600">
     <UserControl.Resources>
         <ResourceDictionary Source="Theme.xaml" />
