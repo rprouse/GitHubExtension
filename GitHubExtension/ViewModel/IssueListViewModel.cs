@@ -27,6 +27,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Model;
 using Microsoft.VisualStudio.Shell;

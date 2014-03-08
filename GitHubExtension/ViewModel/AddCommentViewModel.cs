@@ -26,6 +26,7 @@
 
 using System.Windows;
 using System.Windows.Input;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Octokit;
 
@@ -35,13 +36,13 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class AddCommentViewModel : BaseViewModel
     {
-        private readonly Window _window;
+        private readonly IClosable _closable;
         private readonly Issue _issue;
         private string _comment;
 
-        public AddCommentViewModel(Window window)
+        public AddCommentViewModel(IClosable closable)
         {
-            _window = window;
+            _closable = closable;
             _issue = GitHubApi.Issue;
 
             CloseIssueCommand = new RelayCommand(p => OnCloseIssue(), p => CanCloseIssue());
@@ -70,7 +71,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private void OnCloseIssue()
         {
             GitHubApi.CloseIssue(GitHubApi.Issue, Comment);
-            _window.Close();
+            _closable.Close();
         }
 
         private bool CanCloseIssue()
@@ -81,7 +82,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private void OnCommentOnIssue()
         {
             GitHubApi.AddComment(GitHubApi.Issue, Comment);
-            _window.Close();
+            _closable.Close();
         }
 
         private bool CanCommentOnIssue()

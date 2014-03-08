@@ -21,30 +21,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 // **********************************************************************************
-
-#region Using Directives
-
-using System.Windows;
-using System.Windows.Controls;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
-using Alteridem.GitHub.Extensions;
-
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.Interfaces
 {
-    /// <summary>
-    /// Interaction logic for GiHubUserControl.xaml
-    /// </summary>
-    public partial class GitHubUserControl : UserControl, IWindowProvider
+    public interface IEnableable
     {
-        public GitHubUserControl()
-        {
-            InitializeComponent();
-            DataContext = new UserViewModel(this);
-        }
-
-        public Window Window { get { return this.GetParentWindow(); } }
+        bool IsEnabled { get; set; }
     }
 }

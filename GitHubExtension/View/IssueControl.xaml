@@ -55,7 +55,7 @@
 
         <DockPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4">
             <Button 
-                Command="{Binding Path=AddCommentCommand, RelativeSource={RelativeSource AncestorType={x:Type wpf:IssueControl}}}"
+                Command="{Binding Path=AddCommentCommand}"
                 Content="&#xf075;"
                 FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
                 FontSize="16" 

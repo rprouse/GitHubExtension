@@ -21,12 +21,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 // **********************************************************************************
-
-namespace Alteridem.GitHub.Extension
+namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface IIssueViewer
+    public interface IClosable
     {
-        //void InsertComment();
-        void Show();
+        void Close();
     }
 }

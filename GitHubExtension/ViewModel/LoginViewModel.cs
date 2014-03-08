@@ -30,6 +30,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Model;
 using System.Windows;
@@ -40,12 +41,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
-        private Window _view;
+        private ILoginView _view;
         private string _username;
         private string _message;
         private ICommand _logonCommand;
 
-        public LoginViewModel( Window view )
+        public LoginViewModel(ILoginView view)
         {
             _view = view;
             LogonCommand = new RelayCommand(Logon, p => CanLogon());

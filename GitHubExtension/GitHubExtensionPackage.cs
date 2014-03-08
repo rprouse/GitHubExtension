@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Alteridem.GitHub.Extension.Interfaces;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 

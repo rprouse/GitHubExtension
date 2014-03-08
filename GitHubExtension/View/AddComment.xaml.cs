@@ -25,6 +25,7 @@
 #region Using Directives
 
 using System.Windows;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
 
 #endregion
@@ -34,7 +35,7 @@ namespace Alteridem.GitHub.Extension.View
     /// <summary>
     /// Interaction logic for AddComment.xaml
     /// </summary>
-    public partial class AddComment : Window
+    public partial class AddComment : Window, IClosable
     {
         public AddComment()
         {

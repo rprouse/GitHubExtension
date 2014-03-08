@@ -27,6 +27,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;

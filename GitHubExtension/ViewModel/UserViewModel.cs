@@ -29,6 +29,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Extensions;
 using Alteridem.GitHub.Model;
@@ -41,12 +42,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class UserViewModel : BaseViewModel
     {
-        private Control _control;
+        private IWindowProvider _view;
         private ICommand _loginCommand;
 
-        public UserViewModel(Control control)
+        public UserViewModel(IWindowProvider view)
         {
-            _control = control;
+            _view = view;
             LoginCommand = new RelayCommand(p => Login(), p => CanLogin() );
         }
 
@@ -80,7 +81,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
                 return;
             }
             var view = Factory.Get<LoginDialog>();
-            view.Owner = _control.GetParentWindow();
+            view.Owner = _view.Window;
             view.ShowDialog();
         }
 

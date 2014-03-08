@@ -27,6 +27,7 @@
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Extensions;
 using Octokit;
@@ -37,12 +38,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class IssueViewModel : BaseViewModel
     {
-        private Control _control;
+        private IWindowProvider _view;
         private ICommand _addCommentCommand;
 
-        public IssueViewModel(Control control)
+        public IssueViewModel(IWindowProvider view)
         {
-            _control = control;
+            _view = view;
             AddCommentCommand = new RelayCommand(p => AddComment(), p => CanAddComment());
         }
 
@@ -64,7 +65,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private void AddComment()
         {
             var view = new AddComment();
-            view.Owner = _control.GetParentWindow();
+            view.Owner = _view.Window;
             view.Show();
         }
 
