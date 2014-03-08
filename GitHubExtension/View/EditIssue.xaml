@@ -18,6 +18,7 @@
         <Label DockPanel.Dock="Top" Content="Title" Style="{StaticResource Label}"/>
         <TextBox DockPanel.Dock="Top" Style="{StaticResource TextBox}" Text="{Binding Path=Issue.Title, Mode=TwoWay}" />
 
+        <!--
         <Label DockPanel.Dock="Top" Content="Labels" Style="{StaticResource Label}"/>
         <xctk:CheckComboBox Name="IssuesCombo"
             DockPanel.Dock="Top" 
@@ -32,6 +33,7 @@
                 </LinearGradientBrush>
             </xctk:CheckComboBox.Background>
         </xctk:CheckComboBox>
+        -->
 
         <Label DockPanel.Dock="Top" Content="Assignee" Style="{StaticResource Label}"/>
         <ComboBox 

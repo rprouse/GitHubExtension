@@ -482,6 +482,34 @@ namespace Alteridem.GitHub.Model
             return await _github.Issue.Assignee.GetForRepository(repository.Owner.Login, repository.Name);
         }
 
+        public async void SaveIssue(Repository repository, NewIssue newIssue)
+        {
+            Issue issue = await _github.Issue.Create(repository.Owner.Login, repository.Name, newIssue);
+            if (issue != null && Repository != null && repository.Id == Repository.Repository.Id)
+            {
+                Issues.Insert(0, issue);
+                Issue = issue;
+            }
+        }
+
+        public async void UpdateIssue(Repository repository, int id, IssueUpdate update)
+        {
+            Issue issueUpdate = await _github.Issue.Update(repository.Owner.Login, repository.Name, id, update);
+            if (Repository != null && repository.Id == Repository.Repository.Id)
+            {
+                foreach (var issue in Issues)
+                {
+                    if (issue.Number == issueUpdate.Number)
+                    {
+                        Issues.Remove(issue);
+                        Issues.Add(issueUpdate);
+                        Issue = issueUpdate;
+                        break;
+                    }
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

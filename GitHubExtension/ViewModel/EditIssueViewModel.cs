@@ -24,8 +24,10 @@
 
 #region Using Directives
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
@@ -38,7 +40,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
     public class EditIssueViewModel : BaseViewModel
     {
         private readonly IIssueEditor _editor;
-        private Repository _repository;
+        private readonly Repository _repository;
         private Issue _issue;
         private BindingList<Label> _labels;
 
@@ -108,7 +110,49 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public void Save()
         {
-            // TODO:
+            _editor.IsEnabled = false;
+            try
+            {
+                if (_issue.Number == 0) // New
+                {
+                    var issue = new NewIssue(_issue.Title);
+                    issue.Body = _issue.Body;
+                    if ( _issue.Assignee != null )
+                        issue.Assignee = _issue.Assignee.Login;
+                    if (_issue.Labels != null)
+                    {
+                        foreach (var label in _issue.Labels)
+                            issue.Labels.Add(label.Name);
+                    }
+                    if( _issue.Milestone != null )
+                        issue.Milestone = _issue.Milestone.Number;
+
+                    GitHubApi.SaveIssue(_repository, issue);
+                }
+                else  // Edit
+                {
+                    var issue = new IssueUpdate();
+                    issue.Body = _issue.Body;
+                    if (_issue.Assignee != null)
+                        issue.Assignee = _issue.Assignee.Login;
+                    if (_issue.Labels != null)
+                    {
+                        foreach (var label in _issue.Labels)
+                            issue.Labels.Add(label.Name);
+                    }
+                    if (_issue.Milestone != null)
+                        issue.Milestone = _issue.Milestone.Number;
+
+                    GitHubApi.UpdateIssue(_repository, _issue.Number, issue);
+                }
+                _editor.Close();
+            }
+            catch (Exception e)
+            {
+                _editor.IsEnabled = true;
+                MessageBox.Show(_editor.Window, "Failed to save issue. " + e.Message, "GitHub", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         public bool CanSave()

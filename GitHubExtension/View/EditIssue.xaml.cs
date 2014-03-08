@@ -51,7 +51,7 @@ namespace Alteridem.GitHub.Extension.View
         public Window Window { get { return this; } }
 
         /// <summary>
-        /// Sets the issue to add/edit
+        /// Sets the issue to add/edit. If null, we are adding, if set, we edit
         /// </summary>
         /// <param name="issue">The issue.</param>
         public void SetIssue(Issue issue)
