@@ -22,27 +22,13 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
 using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
 
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.Interfaces
 {
-    /// <summary>
-    /// Interaction logic for LoginDialog.xaml
-    /// </summary>
-    public partial class LoginDialog : ILoginView
+    public interface IDialog
     {
-        public LoginDialog()
-        {
-            InitializeComponent();
-            DataContext = new LoginViewModel(this);
-        }
-
-        public Window Window { get { return this; } }
+        bool? ShowDialog();
+        Window Owner { get; set; }
     }
 }

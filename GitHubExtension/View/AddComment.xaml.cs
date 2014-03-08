@@ -35,12 +35,14 @@ namespace Alteridem.GitHub.Extension.View
     /// <summary>
     /// Interaction logic for AddComment.xaml
     /// </summary>
-    public partial class AddComment : Window, IClosable
+    public partial class AddComment : IAddComment
     {
         public AddComment()
         {
             InitializeComponent();
             DataContext = new AddCommentViewModel(this);
         }
+
+        public Window Window { get { return this; } }
     }
 }

@@ -24,12 +24,9 @@
 
 #region Using Directives
 
-using System.ComponentModel;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
-using Alteridem.GitHub.Extensions;
 using Octokit;
 
 #endregion
@@ -64,7 +61,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         private void AddComment()
         {
-            var view = new AddComment();
+            var view = Factory.Get<IAddComment>();
             view.Owner = _view.Window;
             view.Show();
         }

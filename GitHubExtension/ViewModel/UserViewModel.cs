@@ -24,16 +24,10 @@
 
 #region Using Directives
 
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
-using Alteridem.GitHub.Extensions;
-using Alteridem.GitHub.Model;
-using EnvDTE;
 using Octokit;
 
 #endregion
@@ -80,7 +74,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
                 GitHubApi.Logout();
                 return;
             }
-            var view = Factory.Get<LoginDialog>();
+            var view = Factory.Get<ILoginView>();
             view.Owner = _view.Window;
             view.ShowDialog();
         }

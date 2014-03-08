@@ -59,7 +59,7 @@ namespace Alteridem.GitHub.Extension
     // This attribute registers a tool window exposed by this package.
     [ProvideToolWindow(typeof(IssueListToolWindow))]
     [ProvideToolWindow(typeof(IssueToolWindow))]
-    [ProvideService(typeof(IIssueViewer))]
+    [ProvideService(typeof(IIssueToolWindow))]
     [Guid(GuidList.guidGitHubExtensionPkgString)]
     public sealed class GitHubExtensionPackage : Package
     {
@@ -78,7 +78,7 @@ namespace Alteridem.GitHub.Extension
             
             var container = this as IServiceContainer;
             var callback = new ServiceCreatorCallback(CreateIssueViewer);
-            container.AddService(typeof(IIssueViewer), callback, true);
+            container.AddService(typeof(IIssueToolWindow), callback, true);
         }
 
         private object CreateIssueViewer(IServiceContainer container, Type servicetype)

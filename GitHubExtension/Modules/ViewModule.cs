@@ -1,4 +1,5 @@
-﻿using Alteridem.GitHub.Extension.View;
+﻿using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Extension.View;
 using Ninject.Modules;
 
 namespace Alteridem.GitHub.Extension.Modules
@@ -7,7 +8,8 @@ namespace Alteridem.GitHub.Extension.Modules
     {
         public override void Load()
         {
-            Bind<LoginDialog>().To<LoginDialog>();
+            Bind<ILoginView>().To<LoginDialog>();
+            Bind<IAddComment>().To<AddComment>();
         }
     }
 }

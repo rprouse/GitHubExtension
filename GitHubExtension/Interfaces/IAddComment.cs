@@ -21,10 +21,9 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 // **********************************************************************************
-namespace Alteridem.GitHub.Extension
+namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface IShowable
+    public interface IAddComment : IWindow, IClosable
     {
-        void Show();
     }
 }

@@ -87,7 +87,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public void OpenIssueViewer()
         {
-            var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueViewer)) as IIssueViewer;
+            var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueToolWindow)) as IIssueToolWindow;
             if (viewer != null)
             {
                 viewer.Show();
@@ -103,6 +103,5 @@ namespace Alteridem.GitHub.Extension.ViewModel
         {
             return true;
         }
-         
     }
 }

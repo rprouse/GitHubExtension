@@ -48,7 +48,7 @@ namespace Alteridem.GitHub.Extension
     /// implementation of the IVsUIElementPane interface.
     /// </summary>
     [Guid("05AF9426-E44E-404C-9653-0ADE833D1EAD")]
-    public class IssueToolWindow : ToolWindowPane, IIssueViewer
+    public class IssueToolWindow : ToolWindowPane, IIssueToolWindow
     {
         private readonly IssueControl _issueControl;
 
@@ -75,7 +75,7 @@ namespace Alteridem.GitHub.Extension
             base.Content = _issueControl;
         }
 
-        #region Implementation of IIssueViewer
+        #region Implementation of IIssueToolWindow
 
         public void Show()
         {

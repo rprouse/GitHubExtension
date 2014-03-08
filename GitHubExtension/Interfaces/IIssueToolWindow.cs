@@ -21,28 +21,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 // **********************************************************************************
-
-#region Using Directives
-
-using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
-
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.Interfaces
 {
-    /// <summary>
-    /// Interaction logic for LoginDialog.xaml
-    /// </summary>
-    public partial class LoginDialog : ILoginView
+    public interface IIssueToolWindow
     {
-        public LoginDialog()
-        {
-            InitializeComponent();
-            DataContext = new LoginViewModel(this);
-        }
-
-        public Window Window { get { return this; } }
+        void Show();
     }
 }

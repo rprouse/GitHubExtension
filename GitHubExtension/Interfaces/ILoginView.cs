@@ -23,7 +23,7 @@
 // **********************************************************************************
 namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface ILoginView : IClosable, IEnableable
+    public interface ILoginView : IDialog, IClosable, IEnableable
     {
     }
 }

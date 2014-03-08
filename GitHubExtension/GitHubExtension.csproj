@@ -157,12 +157,14 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAddComment.cs" />
     <Compile Include="Interfaces\IClosable.cs" />
+    <Compile Include="Interfaces\IDialog.cs" />
     <Compile Include="Interfaces\IEnableable.cs" />
+    <Compile Include="Interfaces\IIssueToolWindow.cs" />
     <Compile Include="Interfaces\IIssueViewer.cs" />
     <Compile Include="Interfaces\ILoginView.cs" />
-    <Compile Include="Interfaces\IShowable.cs" />
-    <Compile Include="Interfaces\IShowableWindowProvider.cs" />
+    <Compile Include="Interfaces\IWindow.cs" />
     <Compile Include="Interfaces\IWindowProvider.cs" />
     <Compile Include="IssueListToolWindow.cs" />
     <Compile Include="Guids.cs" />

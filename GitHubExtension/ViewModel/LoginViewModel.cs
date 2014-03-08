@@ -25,15 +25,10 @@
 #region Using Directives
 
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
-using Alteridem.GitHub.Model;
-using System.Windows;
 
 #endregion
 

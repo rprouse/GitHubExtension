@@ -21,10 +21,16 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 // **********************************************************************************
+using System.Windows;
 
 namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface IShowableWindowProvider : IShowable, IWindowProvider
+    /// <summary>
+    /// Wraps the common functions we need from a window
+    /// </summary>
+    public interface IWindow : IWindowProvider
     {
+        void Show();
+        Window Owner { get; set; }
     }
 }
