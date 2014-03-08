@@ -43,7 +43,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public IssueViewModel(Control control)
         {
             _control = control;
-            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
             AddCommentCommand = new RelayCommand(p => AddComment(), p => CanAddComment());
         }
 
@@ -72,12 +71,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private bool CanAddComment()
         {
             return GitHubApi.Issue != null;
-        }
-
-        private void GitHubApiPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // Our properties are named the same, so just chain them
-            OnPropertyChanged(e.PropertyName);
         }
     }
 }

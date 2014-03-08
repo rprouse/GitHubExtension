@@ -42,7 +42,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
     {
         private Window _view;
         private string _username;
-        private string _password;
         private string _message;
         private ICommand _logonCommand;
 

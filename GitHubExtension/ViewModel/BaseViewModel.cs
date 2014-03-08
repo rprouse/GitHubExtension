@@ -35,10 +35,21 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        public BaseViewModel()
+        {
+            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
+        }
+
         [NotNull]
         internal GitHubApi GitHubApi
         {
             get { return Factory.Get<GitHubApi>(); }
+        }
+
+        private void GitHubApiPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Our properties are named the same, so just chain them
+            OnPropertyChanged(e.PropertyName);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -26,9 +26,7 @@
 
 using System.Windows.Controls;
 using System.Windows.Input;
-using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Model;
-using Microsoft.VisualStudio.Shell;
+using Alteridem.GitHub.Extension.ViewModel;
 
 #endregion
 
@@ -39,37 +37,20 @@ namespace Alteridem.GitHub.Extension.View
     /// </summary>
     public partial class IssueListControl : UserControl
     {
+        private IssueListViewModel _viewModel;
+
         public IssueListControl()
         {
             InitializeComponent();
-            RefreshCommand = new RelayCommand(p => Refresh(), p => CanRefresh());
+            _viewModel = new IssueListViewModel();
+            DataContext = _viewModel;
         }
 
-        public ICommand RefreshCommand { get; private set; }
-
-        [NotNull]
-        public GitHubApi GitHubApi
+        private void OnRowDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            get { return Factory.Get<GitHubApi>(); }
-        }
-
-        private void OnOpenIssueViewer( object sender, MouseButtonEventArgs e )
-        {
-            var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueViewer)) as IIssueViewer;
-            if(viewer != null)
-            {
-                viewer.Show();
-            }
-        }
-
-        private void Refresh()
-        {
-            GitHubApi.GetIssues();
-        }
-
-        private bool CanRefresh()
-        {
-            return true;
+            // I am too lazy to create a dependency property for the datagrid
+            // so that I can bind to the mouse double click :)
+            _viewModel.OpenIssueViewer();
         }
     }
 }

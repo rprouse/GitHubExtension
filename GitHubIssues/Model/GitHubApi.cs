@@ -225,7 +225,7 @@ namespace Alteridem.GitHub.Model
         private void LoginFromCache()
         {
             Cache.GetCredentials()
-                .Subscribe(credentials => Login(new Credentials(credentials.Logon, credentials.Password)) );
+                .Subscribe( async credentials => await Login(new Credentials(credentials.Logon, credentials.Password)) );
         }
 
         public async Task<bool> Login(string username, string password)

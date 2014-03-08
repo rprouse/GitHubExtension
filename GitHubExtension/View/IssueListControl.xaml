@@ -8,8 +8,9 @@
              xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
              xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub"
              xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
-             DataContext="{Binding ElementName=IssueList, Path=GitHubApi}"
+             xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModel:IssueListViewModel}"
              d:DesignHeight="500" 
              d:DesignWidth="800">
     <UserControl.Resources>
@@ -103,7 +104,7 @@
                   FontSize="12"
                   IsReadOnly="True"
                   RowHeaderWidth="0" 
-                  MouseDoubleClick="OnOpenIssueViewer"
+                  MouseDoubleClick="OnRowDoubleClick"
                   Background="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}"
                   Foreground="{DynamicResource {x:Static wpf:Theme.ForegroundKey}}"
                   RowBackground="{DynamicResource {x:Static wpf:Theme.BackgroundKey}}"

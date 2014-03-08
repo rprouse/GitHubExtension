@@ -25,68 +25,83 @@
 #region Using Directives
 
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.View;
-using Alteridem.GitHub.Extensions;
 using Alteridem.GitHub.Model;
-using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class UserViewModel : BaseViewModel
+    public class IssueListViewModel : BaseViewModel
     {
-        private Control _control;
-        private ICommand _loginCommand;
-
-        public UserViewModel(Control control)
+        public IssueListViewModel()
         {
-            _control = control;
-            LoginCommand = new RelayCommand(p => Login(), p => CanLogin() );
+            RefreshCommand = new RelayCommand(p => Refresh(), p => CanRefresh());
+        }
+
+        public ICommand RefreshCommand { get; private set; }
+
+        public RepositoryWrapper Repository
+        {
+            get { return GitHubApi.Repository; }
+            set { GitHubApi.Repository = value; }
+        }
+
+        public Label Label
+        {
+            get { return GitHubApi.Label; }
+            set { GitHubApi.Label = value; }
+        }
+
+        public Milestone Milestone
+        {
+            get { return GitHubApi.Milestone; }
+            set { GitHubApi.Milestone = value; }
+        }
+
+        public Issue Issue
+        {
+            get { return GitHubApi.Issue; }
+            set { GitHubApi.Issue = value; }
         }
 
         [NotNull]
-        public ICommand LoginCommand
+        public BindingList<RepositoryWrapper> Repositories { get { return GitHubApi.Repositories; } }
+
+        [NotNull]
+        public BindingList<Label> Labels { get { return GitHubApi.Labels; } }
+
+        [NotNull]
+        public BindingList<Milestone> Milestones { get { return GitHubApi.Milestones; } }
+
+        [NotNull]
+        public BindingList<Organization> Organizations { get { return GitHubApi.Organizations; } }
+
+        [NotNull]
+        public BindingList<Issue> Issues { get { return GitHubApi.Issues; } }
+
+        public void OpenIssueViewer()
         {
-            get { return _loginCommand; }
-            set
+            var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueViewer)) as IIssueViewer;
+            if (viewer != null)
             {
-                if (Equals(value, _loginCommand)) return;
-                _loginCommand = value;
-                OnPropertyChanged();
+                viewer.Show();
             }
         }
 
-        public User User
+        private void Refresh()
         {
-            get { return GitHubApi.User; }
+            GitHubApi.GetIssues();
         }
 
-        public bool LoggedIn
-        {
-            get { return GitHubApi.LoggedIn; }
-        }
-
-        private void Login()
-        {
-            if (GitHubApi.LoggedIn)
-            {
-                GitHubApi.Logout();
-                return;
-            }
-            var view = Factory.Get<LoginDialog>();
-            view.Owner = _control.GetParentWindow();
-            view.ShowDialog();
-        }
-
-        private bool CanLogin()
+        private bool CanRefresh()
         {
             return true;
         }
+         
     }
 }

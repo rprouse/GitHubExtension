@@ -173,6 +173,7 @@
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="ViewModel\AddCommentViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\IssueListViewModel.cs" />
     <Compile Include="ViewModel\IssueViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
