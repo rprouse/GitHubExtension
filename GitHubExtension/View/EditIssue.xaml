@@ -5,11 +5,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
+        xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModel:EditIssueViewModel}"
         Title="Issue" 
-        Height="650" 
-        Width="500">
+        Height="810" 
+        Width="553">
     <Window.Resources>
         <ResourceDictionary Source="LightTheme.xaml" />
     </Window.Resources>
@@ -60,7 +61,16 @@
             </Button>
         </DockPanel>
 
-        <TextBox DockPanel.Dock="Top" Style="{StaticResource TextArea}" Text="{Binding Path=Issue.Body, Mode=TwoWay}" />
+        <TabControl DockPanel.Dock="Top" Margin="12,3,12,0">
+            <TabItem Header="Write">
+                <TextBox TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Path=Issue.Body, Mode=TwoWay}" />
+            </TabItem>
+            <TabItem Header="Preview">
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="0">
+                    <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Path=Issue.Body, Converter={StaticResource MarkdownConverter}}" />
+                </Border>
+            </TabItem>
+        </TabControl>
 
     </DockPanel>
 </Window>

@@ -38,7 +38,7 @@
                 <TextBox TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Path=Comment, Mode=OneWayToSource}" />
             </TabItem>
             <TabItem Header="Preview">
-                <Border BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="0">
                     <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Path=Comment, Converter={StaticResource MarkdownConverter}}" />
                 </Border>
             </TabItem>
