@@ -52,7 +52,7 @@ namespace Alteridem.GitHub.Model
         private Milestone _milestone;
         private Issue _issue;
         private string _markdown = string.Empty;
-        private readonly Label _emptyLabel;
+        private readonly Label _allLabels;
         private readonly Milestone _noMilestone;
         private readonly Milestone _allMilestones;
 
@@ -203,7 +203,7 @@ namespace Alteridem.GitHub.Model
             Issues = new BindingList<Issue>();
             Labels = new BindingList<Label>();
             Milestones = new BindingList<Milestone>();
-            _emptyLabel = new Label {Color = "00000000", Name = "(none)"};
+            _allLabels = new Label {Color = "00000000", Name = "All Labels"};
             _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
             _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
 
@@ -341,11 +341,11 @@ namespace Alteridem.GitHub.Model
             if (Repository != null && Repository.Repository != null)
             {
                 var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
-                Labels.Add( _emptyLabel );
+                Labels.Add( _allLabels );
                 foreach (var label in labels)
                     Labels.Add(label);
 
-                Label = _emptyLabel;
+                Label = _allLabels;
             }
         }
 
@@ -384,7 +384,7 @@ namespace Alteridem.GitHub.Model
                 var request = new RepositoryIssueRequest();
                 request.State = ItemState.Open;
                 request.Filter = IssueFilter.All;
-                if (Label != null && Label != _emptyLabel)
+                if (Label != null && Label != _allLabels)
                     request.Labels.Add(Label.Name);
 
                 if ( Milestone == _noMilestone )
