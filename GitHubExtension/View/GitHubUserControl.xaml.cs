@@ -24,11 +24,8 @@
 
 #region Using Directives
 
-using System.Windows;
 using System.Windows.Controls;
-using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Extensions;
-using Alteridem.GitHub.Model;
+using Alteridem.GitHub.Extension.ViewModel;
 
 #endregion
 
@@ -42,24 +39,7 @@ namespace Alteridem.GitHub.Extension.View
         public GitHubUserControl()
         {
             InitializeComponent();
-        }
-
-        [NotNull]
-        public GitHubApi GitHubApi
-        {
-            get { return Factory.Get<GitHubApi>(); }
-        }
-
-        private void OnLogin(object sender, RoutedEventArgs e)
-        {
-            if(GitHubApi.LoggedIn)
-            {
-                GitHubApi.Logout();
-                return;
-            }
-            var view = Factory.Get<LoginDialog>();
-            view.Owner = this.GetParentWindow();
-            view.ShowDialog();
+            DataContext = new UserViewModel(this);
         }
     }
 }

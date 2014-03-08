@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
+             xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
              mc:Ignorable="d" 
-             DataContext="{Binding ElementName=GitHubUser, Path=GitHubApi}"
+             d:DataContext="{d:DesignInstance viewModel:UserViewModel}"
              d:DesignHeight="32" d:DesignWidth="200">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -29,7 +30,7 @@
                 FontSize="18" 
                 FocusVisualStyle="{x:Null}"
                 Foreground="{DynamicResource {x:Static wpf:Theme.ForegroundKey}}"
-                Click="OnLogin">
+                Command="{Binding Path=LoginCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <ContentPresenter />
