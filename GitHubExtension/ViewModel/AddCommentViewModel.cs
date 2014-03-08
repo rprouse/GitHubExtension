@@ -24,77 +24,69 @@
 
 #region Using Directives
 
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
+using System.Windows;
 using System.Windows.Input;
-using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.View;
-using Alteridem.GitHub.Extensions;
-using Alteridem.GitHub.Model;
-using EnvDTE;
 using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class UserViewModel : BaseViewModel
+    public class AddCommentViewModel : BaseViewModel
     {
-        private User _user;
-        private Control _control;
-        private ICommand _loginCommand;
+        private readonly Window _window;
+        private readonly Issue _issue;
+        private string _comment;
 
-        public UserViewModel(Control control)
+        public AddCommentViewModel(Window window)
         {
-            _control = control;
-            LoginCommand = new RelayCommand(p => Login(), p => CanLogin() );
-            GitHubApi.PropertyChanged += OnGitHubPropertyChanged;
+            _window = window;
+            _issue = GitHubApi.Issue;
+
+            CloseIssueCommand = new RelayCommand(p => OnCloseIssue(), p => CanCloseIssue());
+            CommentCommand = new RelayCommand(p => OnCommentOnIssue(), p => CanCommentOnIssue());
         }
 
-        [NotNull]
-        public ICommand LoginCommand
+        public Issue Issue
         {
-            get { return _loginCommand; }
+            get { return _issue; }
+        }
+
+        public string Comment
+        {
+            get { return _comment; }
             set
             {
-                if (Equals(value, _loginCommand)) return;
-                _loginCommand = value;
+                if (value == _comment) return;
+                _comment = value;
                 OnPropertyChanged();
             }
         }
 
-        public User User
+        public ICommand CloseIssueCommand { get; private set; }
+        public ICommand CommentCommand { get; private set; }
+
+        private void OnCloseIssue()
         {
-            get { return GitHubApi.User; }
+            GitHubApi.CloseIssue(GitHubApi.Issue, Comment);
+            _window.Close();
         }
 
-        public bool LoggedIn
+        private bool CanCloseIssue()
         {
-            get { return GitHubApi.LoggedIn; }
+            return _issue != null;
         }
 
-        private void Login()
+        private void OnCommentOnIssue()
         {
-            if (GitHubApi.LoggedIn)
-            {
-                GitHubApi.Logout();
-                return;
-            }
-            var view = Factory.Get<LoginDialog>();
-            view.Owner = _control.GetParentWindow();
-            view.ShowDialog();
+            GitHubApi.AddComment(GitHubApi.Issue, Comment);
+            _window.Close();
         }
 
-        private bool CanLogin()
+        private bool CanCommentOnIssue()
         {
-            return true;
-        }
-
-        private void OnGitHubPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // Our properties are named the same, so just chain them
-            OnPropertyChanged(e.PropertyName);
+            return _issue != null && !string.IsNullOrWhiteSpace(Comment);
         }
     }
 }

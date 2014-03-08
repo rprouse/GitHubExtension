@@ -38,7 +38,7 @@ using System.Windows;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    public class LoginViewModel : BaseViewModel
     {
         private Window _view;
         private string _username;
@@ -49,7 +49,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public LoginViewModel( Window view )
         {
             _view = view;
-            LogonCommand = new RelayCommand(p => Logon(p), p => CanLogon());
+            LogonCommand = new RelayCommand(Logon, p => CanLogon());
         }
 
         public string Username
@@ -103,8 +103,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
             try
             {
-                var api = Factory.Get<GitHubApi>();
-                if ( await api.Login(Username, pass.Password) )
+                if ( await GitHubApi.Login(Username, pass.Password) )
                     _view.Close();
             }
             catch (Exception e)
@@ -112,15 +111,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
                 _view.IsEnabled = true;
                 Message = "Logon failed. " + e.Message;
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

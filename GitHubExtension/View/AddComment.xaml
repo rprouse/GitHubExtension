@@ -5,13 +5,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
         xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub"
-        xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
+        xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
         Title="Add Comment"
         Height="500" Width="500" 
         Foreground="#FF333333" 
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance octokit:Issue}">
+        d:DataContext="{d:DesignInstance viewModel:AddCommentViewModel}">
     <Window.Resources>
         <converters:MarkdownConverter x:Key="MarkdownConverter" />
         <Style x:Key="FontAwesome">
@@ -31,15 +31,15 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource FontAwesome}" FontSize="36" Text="&#xf09b;" />
-        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="20" Text="{Binding Path=Title}" Margin="0,0,6,0" TextTrimming="CharacterEllipsis" />
+        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="20" Text="{Binding Path=Issue.Title, Mode=OneTime}" Margin="0,0,6,0" TextTrimming="CharacterEllipsis" />
 
         <TabControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="6">
             <TabItem Header="Write">
-                <TextBox x:Name="Comment" TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" />
+                <TextBox TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Path=Comment, Mode=OneWayToSource}" />
             </TabItem>
             <TabItem Header="Preview">
-                <Border x:Name="_htmlView" BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
-                    <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Text, ElementName=Comment, Converter={StaticResource MarkdownConverter}}" />
+                <Border BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
+                    <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Path=Comment, Converter={StaticResource MarkdownConverter}}" />
                 </Border>
             </TabItem>
         </TabControl>
@@ -47,7 +47,7 @@
         <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right">
             <Button 
                 x:Name="CloseIssue" 
-                Command="{Binding Path=CloseIssueCommand, RelativeSource={RelativeSource AncestorType={x:Type view:AddComment}}}"
+                Command="{Binding Path=CloseIssueCommand}"
                 Content="Close Issue"
                 Padding="3" 
                 HorizontalAlignment="Right"
@@ -55,7 +55,7 @@
                 Margin="0,6,3,6" />
             <Button 
                 x:Name="CommentOnIssue" 
-                Command="{Binding Path=CommentCommand, RelativeSource={RelativeSource AncestorType={x:Type view:AddComment}}}"
+                Command="{Binding Path=CommentCommand}"
                 Content="Add Comment"
                 Padding="3" 
                 IsDefault="True" 

@@ -24,22 +24,30 @@
 
 #region Using Directives
 
-using System.Windows;
-using Alteridem.GitHub.Extension.ViewModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Model;
 
 #endregion
 
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.ViewModel
 {
-    /// <summary>
-    /// Interaction logic for AddComment.xaml
-    /// </summary>
-    public partial class AddComment : Window
+    public class BaseViewModel : INotifyPropertyChanged
     {
-        public AddComment()
+        [NotNull]
+        internal GitHubApi GitHubApi
         {
-            InitializeComponent();
-            DataContext = new AddCommentViewModel(this);
+            get { return Factory.Get<GitHubApi>(); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
