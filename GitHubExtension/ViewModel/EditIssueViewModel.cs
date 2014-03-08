@@ -22,10 +22,8 @@
 // 
 // **********************************************************************************
 
-using System.Collections;
 using System.ComponentModel;
 using System.Windows.Input;
-using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Octokit;
@@ -42,16 +40,23 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public EditIssueViewModel(IIssueEditor editor)
         {
             _editor = editor;
-            if ( GitHubApi.Repository != null )
+            if (GitHubApi.Repository != null)
                 _repository = GitHubApi.Repository.Repository;
 
             Labels = new BindingList<Label>(GitHubApi.Labels);
             Milestones = new BindingList<Milestone>(GitHubApi.Milestones);
 
-            SaveCommand = new RelayCommand(p => Save(), p => CanSave() );
+            // The lists contain non-items
+            if (Labels.Count > 0) Labels.RemoveAt(0);
+            if (Milestones.Count > 0) Milestones.RemoveAt(0);
+            if (Milestones.Count > 0) Milestones.RemoveAt(0);
+
+            SaveCommand = new RelayCommand(p => Save(), p => CanSave());
+            CancelCommand = new RelayCommand(p => _editor.Close(), p => true);
         }
 
         public ICommand SaveCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
 
         public Issue Issue
         {
@@ -81,9 +86,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public bool CanSave()
         {
-            return Issue != null &&
-                   _repository != null &&
-                   !string.IsNullOrWhiteSpace(Issue.Title);
+            return Issue != null && _repository != null && !string.IsNullOrWhiteSpace(Issue.Title);
         }
     }
 }

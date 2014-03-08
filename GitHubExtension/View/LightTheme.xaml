@@ -20,25 +20,29 @@
     <Style x:Key="FontAwesome">
         <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
     </Style>
+    
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+        <Setter Property="Background" Value="White" />
+    </Style>
 
     <Style x:Key="Label" TargetType="{x:Type Label}" >
         <Setter Property="Foreground" Value="#333" />
-        <Setter Property="FontSize" Value="14pt" />
+        <Setter Property="FontSize" Value="12pt" />
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Margin" Value="12,3,12,0"/>
     </Style>
 
     <Style x:Key="TextBox" TargetType="{x:Type TextBox}" >
         <Setter Property="Foreground" Value="#333" />
-        <Setter Property="FontSize" Value="12pt" />
+        <Setter Property="FontSize" Value="11pt" />
         <Setter Property="Margin" Value="12,3,12,0"/>
-        <Setter Property="Height" Value="36" />
         <Setter Property="Padding" Value="4" />
+        <Setter Property="Height" Value="30" />
     </Style>
 
     <Style x:Key="TextArea" TargetType="{x:Type TextBox}" >
         <Setter Property="Foreground" Value="#333" />
-        <Setter Property="FontSize" Value="12pt" />
+        <Setter Property="FontSize" Value="11pt" />
         <Setter Property="Margin" Value="12,3,12,0"/>
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Padding" Value="4" />
@@ -48,16 +52,16 @@
 
     <Style x:Key="CheckComboBox" TargetType="{x:Type xctk:CheckComboBox}" >
         <Setter Property="Foreground" Value="#333" />
-        <Setter Property="FontSize" Value="12pt" />
+        <Setter Property="FontSize" Value="11pt" />
         <Setter Property="Margin" Value="12,3,12,0"/>
-        <Setter Property="Height" Value="36" />
+        <Setter Property="Height" Value="30" />
     </Style>
 
     <Style x:Key="ComboBox" TargetType="{x:Type ComboBox}" >
         <Setter Property="Foreground" Value="#333" />
         <Setter Property="FontSize" Value="12pt" />
         <Setter Property="Margin" Value="12,3,12,0"/>
-        <Setter Property="Height" Value="36" />
+        <Setter Property="Height" Value="30" />
     </Style>
 
     <Style x:Key="Button" TargetType="{x:Type Button}" >

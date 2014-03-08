@@ -21,9 +21,16 @@
         <xctk:CheckComboBox Name="IssuesCombo"
             DockPanel.Dock="Top" 
             Style="{StaticResource CheckComboBox}"
-            ItemTemplate="{StaticResource LabelTemplate}"
+            DisplayMemberPath="Name"
             ItemsSource="{Binding Path=Labels}"
-            SelectedItemsOverride="{Binding Path=Issue.Labels, Mode=TwoWay}" />
+            SelectedItemsOverride="{Binding Path=Issue.Labels, Mode=TwoWay}" >
+            <xctk:CheckComboBox.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                </LinearGradientBrush>
+            </xctk:CheckComboBox.Background>
+        </xctk:CheckComboBox>
 
         <Label DockPanel.Dock="Top" Content="Assignee" Style="{StaticResource Label}"/>
         <ComboBox DockPanel.Dock="Top" Style="{StaticResource ComboBox}" />
@@ -34,25 +41,25 @@
             Style="{StaticResource ComboBox}"
             ItemTemplate="{StaticResource MilestoneTemplate}"
             ItemsSource="{Binding Path=Milestones}"
-            SelectedValue="{Binding Path=Issue.Milestone}"/>
+            SelectedValue="{Binding Path=Issue.Milestone}" />
 
         <Label DockPanel.Dock="Top" Content="Description" Style="{StaticResource Label}"/>
 
         <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="12">
-            <Button Style="{StaticResource Button}" DockPanel.Dock="Right" IsDefault="True">
+            <Button Style="{StaticResource Button}" DockPanel.Dock="Right" IsCancel="True" Command="{Binding Path=CancelCommand}" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource FontAwesome}" Text="&#xf00d;" Margin="0,0,6,0" VerticalAlignment="Center" />
                     <TextBlock Text="Cancel" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource Button}" DockPanel.Dock="Right" IsCancel="True">
+            <Button Style="{StaticResource Button}" DockPanel.Dock="Right" IsDefault="True" Command="{Binding Path=SaveCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource FontAwesome}" Text="&#xf0c7;" Margin="0,0,6,0" VerticalAlignment="Center" />
                     <TextBlock Text="Save" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
         </DockPanel>
-        
+
         <TextBox DockPanel.Dock="Top" Style="{StaticResource TextArea}" Text="{Binding Path=Issue.Body, Mode=TwoWay}" />
 
     </DockPanel>
