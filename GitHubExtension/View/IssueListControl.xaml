@@ -84,13 +84,23 @@
                       SelectedItem="{Binding Path=Milestone}"
                       ItemTemplate="{StaticResource MilestoneTemplate}" />
             <Button 
-                Command="{Binding Path=RefreshCommand, RelativeSource={RelativeSource AncestorType={x:Type wpf:IssueListControl}}}"
+                Command="{Binding Path=RefreshCommand}"
                 Content="&#xf021;"
                 FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
                 FontSize="14" 
                 Width="26" Height="26" 
                 Margin="3,6" 
                 ToolTip="Refresh List" 
+                HorizontalAlignment="Right"
+                IsEnabled="True" />
+            <Button 
+                Command="{Binding Path=AddIssueCommand}"
+                Content="&#xf067;"
+                FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
+                FontSize="14" 
+                Width="26" Height="26" 
+                Margin="3,6" 
+                ToolTip="Add Issue" 
                 HorizontalAlignment="Right"
                 IsEnabled="True" />
         </StackPanel>

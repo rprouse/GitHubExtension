@@ -39,12 +39,17 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class IssueListViewModel : BaseViewModel
     {
-        public IssueListViewModel()
+        private readonly IWindowProvider _windowProvider;
+
+        public IssueListViewModel(IWindowProvider windowProvider)
         {
+            _windowProvider = windowProvider;
             RefreshCommand = new RelayCommand(p => Refresh(), p => CanRefresh());
+            AddIssueCommand = new RelayCommand(p => AddIssue(), p => CanAddIssue() );
         }
 
         public ICommand RefreshCommand { get; private set; }
+        public ICommand AddIssueCommand { get; private set; }
 
         public RepositoryWrapper Repository
         {
@@ -85,6 +90,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         [NotNull]
         public BindingList<Issue> Issues { get { return GitHubApi.Issues; } }
 
+
         public void OpenIssueViewer()
         {
             var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueToolWindow)) as IIssueToolWindow;
@@ -102,6 +108,19 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private bool CanRefresh()
         {
             return true;
+        }
+
+        private void AddIssue()
+        {
+            var add = Factory.Get<IIssueEditor>();
+            add.SetIssue(new Issue());
+            add.Owner = _windowProvider.Window;
+            add.Show();
+        }
+
+        private bool CanAddIssue()
+        {
+            return Repository != null;
         }
     }
 }

@@ -22,40 +22,16 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
+using Octokit;
 
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
-using Alteridem.GitHub.Extensions;
-
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.Interfaces
 {
-    /// <summary>
-    /// Interaction logic for IssueListControl.xaml
-    /// </summary>
-    public partial class IssueListControl : IWindowProvider
+    public interface IIssueEditor : IClosable, IWindow
     {
-        private IssueListViewModel _viewModel;
-
-        public IssueListControl()
-        {
-            InitializeComponent();
-            _viewModel = new IssueListViewModel(this);
-            DataContext = _viewModel;
-        }
-
-        private void OnRowDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            // I am too lazy to create a dependency property for the datagrid
-            // so that I can bind to the mouse double click :)
-            _viewModel.OpenIssueViewer();
-        }
-
-        public Window Window { get { return this.GetParentWindow(); } }
+        /// <summary>
+        /// Sets the issue to add/edit
+        /// </summary>
+        /// <param name="issue">The issue.</param>
+        void SetIssue(Issue issue);
     }
 }

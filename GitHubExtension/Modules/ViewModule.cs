@@ -10,6 +10,7 @@ namespace Alteridem.GitHub.Extension.Modules
         {
             Bind<ILoginView>().To<LoginDialog>();
             Bind<IAddComment>().To<AddComment>();
+            Bind<IIssueEditor>().To<EditIssue>();
         }
     }
 }
