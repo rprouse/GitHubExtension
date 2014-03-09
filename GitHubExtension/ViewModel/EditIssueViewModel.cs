@@ -26,7 +26,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
@@ -58,7 +62,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
                 _repository = GitHubApi.Repository.Repository;
 
             Assignees = new BindingList<User>();
-            LoadAssignees();
 
             Labels = new BindingList<Label>();
             AllLabels = new BindingList<Label>();
@@ -83,6 +86,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
         /// <param name="issue">The issue.</param>
         public void SetIssue(Issue issue)
         {
+            LoadAssignees(issue);
+
             if(issue == null)
                 return;
 
@@ -92,20 +97,60 @@ namespace Alteridem.GitHub.Extension.ViewModel
             Assignee = issue.Assignee;
             if (issue.Labels != null)
                 foreach (var label in issue.Labels)
-                    Labels.Add(label);
-            Milestone = issue.Milestone;
-
+                    AddLabel(label);
+            SetMilestone(issue.Milestone);
         }
 
-        private async void LoadAssignees()
+        /// <summary>
+        /// Labels don't override Equals, so we need to find the ones in
+        /// the main collection and add them so that reference equals works
+        /// for binding
+        /// </summary>
+        /// <param name="label"></param>
+        private void AddLabel(Label label)
+        {
+            var labels = from l in AllLabels
+                         where l.Url == label.Url
+                         select l;
+            labels.ToList().ForEach(l => Labels.Add(l));
+        }
+
+        /// <summary>
+        /// Milestones don't override Equals, so we need to find the one in
+        /// the main collection and add it so that reference equals works
+        /// for binding
+        /// </summary>
+        /// <param name="milestone"></param>
+        private void SetMilestone(Milestone milestone)
+        {
+            Milestone = (from m in Milestones
+                         where m.Url == milestone.Url
+                         select m).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Users don't override Equals, so we need to find the one in
+        /// the main collection and add it so that reference equals works
+        /// for binding
+        /// </summary>
+        /// <param name="assignee"></param>
+        private void SetAssignee(User assignee)
+        {
+            Assignee = (from u in Assignees
+                        where u.Url == assignee.Url
+                        select u).FirstOrDefault();
+        }
+
+        private async void LoadAssignees(Issue issue)
         {
             if (GitHubApi.Repository != null)
             {
                 IReadOnlyList<User> assignees = await GitHubApi.GetAssignees(_repository);
                 foreach (var assignee in assignees)
-                {
                     Assignees.Add(assignee);
-                }
+
+                if (issue != null && issue.Assignee != null)
+                    SetAssignee(issue.Assignee);
             }
         }
 

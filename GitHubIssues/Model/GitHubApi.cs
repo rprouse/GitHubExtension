@@ -502,7 +502,7 @@ namespace Alteridem.GitHub.Model
                     if (issue.Number == issueUpdate.Number)
                     {
                         Issues.Remove(issue);
-                        Issues.Add(issueUpdate);
+                        Issues.Insert(0, issueUpdate);
                         Issue = issueUpdate;
                         break;
                     }

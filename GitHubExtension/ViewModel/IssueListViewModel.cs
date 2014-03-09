@@ -113,6 +113,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private void AddIssue()
         {
             var add = Factory.Get<IIssueEditor>();
+            add.SetIssue(null);
             add.Owner = _windowProvider.Window;
             add.Show();
         }
