@@ -53,17 +53,25 @@
             <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" wpf:WebBrowserBehavior.Html="{Binding Path=IssueMarkdown, Converter={StaticResource MarkdownConverter}}" />
         </Border>
 
-        <DockPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4">
+        <DockPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" LastChildFill="False">
             <Button 
+                DockPanel.Dock="Right"
                 Command="{Binding Path=AddCommentCommand}"
                 Content="&#xf075;"
                 FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
                 FontSize="16" 
                 Width="30" Height="30" 
                 Margin="6px" 
-                ToolTip="Add Comment" 
-                HorizontalAlignment="Right"
-                IsEnabled="True" />
+                ToolTip="Add Comment"/>
+            <Button 
+                DockPanel.Dock="Right"
+                Command="{Binding Path=EditIssueCommand}"
+                Content="&#xf15c;"
+                FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
+                FontSize="16" 
+                Width="30" Height="30" 
+                Margin="6px" 
+                ToolTip="Edit Issue"/>
         </DockPanel>
     </Grid>
 </UserControl>
