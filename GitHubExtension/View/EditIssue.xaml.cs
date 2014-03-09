@@ -56,7 +56,7 @@ namespace Alteridem.GitHub.Extension.View
         /// <param name="issue">The issue.</param>
         public void SetIssue(Issue issue)
         {
-            _viewModel.Issue = issue;
+            _viewModel.SetIssue(issue);
         }
     }
 }

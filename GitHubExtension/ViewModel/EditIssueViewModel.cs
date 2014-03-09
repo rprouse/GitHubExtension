@@ -41,30 +41,56 @@ namespace Alteridem.GitHub.Extension.ViewModel
     {
         private readonly IIssueEditor _editor;
         private readonly Repository _repository;
-        private Issue _issue;
         private BindingList<Label> _labels;
+        private int _issueNumber;
+        private Milestone _milestone;
+        private User _assignee;
+        private string _body = string.Empty;
+        private string _title = string.Empty;
+        private BindingList<Milestone> _milestones;
+        private BindingList<Label> _allLabels;
+        private BindingList<User> _assignees;
 
         public EditIssueViewModel(IIssueEditor editor)
         {
             _editor = editor;
             if (GitHubApi.Repository != null)
-            {
                 _repository = GitHubApi.Repository.Repository;
-            }
 
             Assignees = new BindingList<User>();
             LoadAssignees();
 
-            Labels = new BindingList<Label>(GitHubApi.Labels);
+            Labels = new BindingList<Label>();
+            AllLabels = new BindingList<Label>(GitHubApi.Labels);
             Milestones = new BindingList<Milestone>(GitHubApi.Milestones);
 
             // The lists contain non-items
-            if (Labels.Count > 0) Labels.RemoveAt(0);
+            if (AllLabels.Count > 0) AllLabels.RemoveAt(0);
             if (Milestones.Count > 0) Milestones.RemoveAt(0);
             if (Milestones.Count > 0) Milestones.RemoveAt(0);
 
             SaveCommand = new RelayCommand(p => Save(), p => CanSave());
             CancelCommand = new RelayCommand(p => _editor.Close(), p => true);
+        }
+
+        /// <summary>
+        /// Sets the issue to add/edit. If null, we are adding, if set, we edit
+        /// </summary>
+        /// <param name="issue">The issue.</param>
+        public void SetIssue(Issue issue)
+        {
+            if(issue == null)
+                return;
+
+            _issueNumber = issue.Number;
+            Title = issue.Title;
+            Body = issue.Body;
+            Assignee = issue.Assignee;
+            if (issue.Labels != null)
+                foreach (var label in issue.Labels)
+                    Labels.Add(label);
+            Milestone = issue.Milestone;
+
         }
 
         private async void LoadAssignees()
@@ -82,13 +108,57 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public ICommand SaveCommand { get; private set; }
         public ICommand CancelCommand { get; private set; }
 
-        public Issue Issue
+        public string Title
         {
-            get { return _issue; }
+            get { return _title; }
             set
             {
-                if (Equals(value, _issue)) return;
-                _issue = value;
+                if (value == _title) return;
+                _title = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Body
+        {
+            get { return _body; }
+            set
+            {
+                if (value == _body) return;
+                _body = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public User Assignee
+        {
+            get { return _assignee; }
+            set
+            {
+                if (Equals(value, _assignee)) return;
+                _assignee = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public BindingList<Label> Labels
+        {
+            get { return _labels; }
+            set
+            {
+                if (Equals(value, _labels)) return;
+                _labels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Milestone Milestone
+        {
+            get { return _milestone; }
+            set
+            {
+                if (Equals(value, _milestone)) return;
+                _milestone = value;
                 OnPropertyChanged();
             }
         }
@@ -96,54 +166,79 @@ namespace Alteridem.GitHub.Extension.ViewModel
         /// <summary>
         /// All the labels available
         /// </summary>
-        public BindingList<Label> Labels { get; set; }
+        public BindingList<Label> AllLabels
+        {
+            get { return _allLabels; }
+            set
+            {
+                if (Equals(value, _allLabels)) return;
+                _allLabels = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// All Milestones available
         /// </summary>
-        public BindingList<Milestone> Milestones { get; set; }
+        public BindingList<Milestone> Milestones
+        {
+            get { return _milestones; }
+            set
+            {
+                if (Equals(value, _milestones)) return;
+                _milestones = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// All people that can be assigned to this issue
         /// </summary>
-        public BindingList<User> Assignees { get; set; } 
+        public BindingList<User> Assignees
+        {
+            get { return _assignees; }
+            set
+            {
+                if (Equals(value, _assignees)) return;
+                _assignees = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void Save()
         {
             _editor.IsEnabled = false;
             try
             {
-                if (_issue.Number == 0) // New
+                if (_issueNumber == 0) // New
                 {
-                    var issue = new NewIssue(_issue.Title);
-                    issue.Body = _issue.Body;
-                    if ( _issue.Assignee != null )
-                        issue.Assignee = _issue.Assignee.Login;
-                    if (_issue.Labels != null)
-                    {
-                        foreach (var label in _issue.Labels)
-                            issue.Labels.Add(label.Name);
-                    }
-                    if( _issue.Milestone != null )
-                        issue.Milestone = _issue.Milestone.Number;
+                    var issue = new NewIssue(Title);
+                    issue.Body = Body;
+                    if ( Assignee != null )
+                        issue.Assignee = Assignee.Login;
+                    foreach (var label in Labels)
+                        issue.Labels.Add(label.Name);
+
+                    if( Milestone != null )
+                        issue.Milestone = Milestone.Number;
 
                     GitHubApi.SaveIssue(_repository, issue);
                 }
                 else  // Edit
                 {
                     var issue = new IssueUpdate();
-                    issue.Body = _issue.Body;
-                    if (_issue.Assignee != null)
-                        issue.Assignee = _issue.Assignee.Login;
-                    if (_issue.Labels != null)
-                    {
-                        foreach (var label in _issue.Labels)
-                            issue.Labels.Add(label.Name);
-                    }
-                    if (_issue.Milestone != null)
-                        issue.Milestone = _issue.Milestone.Number;
+                    issue.Title = Title;
+                    issue.Body = Body;
+                    if (Assignee != null)
+                        issue.Assignee = Assignee.Login;
 
-                    GitHubApi.UpdateIssue(_repository, _issue.Number, issue);
+                    foreach (var label in Labels)
+                        issue.Labels.Add(label.Name);
+
+                    if (Milestone != null)
+                        issue.Milestone = Milestone.Number;
+
+                    GitHubApi.UpdateIssue(_repository, _issueNumber, issue);
                 }
                 _editor.Close();
             }
@@ -157,7 +252,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public bool CanSave()
         {
-            return Issue != null && _repository != null && !string.IsNullOrWhiteSpace(Issue.Title);
+            return _repository != null && !string.IsNullOrWhiteSpace(Title);
         }
     }
 }

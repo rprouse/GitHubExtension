@@ -16,16 +16,15 @@
     </Window.Resources>
     <DockPanel LastChildFill="True">
         <Label DockPanel.Dock="Top" Content="Title" Style="{StaticResource Label}"/>
-        <TextBox DockPanel.Dock="Top" Style="{StaticResource TextBox}" Text="{Binding Path=Issue.Title, Mode=TwoWay}" />
+        <TextBox DockPanel.Dock="Top" Style="{StaticResource TextBox}" Text="{Binding Path=Title, Mode=TwoWay}" />
 
-        <!--
         <Label DockPanel.Dock="Top" Content="Labels" Style="{StaticResource Label}"/>
         <xctk:CheckComboBox Name="IssuesCombo"
             DockPanel.Dock="Top" 
             Style="{StaticResource CheckComboBox}"
             DisplayMemberPath="Name"
-            ItemsSource="{Binding Path=Labels}"
-            SelectedItemsOverride="{Binding Path=Issue.Labels, Mode=TwoWay}" >
+            ItemsSource="{Binding Path=AllLabels}"
+            SelectedItemsOverride="{Binding Path=Labels, Mode=TwoWay}" >
             <xctk:CheckComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -33,7 +32,6 @@
                 </LinearGradientBrush>
             </xctk:CheckComboBox.Background>
         </xctk:CheckComboBox>
-        -->
 
         <Label DockPanel.Dock="Top" Content="Assignee" Style="{StaticResource Label}"/>
         <ComboBox 
@@ -41,7 +39,7 @@
             Style="{StaticResource ComboBox}" 
             DisplayMemberPath="Login"
             ItemsSource="{Binding Path=Assignees}"
-            SelectedValue="{Binding Path=Issue.Assignee}" />
+            SelectedValue="{Binding Path=Assignee}" />
 
         <Label DockPanel.Dock="Top" Content="Milestone" Style="{StaticResource Label}"/>
         <ComboBox 
@@ -49,7 +47,7 @@
             Style="{StaticResource ComboBox}"
             ItemTemplate="{StaticResource MilestoneTemplate}"
             ItemsSource="{Binding Path=Milestones}"
-            SelectedValue="{Binding Path=Issue.Milestone}" />
+            SelectedValue="{Binding Path=Milestone}" />
 
         <Label DockPanel.Dock="Top" Content="Description" Style="{StaticResource Label}"/>
 
@@ -70,11 +68,11 @@
 
         <TabControl DockPanel.Dock="Top" Margin="12,3,12,0">
             <TabItem Header="Write">
-                <TextBox TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Path=Issue.Body, Mode=TwoWay}" />
+                <TextBox TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Path=Body, Mode=TwoWay}" />
             </TabItem>
             <TabItem Header="Preview">
                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="0">
-                    <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Path=Issue.Body, Converter={StaticResource MarkdownConverter}}" />
+                    <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Path=Body, Converter={StaticResource MarkdownConverter}}" />
                 </Border>
             </TabItem>
         </TabControl>
