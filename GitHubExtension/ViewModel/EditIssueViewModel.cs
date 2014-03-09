@@ -61,8 +61,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
             LoadAssignees();
 
             Labels = new BindingList<Label>();
-            AllLabels = new BindingList<Label>(GitHubApi.Labels);
-            Milestones = new BindingList<Milestone>(GitHubApi.Milestones);
+            AllLabels = new BindingList<Label>();
+            foreach (var label in GitHubApi.Labels)
+                AllLabels.Add(label);
+            Milestones = new BindingList<Milestone>();
+            foreach (var milestone in GitHubApi.Milestones)
+                Milestones.Add(milestone);
 
             // The lists contain non-items
             if (AllLabels.Count > 0) AllLabels.RemoveAt(0);
