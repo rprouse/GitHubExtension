@@ -55,6 +55,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private BindingList<Label> _allLabels;
         private BindingList<User> _assignees;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public EditIssueViewModel(IIssueEditor editor)
         {
             _editor = editor;
