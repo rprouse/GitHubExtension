@@ -78,6 +78,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
             SaveCommand = new RelayCommand(p => Save(), p => CanSave());
             CancelCommand = new RelayCommand(p => _editor.Close(), p => true);
+            ClearAssigneeCommand = new RelayCommand(p => Assignee = null, p => Assignee != null);
+            ClearMilestoneCommand = new RelayCommand(p => Milestone = null, p => Milestone != null);
         }
 
         /// <summary>
@@ -156,6 +158,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public ICommand SaveCommand { get; private set; }
         public ICommand CancelCommand { get; private set; }
+        public ICommand ClearAssigneeCommand { get; private set; }
+        public ICommand ClearMilestoneCommand { get; private set; }
 
         public string Title
         {
@@ -263,13 +267,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
                 {
                     var issue = new NewIssue(Title);
                     issue.Body = Body;
-                    if ( Assignee != null )
-                        issue.Assignee = Assignee.Login;
+                    issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
+                    issue.Milestone = Milestone != null ? Milestone.Number : 0;
+
                     foreach (var label in Labels)
                         issue.Labels.Add(label.Name);
-
-                    if( Milestone != null )
-                        issue.Milestone = Milestone.Number;
 
                     GitHubApi.SaveIssue(_repository, issue);
                 }
@@ -278,14 +280,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
                     var issue = new IssueUpdate();
                     issue.Title = Title;
                     issue.Body = Body;
-                    if (Assignee != null)
-                        issue.Assignee = Assignee.Login;
+                    issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
+                    issue.Milestone = Milestone != null ? Milestone.Number : 0;
 
                     foreach (var label in Labels)
                         issue.Labels.Add(label.Name);
-
-                    if (Milestone != null)
-                        issue.Milestone = Milestone.Number;
 
                     GitHubApi.UpdateIssue(_repository, _issueNumber, issue);
                 }
