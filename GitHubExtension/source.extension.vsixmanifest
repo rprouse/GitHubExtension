@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="dae607b6-043f-400a-bd24-ffda143b13f4" Version="0.1.1" Language="en-US" Publisher="Rob Prouse" />
+    <Identity Id="dae607b6-043f-400a-bd24-ffda143b13f4" Version="0.1.2" Language="en-US" Publisher="Rob Prouse" />
     <DisplayName>GitHub Extension</DisplayName>
     <Description>Allows you to work with GitHub repositories and issues from within Visual Studio</Description>
     <MoreInfo>http://www.alteridem.net</MoreInfo>

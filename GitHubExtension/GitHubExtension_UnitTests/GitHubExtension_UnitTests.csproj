@@ -52,9 +52,9 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
     <Reference Include="Microsoft.VSSDK.UnitTestLibrary" />
     <Reference Include="Microsoft.VSSDK.TestHostFramework" />
-    <Reference Include="Octokit, Version=0.2.1.0, Culture=neutral, PublicKeyToken=641a546795d6bf70, processorArchitecture=MSIL">
+    <Reference Include="Octokit, Version=0.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Octokit.0.2.1\lib\net45\Octokit.dll</HintPath>
+      <HintPath>..\..\packages\Octokit.0.2.2\lib\net45\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

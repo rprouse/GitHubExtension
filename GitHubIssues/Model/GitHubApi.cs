@@ -27,8 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net.Http.Headers;
-using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -194,9 +192,9 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApi()
+        public GitHubApi(GitHubClient github)
         {
-            _github = new GitHubClient(new ProductHeaderValue("GitHubExtension"));
+            _github = github;
 
             _filter = IssueFilter.Assigned;
             Repositories = new BindingList<RepositoryWrapper>();
