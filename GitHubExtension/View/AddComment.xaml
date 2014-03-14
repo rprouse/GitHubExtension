@@ -35,7 +35,11 @@
 
         <TabControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="6">
             <TabItem Header="Write">
-                <TextBox TextWrapping="WrapWithOverflow" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Path=Comment, Mode=OneWayToSource}" />
+                <TextBox 
+                    TextWrapping="WrapWithOverflow"
+                    AcceptsReturn="True" 
+                    AcceptsTab="True"
+                    Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
             </TabItem>
             <TabItem Header="Preview">
                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="0">
@@ -48,6 +52,7 @@
             <Button 
                 x:Name="CloseIssue" 
                 Command="{Binding Path=CloseIssueCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:AddComment}}"
                 Content="Close Issue"
                 Padding="3" 
                 HorizontalAlignment="Right"
@@ -56,6 +61,7 @@
             <Button 
                 x:Name="CommentOnIssue" 
                 Command="{Binding Path=CommentCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:AddComment}}"
                 Content="Add Comment"
                 Padding="3" 
                 IsDefault="True" 

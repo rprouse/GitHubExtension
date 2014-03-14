@@ -40,7 +40,7 @@ namespace Alteridem.GitHub.Extension.View
         public AddComment()
         {
             InitializeComponent();
-            DataContext = new AddCommentViewModel(this);
+            DataContext = Factory.Get<AddCommentViewModel>();
         }
 
         public Window Window { get { return this; } }

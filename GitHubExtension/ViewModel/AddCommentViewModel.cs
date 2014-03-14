@@ -35,17 +35,15 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class AddCommentViewModel : BaseViewModel
     {
-        private readonly IClosable _closable;
         private readonly Issue _issue;
         private string _comment;
 
-        public AddCommentViewModel(IClosable closable)
+        public AddCommentViewModel()
         {
-            _closable = closable;
             _issue = GitHubApi.Issue;
 
-            CloseIssueCommand = new RelayCommand(p => OnCloseIssue(), p => CanCloseIssue());
-            CommentCommand = new RelayCommand(p => OnCommentOnIssue(), p => CanCommentOnIssue());
+            CloseIssueCommand = new RelayCommand(OnCloseIssue, p => CanCloseIssue());
+            CommentCommand = new RelayCommand(OnCommentOnIssue, p => CanCommentOnIssue());
         }
 
         public Issue Issue
@@ -59,7 +57,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             set
             {
                 if (value == _comment) return;
-                _comment = value;
+                _comment = value; 
                 OnPropertyChanged();
             }
         }
@@ -67,10 +65,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public ICommand CloseIssueCommand { get; private set; }
         public ICommand CommentCommand { get; private set; }
 
-        private void OnCloseIssue()
+        private void OnCloseIssue(object o)
         {
             GitHubApi.CloseIssue(GitHubApi.Issue, Comment);
-            _closable.Close();
+            var closable = o as IClosable;
+            if ( closable != null )
+                closable.Close();
         }
 
         private bool CanCloseIssue()
@@ -78,10 +78,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
             return _issue != null;
         }
 
-        private void OnCommentOnIssue()
+        private void OnCommentOnIssue(object o)
         {
             GitHubApi.AddComment(GitHubApi.Issue, Comment);
-            _closable.Close();
+            var closable = o as IClosable;
+            if (closable != null)
+                closable.Close();
         }
 
         private bool CanCommentOnIssue()
