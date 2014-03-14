@@ -8,9 +8,10 @@
         xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModel:EditIssueViewModel}"
+        WindowStartupLocation="CenterOwner"
         Title="Issue" 
         Height="810" 
-        Width="553">
+        Width="553" >
     <Window.Resources>
         <ResourceDictionary Source="LightTheme.xaml" />
     </Window.Resources>

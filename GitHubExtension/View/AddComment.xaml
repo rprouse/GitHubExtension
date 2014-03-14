@@ -6,10 +6,10 @@
         xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
         xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub"
         xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
+        WindowStartupLocation="CenterOwner"
         Title="Add Comment"
         Height="500" Width="500" 
         Foreground="#FF333333" 
-        WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModel:AddCommentViewModel}">
     <Window.Resources>
