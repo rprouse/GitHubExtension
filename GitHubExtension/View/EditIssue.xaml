@@ -82,13 +82,23 @@
         <Label DockPanel.Dock="Top" Content="Description" Style="{StaticResource Label}"/>
 
         <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="12">
-            <Button Style="{StaticResource Button}" DockPanel.Dock="Right" IsCancel="True" Command="{Binding Path=CancelCommand}" >
+            <Button 
+                Style="{StaticResource Button}" 
+                DockPanel.Dock="Right" 
+                IsCancel="True" 
+                Command="{Binding Path=CancelCommand}" 
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:EditIssue}}" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource FontAwesome}" Text="&#xf00d;" Margin="0,0,6,0" VerticalAlignment="Center" />
                     <TextBlock Text="Cancel" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource Button}" DockPanel.Dock="Right" IsDefault="True" Command="{Binding Path=SaveCommand}">
+            <Button 
+                Style="{StaticResource Button}" 
+                DockPanel.Dock="Right"
+                IsDefault="True" 
+                Command="{Binding Path=SaveCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:EditIssue}}" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource FontAwesome}" Text="&#xf0c7;" Margin="0,0,6,0" VerticalAlignment="Center" />
                     <TextBlock Text="Save" VerticalAlignment="Center" />

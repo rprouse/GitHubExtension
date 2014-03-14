@@ -39,13 +39,10 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class IssueListViewModel : BaseViewModel
     {
-        private readonly IWindowProvider _windowProvider;
-
-        public IssueListViewModel(IWindowProvider windowProvider)
+        public IssueListViewModel()
         {
-            _windowProvider = windowProvider;
             RefreshCommand = new RelayCommand(p => Refresh(), p => CanRefresh());
-            AddIssueCommand = new RelayCommand(p => AddIssue(), p => CanAddIssue() );
+            AddIssueCommand = new RelayCommand(AddIssue, p => CanAddIssue() );
         }
 
         public ICommand RefreshCommand { get; private set; }
@@ -110,11 +107,13 @@ namespace Alteridem.GitHub.Extension.ViewModel
             return true;
         }
 
-        private void AddIssue()
+        private void AddIssue(object o)
         {
             var add = Factory.Get<IIssueEditor>();
             add.SetIssue(null);
-            add.Owner = _windowProvider.Window;
+            var view = o as IWindowProvider;
+            if ( view != null )
+                add.Owner = view.Window;
             add.Show();
         }
 

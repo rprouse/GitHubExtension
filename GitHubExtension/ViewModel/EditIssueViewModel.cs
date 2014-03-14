@@ -26,11 +26,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
@@ -43,7 +40,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class EditIssueViewModel : BaseViewModel
     {
-        private readonly IIssueEditor _editor;
         private readonly Repository _repository;
         private BindingList<Label> _labels;
         private int _issueNumber;
@@ -56,9 +52,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private BindingList<User> _assignees;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EditIssueViewModel(IIssueEditor editor)
+        public EditIssueViewModel()
         {
-            _editor = editor;
             if (GitHubApi.Repository != null)
                 _repository = GitHubApi.Repository.Repository;
 
@@ -77,8 +72,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
             if (Milestones.Count > 0) Milestones.RemoveAt(0);
             if (Milestones.Count > 0) Milestones.RemoveAt(0);
 
-            SaveCommand = new RelayCommand(p => Save(), p => CanSave());
-            CancelCommand = new RelayCommand(p => _editor.Close(), p => true);
+            SaveCommand = new RelayCommand(Save, p => CanSave());
+            CancelCommand = new RelayCommand(Cancel, p => true);
             ClearAssigneeCommand = new RelayCommand(p => Assignee = null, p => Assignee != null);
             ClearMilestoneCommand = new RelayCommand(p => Milestone = null, p => Milestone != null);
         }
@@ -259,44 +254,75 @@ namespace Alteridem.GitHub.Extension.ViewModel
             }
         }
 
-        public void Save()
+        public void Cancel(object o)
         {
-            _editor.IsEnabled = false;
+            var closable = o as IClosable;
+            if(closable != null)
+                closable.Close();
+        }
+
+        public void Save(object o)
+        {
+            var editor = o as IIssueEditor;
+            Action save = () =>
+            {
+                if (_issueNumber == 0) 
+                    NewIssue();
+                else
+                    UpdateIssue();
+            };
+
+            if (editor == null)
+            {
+                try
+                {
+                    save.Invoke();
+                }
+                catch (Exception) { 
+                    // TODO: Log
+                }
+                return;
+            }
+
+            editor.IsEnabled = false;
             try
             {
-                if (_issueNumber == 0) // New
-                {
-                    var issue = new NewIssue(Title);
-                    issue.Body = Body;
-                    issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
-                    issue.Milestone = Milestone != null ? Milestone.Number : 0;
-
-                    foreach (var label in Labels)
-                        issue.Labels.Add(label.Name);
-
-                    GitHubApi.SaveIssue(_repository, issue);
-                }
-                else  // Edit
-                {
-                    var issue = new IssueUpdate();
-                    issue.Title = Title;
-                    issue.Body = Body;
-                    issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
-                    issue.Milestone = Milestone != null ? Milestone.Number : 0;
-
-                    foreach (var label in Labels)
-                        issue.Labels.Add(label.Name);
-
-                    GitHubApi.UpdateIssue(_repository, _issueNumber, issue);
-                }
-                _editor.Close();
+                save.Invoke();
+                editor.Close();
             }
             catch (Exception e)
             {
-                _editor.IsEnabled = true;
-                MessageBox.Show(_editor.Window, "Failed to save issue. " + e.Message, "GitHub", MessageBoxButton.OK,
+                editor.IsEnabled = true;
+                MessageBox.Show(editor.Window, "Failed to save issue. " + e.Message, "GitHub", MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
+        }
+
+        private void NewIssue()
+        {
+            var issue = new NewIssue(Title);
+            issue.Body = Body;
+            issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
+            issue.Milestone = Milestone != null ? Milestone.Number : 0;
+
+            foreach (var label in Labels)
+                issue.Labels.Add(label.Name);
+
+            GitHubApi.SaveIssue(_repository, issue);
+        }
+
+        private void UpdateIssue()
+        {
+            var issue = new IssueUpdate();
+            issue.Title = Title;
+            issue.Body = Body;
+            issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
+            issue.Milestone = Milestone != null ? Milestone.Number : 0;
+
+            foreach (var label in Labels)
+                issue.Labels.Add(label.Name);
+
+            GitHubApi.UpdateIssue(_repository, _issueNumber, issue);
         }
 
         public bool CanSave()

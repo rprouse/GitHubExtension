@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:wpf="clr-namespace:Alteridem.GitHub.Extension.View"
+             xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
              xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModel:UserViewModel}"
@@ -29,8 +29,9 @@
                 Margin="3,6,6,6"
                 FontSize="18" 
                 FocusVisualStyle="{x:Null}"
-                Foreground="{DynamicResource {x:Static wpf:Theme.ForegroundKey}}"
-                Command="{Binding Path=LoginCommand}">
+                Foreground="{DynamicResource {x:Static view:Theme.ForegroundKey}}"
+                Command="{Binding Path=LoginCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:GitHubUserControl}}" >
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <ContentPresenter />

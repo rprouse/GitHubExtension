@@ -25,7 +25,6 @@
 #region Using Directives
 
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
@@ -45,7 +44,7 @@ namespace Alteridem.GitHub.Extension.View
         public IssueListControl()
         {
             InitializeComponent();
-            _viewModel = new IssueListViewModel(this);
+            _viewModel = Factory.Get<IssueListViewModel>();
             DataContext = _viewModel;
         }
 

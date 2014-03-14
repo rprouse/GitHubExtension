@@ -36,13 +36,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class UserViewModel : BaseViewModel
     {
-        private IWindowProvider _view;
         private ICommand _loginCommand;
 
-        public UserViewModel(IWindowProvider view)
+        public UserViewModel()
         {
-            _view = view;
-            LoginCommand = new RelayCommand(p => Login(), p => CanLogin() );
+            LoginCommand = new RelayCommand(Login, p => CanLogin() );
         }
 
         [NotNull]
@@ -67,16 +65,19 @@ namespace Alteridem.GitHub.Extension.ViewModel
             get { return GitHubApi.LoggedIn; }
         }
 
-        private void Login()
+        private void Login(object o)
         {
             if (GitHubApi.LoggedIn)
             {
                 GitHubApi.Logout();
                 return;
             }
-            var view = Factory.Get<ILoginView>();
-            view.Owner = _view.Window;
-            view.ShowDialog();
+
+            var dlg = Factory.Get<ILoginView>();
+            var view = o as IWindowProvider;
+            if ( view != null )
+                dlg.Owner = view.Window;
+            dlg.ShowDialog();
         }
 
         private bool CanLogin()

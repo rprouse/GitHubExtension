@@ -24,7 +24,6 @@
 
 #region Using Directives
 
-using System.Collections;
 using System.Windows;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
@@ -39,12 +38,12 @@ namespace Alteridem.GitHub.Extension.View
     /// </summary>
     public partial class EditIssue : IIssueEditor
     {
-        private EditIssueViewModel _viewModel;
+        private readonly EditIssueViewModel _viewModel;
 
         public EditIssue()
         {
             InitializeComponent();
-            _viewModel = new EditIssueViewModel(this);
+            _viewModel = Factory.Get<EditIssueViewModel>();
             DataContext = _viewModel;
         }
 
