@@ -22,39 +22,35 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
-using System.Windows;
-using System.Windows.Input;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
-using Alteridem.GitHub.Extensions;
-
-#endregion
+using System;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Alteridem.GitHub.Extension.View
 {
-    /// <summary>
-    /// Interaction logic for IssueListControl.xaml
-    /// </summary>
-    public partial class IssueListControl : IWindowProvider
+    public static class VisualStudioMessageBox
     {
-        private IssueListViewModel _viewModel;
-
-        public IssueListControl()
+        public static int Show(string message)
         {
-            InitializeComponent();
-            _viewModel = Factory.Get<IssueListViewModel>();
-            DataContext = _viewModel;
-        }
+            var uiShell = ServiceProvider.GlobalProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+            if (uiShell == null)
+                return -1;
 
-        private void OnRowDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            // I am too lazy to create a dependency property for the datagrid
-            // so that I can bind to the mouse double click :)
-            _viewModel.OpenIssueViewer();
+            Guid clsid = Guid.Empty;
+            int result;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(
+                       0,
+                       ref clsid,
+                       "GitHub Extension",
+                       message,
+                       string.Empty,
+                       0,
+                       OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                       OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
+                       OLEMSGICON.OLEMSGICON_INFO,
+                       0,        // false
+                       out result));
+            return result;
         }
-
-        public Window Window { get { return this.GetParentWindow(); } }
     }
 }

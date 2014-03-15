@@ -42,7 +42,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public IssueListViewModel()
         {
             RefreshCommand = new RelayCommand(p => Refresh(), p => CanRefresh());
-            AddIssueCommand = new RelayCommand(AddIssue, p => CanAddIssue() );
+            AddIssueCommand = new RelayCommand(p => AddIssue(), p => CanAddIssue() );
         }
 
         public ICommand RefreshCommand { get; private set; }
@@ -87,7 +87,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
         [NotNull]
         public BindingList<Issue> Issues { get { return GitHubApi.Issues; } }
 
-
         public void OpenIssueViewer()
         {
             var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueToolWindow)) as IIssueToolWindow;
@@ -107,14 +106,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
             return true;
         }
 
-        private void AddIssue(object o)
+        private void AddIssue()
         {
             var add = Factory.Get<IIssueEditor>();
             add.SetIssue(null);
-            var view = o as IWindowProvider;
-            if ( view != null )
-                add.Owner = view.Window;
-            add.Show();
+            add.ShowModal();
         }
 
         private bool CanAddIssue()

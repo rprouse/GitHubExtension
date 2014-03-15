@@ -27,22 +27,21 @@
 using System.Windows;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
+using Microsoft.VisualStudio.PlatformUI;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for LoginDialog.xaml
+    /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class LoginDialog : ILoginView
+    public partial class Login : DialogWindow, ILoginView
     {
-        public LoginDialog()
+        public Login()
         {
             InitializeComponent();
             DataContext = new LoginViewModel(this);
         }
-
-        public Window Window { get { return this; } }
     }
 }

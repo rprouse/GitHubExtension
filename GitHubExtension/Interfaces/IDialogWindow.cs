@@ -21,41 +21,15 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 // **********************************************************************************
-
-#region Using Directives
-
 using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
-using Octokit;
 
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.Interfaces
 {
     /// <summary>
-    /// Interaction logic for EditIssue.xaml
+    /// Wraps the common functions we need from a window
     /// </summary>
-    public partial class EditIssue : IIssueEditor
+    public interface IDialogWindow
     {
-        private readonly EditIssueViewModel _viewModel;
-
-        public EditIssue()
-        {
-            InitializeComponent();
-            _viewModel = Factory.Get<EditIssueViewModel>();
-            DataContext = _viewModel;
-        }
-
-        public Window Window { get { return this; } }
-
-        /// <summary>
-        /// Sets the issue to add/edit. If null, we are adding, if set, we edit
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        public void SetIssue(Issue issue)
-        {
-            _viewModel.SetIssue(issue);
-        }
+        bool? ShowModal();
     }
 }

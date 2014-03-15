@@ -177,14 +177,12 @@
   <ItemGroup>
     <Compile Include="Interfaces\IAddComment.cs" />
     <Compile Include="Interfaces\IClosable.cs" />
-    <Compile Include="Interfaces\IDialog.cs" />
     <Compile Include="Interfaces\IEnableable.cs" />
     <Compile Include="Interfaces\IIssueEditor.cs" />
     <Compile Include="Interfaces\IIssueToolWindow.cs" />
     <Compile Include="Interfaces\IIssueViewer.cs" />
     <Compile Include="Interfaces\ILoginView.cs" />
-    <Compile Include="Interfaces\IWindow.cs" />
-    <Compile Include="Interfaces\IWindowProvider.cs" />
+    <Compile Include="Interfaces\IDialogWindow.cs" />
     <Compile Include="IssueListToolWindow.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IssueToolWindow.cs" />
@@ -200,7 +198,7 @@
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="ViewModel\AddCommentViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\EditIssueViewModel.cs" />
+    <Compile Include="ViewModel\IssueEditorViewModel.cs" />
     <Compile Include="ViewModel\IssueListViewModel.cs" />
     <Compile Include="ViewModel\IssueViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
@@ -208,23 +206,24 @@
     <Compile Include="View\AddComment.xaml.cs">
       <DependentUpon>AddComment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditIssue.xaml.cs">
-      <DependentUpon>EditIssue.xaml</DependentUpon>
+    <Compile Include="View\IssueEditor.xaml.cs">
+      <DependentUpon>IssueEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IssueControl.xaml.cs">
       <DependentUpon>IssueControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RelayCommand.cs" />
     <Compile Include="View\Theme.cs" />
-    <Compile Include="View\GitHubUserControl.xaml.cs">
-      <DependentUpon>GitHubUserControl.xaml</DependentUpon>
+    <Compile Include="View\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\IssueListControl.xaml.cs">
-      <DependentUpon>IssueListControl.xaml</DependentUpon>
+    <Compile Include="View\IssueList.xaml.cs">
+      <DependentUpon>IssueList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoginDialog.xaml.cs">
-      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    <Compile Include="View\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\VisualStudioMessageBox.cs" />
     <Compile Include="View\WebBrowserBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -280,7 +279,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditIssue.xaml">
+    <Page Include="View\IssueEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -292,15 +291,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginDialog.xaml">
+    <Page Include="View\Login.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\IssueListControl.xaml">
+    <Page Include="View\IssueList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\GitHubUserControl.xaml">
+    <Page Include="View\UserView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

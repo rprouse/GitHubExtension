@@ -38,7 +38,7 @@ using Octokit;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class EditIssueViewModel : BaseViewModel
+    public class IssueEditorViewModel : BaseViewModel
     {
         private readonly Repository _repository;
         private BindingList<Label> _labels;
@@ -52,7 +52,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private BindingList<User> _assignees;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EditIssueViewModel()
+        public IssueEditorViewModel()
         {
             if (GitHubApi.Repository != null)
                 _repository = GitHubApi.Repository.Repository;
@@ -293,8 +293,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             catch (Exception e)
             {
                 editor.IsEnabled = true;
-                MessageBox.Show(editor.Window, "Failed to save issue. " + e.Message, "GitHub", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                VisualStudioMessageBox.Show("Failed to save issue. " + e.Message);
             }
         }
 

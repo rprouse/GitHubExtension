@@ -1,4 +1,4 @@
-﻿<UserControl x:Name="GitHubUser" x:Class="Alteridem.GitHub.Extension.View.GitHubUserControl"
+﻿<UserControl x:Name="GitHubUser" x:Class="Alteridem.GitHub.Extension.View.UserView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -30,8 +30,7 @@
                 FontSize="18" 
                 FocusVisualStyle="{x:Null}"
                 Foreground="{DynamicResource {x:Static view:Theme.ForegroundKey}}"
-                Command="{Binding Path=LoginCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:GitHubUserControl}}" >
+                Command="{Binding Path=LoginCommand}" >
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <ContentPresenter />

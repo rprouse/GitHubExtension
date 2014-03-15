@@ -24,10 +24,7 @@
 
 #region Using Directives
 
-using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
-using Alteridem.GitHub.Extensions;
 
 #endregion
 
@@ -36,14 +33,12 @@ namespace Alteridem.GitHub.Extension.View
     /// <summary>
     /// Interaction logic for IssueControl.xaml
     /// </summary>
-    public partial class IssueControl : IWindowProvider
+    public partial class IssueControl
     {
         public IssueControl()
         {
             InitializeComponent();
             DataContext = Factory.Get<IssueViewModel>();
         }
-
-        public Window Window { get { return this.GetParentWindow(); } }
     }
 }

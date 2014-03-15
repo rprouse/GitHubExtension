@@ -22,13 +22,34 @@
 // 
 // **********************************************************************************
 
-using System.Windows;
+#region Using Directives
 
-namespace Alteridem.GitHub.Extension.Interfaces
+using System.Windows.Input;
+using Alteridem.GitHub.Extension.ViewModel;
+
+#endregion
+
+namespace Alteridem.GitHub.Extension.View
 {
-    public interface IDialog
+    /// <summary>
+    /// Interaction logic for IssueList.xaml
+    /// </summary>
+    public partial class IssueList
     {
-        bool? ShowDialog();
-        Window Owner { get; set; }
+        private IssueListViewModel _viewModel;
+
+        public IssueList()
+        {
+            InitializeComponent();
+            _viewModel = Factory.Get<IssueListViewModel>();
+            DataContext = _viewModel;
+        }
+
+        private void OnRowDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // I am too lazy to create a dependency property for the datagrid
+            // so that I can bind to the mouse double click :)
+            _viewModel.OpenIssueViewer();
+        }
     }
 }

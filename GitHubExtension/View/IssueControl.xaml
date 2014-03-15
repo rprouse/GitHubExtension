@@ -57,7 +57,6 @@
             <Button 
                 DockPanel.Dock="Right"
                 Command="{Binding Path=AddCommentCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:IssueControl}}"
                 Content="&#xf075;"
                 FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
                 FontSize="16" 
@@ -67,7 +66,6 @@
             <Button 
                 DockPanel.Dock="Right"
                 Command="{Binding Path=EditIssueCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:IssueControl}}"
                 Content="&#xf15c;"
                 FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
                 FontSize="16" 

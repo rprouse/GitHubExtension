@@ -24,7 +24,7 @@
 
 namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface IIssueViewer : IDialog
+    public interface IIssueViewer : IDialogWindow
     {
     }
 }

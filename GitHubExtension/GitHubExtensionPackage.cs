@@ -177,22 +177,26 @@ namespace Alteridem.GitHub.Extension
         /// </summary>
         private void MenuItemCallback(object sender, EventArgs e)
         {
+            var add = Factory.Get<IIssueEditor>();
+            add.SetIssue(null);
+            add.ShowModal();
+
             // Show a Message Box to prove we were here
-            var uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
-            Guid clsid = Guid.Empty;
-            int result;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(
-                       0,
-                       ref clsid,
-                       "GitHub Extension",
-                       string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", ToString()),
-                       string.Empty,
-                       0,
-                       OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                       OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-                       OLEMSGICON.OLEMSGICON_INFO,
-                       0,        // false
-                       out result));
+            //var uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
+            //Guid clsid = Guid.Empty;
+            //int result;
+            //Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(
+            //           0,
+            //           ref clsid,
+            //           "GitHub Extension",
+            //           string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", ToString()),
+            //           string.Empty,
+            //           0,
+            //           OLEMSGBUTTON.OLEMSGBUTTON_OK,
+            //           OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
+            //           OLEMSGICON.OLEMSGICON_INFO,
+            //           0,        // false
+            //           out result));
         }
 
     }

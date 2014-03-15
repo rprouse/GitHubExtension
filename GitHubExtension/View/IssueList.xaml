@@ -1,5 +1,5 @@
-﻿<UserControl x:Name="IssueList"
-             x:Class="Alteridem.GitHub.Extension.View.IssueListControl"
+﻿<UserControl x:Name="IssueListControl"
+             x:Class="Alteridem.GitHub.Extension.View.IssueList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -95,7 +95,6 @@
                 IsEnabled="True" />
             <Button 
                 Command="{Binding Path=AddIssueCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:IssueListControl}}"
                 Content="&#xf067;"
                 FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
                 FontSize="14" 
@@ -105,7 +104,7 @@
                 HorizontalAlignment="Right"
                 IsEnabled="True" />
         </StackPanel>
-        <view:GitHubUserControl Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
+        <view:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                   Name="Issues"
                   Margin="6,0,6,6"

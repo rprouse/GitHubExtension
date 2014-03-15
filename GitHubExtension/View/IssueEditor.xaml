@@ -1,4 +1,4 @@
-﻿<Window x:Class="Alteridem.GitHub.Extension.View.EditIssue"
+﻿<platformUi:DialogWindow x:Class="Alteridem.GitHub.Extension.View.IssueEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,15 +6,16 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
         xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
+        xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.12.0"
         mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance viewModel:EditIssueViewModel}"
+        d:DataContext="{d:DesignInstance viewModel:IssueEditorViewModel}"
         WindowStartupLocation="CenterOwner"
         Title="Issue" 
         Height="810" 
         Width="553" >
-    <Window.Resources>
+    <platformUi:DialogWindow.Resources>
         <ResourceDictionary Source="LightTheme.xaml" />
-    </Window.Resources>
+    </platformUi:DialogWindow.Resources>
     <DockPanel LastChildFill="True">
         <Label DockPanel.Dock="Top" Content="Title" Style="{StaticResource Label}"/>
         <TextBox DockPanel.Dock="Top" Style="{StaticResource TextBox}" Text="{Binding Path=Title, Mode=TwoWay}" />
@@ -87,7 +88,7 @@
                 DockPanel.Dock="Right" 
                 IsCancel="True" 
                 Command="{Binding Path=CancelCommand}" 
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:EditIssue}}" >
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:IssueEditor}}" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource FontAwesome}" Text="&#xf00d;" Margin="0,0,6,0" VerticalAlignment="Center" />
                     <TextBlock Text="Cancel" VerticalAlignment="Center" />
@@ -98,7 +99,7 @@
                 DockPanel.Dock="Right"
                 IsDefault="True" 
                 Command="{Binding Path=SaveCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:EditIssue}}" >
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=view:IssueEditor}}" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource FontAwesome}" Text="&#xf0c7;" Margin="0,0,6,0" VerticalAlignment="Center" />
                     <TextBlock Text="Save" VerticalAlignment="Center" />
@@ -118,4 +119,4 @@
         </TabControl>
 
     </DockPanel>
-</Window>
+</platformUi:DialogWindow>

@@ -40,8 +40,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public IssueViewModel()
         {
-            AddCommentCommand = new RelayCommand(AddComment, p => CanAddComment());
-            EditIssueCommand = new RelayCommand(EditIssue, p => CanEditIssue());
+            AddCommentCommand = new RelayCommand(p => AddComment(), p => CanAddComment());
+            EditIssueCommand = new RelayCommand(p => IssueEditor(), p => CanEditIssue());
         }
 
         public Issue Issue { get { return GitHubApi.Issue; } }
@@ -70,13 +70,10 @@ namespace Alteridem.GitHub.Extension.ViewModel
             }
         }
 
-        private void AddComment(object o)
+        private void AddComment()
         {
             var dlg = Factory.Get<IAddComment>();
-            var view = o as IWindowProvider;
-            if (view != null)
-                dlg.Owner = view.Window;
-            dlg.Show();
+            dlg.ShowModal();
         }
 
         private bool CanAddComment()
@@ -84,14 +81,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
             return GitHubApi.Issue != null;
         }
 
-        private void EditIssue(object o)
+        private void IssueEditor()
         {
             var dlg = Factory.Get<IIssueEditor>();
             dlg.SetIssue(GitHubApi.Issue);
-            var view = o as IWindowProvider;
-            if (view != null)
-                dlg.Owner = view.Window;
-            dlg.Show();
+            dlg.ShowModal();
         }
 
         private bool CanEditIssue()

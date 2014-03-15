@@ -8,9 +8,9 @@ namespace Alteridem.GitHub.Extension.Modules
     {
         public override void Load()
         {
-            Bind<ILoginView>().To<LoginDialog>();
+            Bind<ILoginView>().To<Login>();
             Bind<IAddComment>().To<AddComment>();
-            Bind<IIssueEditor>().To<EditIssue>();
+            Bind<IIssueEditor>().To<IssueEditor>();
         }
     }
 }

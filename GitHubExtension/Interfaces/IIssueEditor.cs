@@ -26,7 +26,7 @@ using Octokit;
 
 namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface IIssueEditor : IClosable, IWindow, IEnableable
+    public interface IIssueEditor : IClosable, IDialogWindow, IEnableable
     {
         /// <summary>
         /// Sets the issue to add/edit

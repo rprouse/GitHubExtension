@@ -24,26 +24,21 @@
 
 #region Using Directives
 
-using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
-using Alteridem.GitHub.Extensions;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for GiHubUserControl.xaml
+    /// Interaction logic for UserView.xaml
     /// </summary>
-    public partial class GitHubUserControl : IWindowProvider
+    public partial class UserView
     {
-        public GitHubUserControl()
+        public UserView()
         {
             InitializeComponent();
             DataContext = Factory.Get<UserViewModel>();
         }
-
-        public Window Window { get { return this.GetParentWindow(); } }
     }
 }

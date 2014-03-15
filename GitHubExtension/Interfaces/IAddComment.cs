@@ -23,7 +23,7 @@
 // **********************************************************************************
 namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface IAddComment : IWindow, IClosable
+    public interface IAddComment : IDialogWindow, IClosable
     {
     }
 }
