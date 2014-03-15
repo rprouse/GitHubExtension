@@ -26,8 +26,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
@@ -38,157 +37,16 @@ using Octokit;
 
 namespace Alteridem.GitHub.Model
 {
-    public class GitHubApi : INotifyPropertyChanged
+    public class GitHubApi : GitHubApiBase
     {
+        #region Members
+
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
-        private string _token;
         private bool _gettingIssues;
-        private User _user;
-        private RepositoryWrapper _repository;
-        private IssueFilter _filter;
-        private Label _label;
-        private Milestone _milestone;
-        private Issue _issue;
-        private string _markdown = string.Empty;
         private readonly Label _allLabels;
         private readonly Milestone _noMilestone;
         private readonly Milestone _allMilestones;
-
-        #region Public Data
-
-        public bool LoggedIn
-        {
-            get { return !string.IsNullOrWhiteSpace(Token); }
-        }
-
-        [CanBeNull]
-        public User User
-        {
-            get { return _user; }
-            private set
-            {
-                if (Equals(value, _user)) return;
-                _user = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// The currently selected repository.
-        /// </summary>
-        [CanBeNull]
-        public RepositoryWrapper Repository
-        {
-            get { return _repository; }
-            set
-            {
-                if (Equals(value, _repository)) return;
-                if (value != null)
-                    Cache.SaveRepository(value.Repository);
-                else
-                    Cache.DeleteRepository();
-                _repository = value;
-                GetRepositoryInfo();
-                OnPropertyChanged();
-            }
-        }
-
-        public Label Label
-        {
-            get { return _label; }
-            set
-            {
-                if (Equals(value, _label)) return;
-                _label = value;
-                GetIssues();
-                OnPropertyChanged();
-            }
-        }
-
-        public Milestone Milestone
-        {
-            get { return _milestone; }
-            set
-            {
-                if (Equals(value, _milestone)) return;
-                _milestone = value;
-                GetIssues();
-                OnPropertyChanged();
-            }
-        }
-
-        [NotNull]
-        public BindingList<RepositoryWrapper> Repositories { get; set; }
-
-        [NotNull]
-        public BindingList<Label> Labels { get; set; }
-
-        [NotNull]
-        public BindingList<Milestone> Milestones { get; set; }
-            
-        [NotNull]
-        public BindingList<Organization> Organizations { get; set; }
-
-        [NotNull]
-        public BindingList<Issue> Issues { get; set; }
-
-        /// <summary>
-        /// Should we fetch open, closed, assigned, etc issues
-        /// </summary>
-        public IssueFilter Filter
-        {
-            get { return _filter; }
-            set
-            {
-                if (Equals(value, _filter)) return;
-                _filter = value;
-                GetIssues();
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the markdown text for an issue.
-        /// </summary>
-        public string IssueMarkdown
-        {
-            get { return _markdown; }
-            set
-            {
-                if(Equals(value, _markdown)) return;
-                _markdown = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// The currently selected issue
-        /// </summary>
-        public Issue Issue
-        {
-            get { return _issue; }
-            set
-            {
-                if(Equals(value, _issue)) return;
-                _issue = value;
-                GetComments( _issue );
-                OnPropertyChanged();
-            }
-        }
-
-        [CanBeNull]
-        private string Token
-        {
-            get { return _token; }
-            set
-            {
-                if (Equals(value, _token)) return;
-                _token = value;
-                OnPropertyChanged();
-                OnPropertyChanged("LoggedIn");
-            }
-        }
 
         #endregion
 
@@ -196,12 +54,6 @@ namespace Alteridem.GitHub.Model
         {
             _github = github;
 
-            _filter = IssueFilter.Assigned;
-            Repositories = new BindingList<RepositoryWrapper>();
-            Organizations = new BindingList<Organization>();
-            Issues = new BindingList<Issue>();
-            Labels = new BindingList<Label>();
-            Milestones = new BindingList<Milestone>();
             _allLabels = new Label {Color = "00000000", Name = "All Labels"};
             _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
             _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
@@ -210,10 +62,17 @@ namespace Alteridem.GitHub.Model
             LoginFromCache();
         }
 
-        public void Logout()
+        #region Public API
+
+        public override async Task<bool> Login(string username, string password)
+        {
+            return await Login(new Credentials(username, password));
+        }
+
+        public override void Logout()
         {
             log.Info("Logging out of GitHub");
-            Token = string.Empty;
+            base.Logout();
             Cache.DeleteCredentials();
             User = null;
             Repositories.Clear();
@@ -221,15 +80,121 @@ namespace Alteridem.GitHub.Model
             Issues.Clear();
         }
 
+        public override async void GetIssues()
+        {
+            if (_gettingIssues)
+                return;
+
+            _gettingIssues = true;
+            Issues.Clear();
+            var wrapper = Repository;
+            if (wrapper != null && wrapper.Repository != null)
+            {
+                var repository = wrapper.Repository;
+                // TODO: Filter issues
+                var request = new RepositoryIssueRequest();
+                request.State = ItemState.Open;
+                request.Filter = IssueFilter.All;
+                if (Label != null && Label != _allLabels)
+                    request.Labels.Add(Label.Name);
+
+                if ( Milestone == _noMilestone )
+                    request.Milestone = "none";
+                else if ( Milestone == _allMilestones )
+                    request.Milestone = "*";
+                else if (Milestone != null)
+                    request.Milestone = Milestone.Number.ToString(CultureInfo.InvariantCulture);
+
+                await GetIssues(repository.Owner.Login, repository.Name, request);
+            }
+            _gettingIssues = false;
+        }
+
+        public override async void GetComments( Issue issue )
+        {
+            if (issue == null)
+                return;
+
+            IssueMarkdown = issue.Body;
+
+            if (issue.Comments == 0 || Repository == null)
+                return;
+
+            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number );
+            AppendComments(comments);
+        }
+
+        public override async void AddComment(Issue issue, string comment)
+        {
+            if (Repository == null)
+                return;
+
+            var newComment = await _github.Issue.Comment.Create( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, comment );
+
+            // Append the current comment
+            AppendComments(new []{ newComment });
+        }
+
+        public override async void CloseIssue(Issue issue, string comment)
+        {
+            if ( !string.IsNullOrWhiteSpace(comment))
+                AddComment(issue, comment);
+
+            if (Repository == null)
+                return;
+
+            var update = new IssueUpdate();
+            update.State = ItemState.Closed;
+            var updatedIssue = await _github.Issue.Update(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, update);
+            if (updatedIssue.State == ItemState.Closed)
+            {
+                Issue = null;
+                Issues.Remove(issue);
+                IssueMarkdown = string.Empty;
+            }
+        }
+
+        public override async Task<IReadOnlyList<User>> GetAssignees(Repository repository)
+        {
+            return await _github.Issue.Assignee.GetForRepository(repository.Owner.Login, repository.Name);
+        }
+
+        public override async void SaveIssue(Repository repository, NewIssue newIssue)
+        {
+            Issue issue = await _github.Issue.Create(repository.Owner.Login, repository.Name, newIssue);
+            if (issue != null && Repository != null && repository.Id == Repository.Repository.Id)
+            {
+                Issues.Insert(0, issue);
+                Issue = issue;
+            }
+        }
+
+        public override async void UpdateIssue(Repository repository, int id, IssueUpdate update)
+        {
+            Issue issueUpdate = await _github.Issue.Update(repository.Owner.Login, repository.Name, id, update);
+            if (Repository != null && repository.Id == Repository.Repository.Id)
+            {
+                foreach (var issue in Issues)
+                {
+                    if (issue.Number == issueUpdate.Number)
+                    {
+                        Issues.Remove(issue);
+                        Issues.Insert(0, issueUpdate);
+                        Issue = issueUpdate;
+                        break;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Private members
+
         private void LoginFromCache()
         {
             Cache.GetCredentials()
-                .Subscribe( async credentials => await Login(new Credentials(credentials.Logon, credentials.Password)) );
-        }
-
-        public async Task<bool> Login(string username, string password)
-        {
-            return await Login(new Credentials(username, password));
+                 .Subscribe(async credentials => await Login(new Credentials(credentials.Logon, credentials.Password)));
         }
 
         private async Task<bool> Login([NotNull] Credentials credentials)
@@ -326,14 +291,7 @@ namespace Alteridem.GitHub.Model
             Repository = Repositories.Count > 0 ? Repositories[0] : null;
         }
 
-        private void GetRepositoryInfo()
-        {
-            GetLabels();
-            GetMilestones();
-            GetIssues();
-        }
-
-        private async void GetLabels()
+        protected override async void GetLabels()
         {
             Labels.Clear();
             Label = null;
@@ -348,7 +306,7 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        private async void GetMilestones()
+        protected override async void GetMilestones()
         {
             Milestones.Clear();
             Milestone = null;
@@ -368,36 +326,6 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        public async void GetIssues()
-        {
-            if (_gettingIssues)
-                return;
-
-            _gettingIssues = true;
-            Issues.Clear();
-            var wrapper = Repository;
-            if (wrapper != null && wrapper.Repository != null)
-            {
-                var repository = wrapper.Repository;
-                // TODO: Filter issues
-                var request = new RepositoryIssueRequest();
-                request.State = ItemState.Open;
-                request.Filter = IssueFilter.All;
-                if (Label != null && Label != _allLabels)
-                    request.Labels.Add(Label.Name);
-
-                if ( Milestone == _noMilestone )
-                    request.Milestone = "none";
-                else if ( Milestone == _allMilestones )
-                    request.Milestone = "*";
-                else if (Milestone != null)
-                    request.Milestone = Milestone.Number.ToString();
-
-                await GetIssues(repository.Owner.Login, repository.Name, request);
-            }
-            _gettingIssues = false;
-        }
-
         private async Task GetIssues(string owner, string name, RepositoryIssueRequest request)
         {
             log.Info("Fetching repositories for {0}/{1}", owner, name);
@@ -415,23 +343,9 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        public async void GetComments( Issue issue )
-        {
-            if (issue == null)
-                return;
-
-            IssueMarkdown = issue.Body;
-
-            if ( issue.Comments == 0 )
-                return;
-
-            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number );
-            AppendComments(comments);
-        }
-
         private void AppendComments(IEnumerable<IssueComment> comments)
         {
-            var builder = new StringBuilder(_markdown);
+            var builder = new StringBuilder(IssueMarkdown);
             foreach (var comment in comments)
             {
                 string gravatar =
@@ -452,70 +366,6 @@ namespace Alteridem.GitHub.Model
             IssueMarkdown = builder.ToString();
         }
 
-        public async void AddComment(Issue issue, string comment)
-        {
-            var newComment = await _github.Issue.Comment.Create( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, comment );
-
-            // Append the current comment
-            AppendComments(new []{ newComment });
-        }
-
-        public async void CloseIssue(Issue issue, string comment)
-        {
-            if ( !string.IsNullOrWhiteSpace(comment))
-                AddComment(issue, comment);
-
-            var update = new IssueUpdate();
-            update.State = ItemState.Closed;
-            var updatedIssue = await _github.Issue.Update(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, update);
-            if (updatedIssue.State == ItemState.Closed)
-            {
-                Issue = null;
-                Issues.Remove(issue);
-                IssueMarkdown = string.Empty;
-            }
-        }
-
-        public async Task<IReadOnlyList<User>> GetAssignees(Repository repository)
-        {
-            return await _github.Issue.Assignee.GetForRepository(repository.Owner.Login, repository.Name);
-        }
-
-        public async void SaveIssue(Repository repository, NewIssue newIssue)
-        {
-            Issue issue = await _github.Issue.Create(repository.Owner.Login, repository.Name, newIssue);
-            if (issue != null && Repository != null && repository.Id == Repository.Repository.Id)
-            {
-                Issues.Insert(0, issue);
-                Issue = issue;
-            }
-        }
-
-        public async void UpdateIssue(Repository repository, int id, IssueUpdate update)
-        {
-            Issue issueUpdate = await _github.Issue.Update(repository.Owner.Login, repository.Name, id, update);
-            if (Repository != null && repository.Id == Repository.Repository.Id)
-            {
-                foreach (var issue in Issues)
-                {
-                    if (issue.Number == issueUpdate.Number)
-                    {
-                        Issues.Remove(issue);
-                        Issues.Insert(0, issueUpdate);
-                        Issue = issueUpdate;
-                        break;
-                    }
-                }
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CanBeNull, CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
+        #endregion
     }
 }
