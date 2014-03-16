@@ -72,10 +72,6 @@
     <Compile Include="IntegrationTest Library\DialogboxPurger.cs" />
     <Compile Include="IntegrationTest Library\NativeMethods.cs" />
     <Compile Include="IntegrationTest Library\Utils.cs" />
-    <Compile Include="SignOff-Tests\CPPProjectTests.cs" />
-    <Compile Include="SignOff-Tests\CSharpProjectTests.cs" />
-    <Compile Include="SignOff-Tests\SolutionTests.cs" />
-    <Compile Include="SignOff-Tests\VBProjectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -86,6 +82,9 @@
       <Project>{848A709C-6756-4790-BBAE-C13D1C7D496C}</Project>
       <Name>GitHubExtension</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SignOff-Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,7 +26,6 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using NLog;
-using Octokit;
 
 namespace Alteridem.GitHub.Converters
 {

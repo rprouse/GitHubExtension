@@ -15,7 +15,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Alteridem.GitHub.Extension</RootNamespace>
-    <AssemblyName>GitHubExtension</AssemblyName>
+    <AssemblyName>Alteridem.GitHub.Extension</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>

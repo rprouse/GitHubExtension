@@ -46,8 +46,7 @@ namespace GitHubExtension_IntegrationTests
                 CommandID menuItemCmd = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidNewIssue);
 
                 // Create the DialogBoxListener Thread.
-                string expectedDialogBoxText = string.Format(CultureInfo.CurrentCulture, "{0}\n\nInside {1}.MenuItemCallback()", "GitHub Extension", "AlteridemConsulting.GitHubExtension.GitHubExtensionPackage");
-                DialogBoxPurger purger = new DialogBoxPurger(NativeMethods.IDOK, expectedDialogBoxText);
+                DialogBoxPurger purger = new DialogBoxPurger(NativeMethods.IDOK, "Issue");
 
                 try
                 {
@@ -58,7 +57,7 @@ namespace GitHubExtension_IntegrationTests
                 }
                 finally
                 {
-                    Assert.IsTrue(purger.WaitForDialogThreadToTerminate(), "The dialog box has not shown");
+                    Assert.IsTrue(purger.WaitForDialogThreadToTerminate(), "The issue dialog box has not shown");
                 }
             });
         }

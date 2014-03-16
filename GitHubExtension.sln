@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubExtension", "GitHubExtension\GitHubExtension.csproj", "{848A709C-6756-4790-BBAE-C13D1C7D496C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubExtension_IntegrationTests", "GitHubExtension\GitHubExtension_IntegrationTests\GitHubExtension_IntegrationTests.csproj", "{3EEC4AE7-3A99-49B2-895B-0B3B354DB6F6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{49156AED-CE96-446A-B09C-3282E05A6F17}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
@@ -17,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		UnitTests.testsettings = UnitTests.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubExtension_UnitTests", "GitHubExtension\GitHubExtension_UnitTests\GitHubExtension_UnitTests.csproj", "{5B32EFDF-6CA7-4019-A12B-0935C7CB523C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubIssues", "GitHubIssues\GitHubIssues.csproj", "{64740CE5-68C6-4B63-B607-831BF8C205F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubExtension.Test", "GitHubExtension.Test\GitHubExtension.Test.csproj", "{CF36DB6C-FA8F-4102-B042-9BC990202DE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,18 +29,14 @@ Global
 		{848A709C-6756-4790-BBAE-C13D1C7D496C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{848A709C-6756-4790-BBAE-C13D1C7D496C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{848A709C-6756-4790-BBAE-C13D1C7D496C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EEC4AE7-3A99-49B2-895B-0B3B354DB6F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EEC4AE7-3A99-49B2-895B-0B3B354DB6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EEC4AE7-3A99-49B2-895B-0B3B354DB6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EEC4AE7-3A99-49B2-895B-0B3B354DB6F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B32EFDF-6CA7-4019-A12B-0935C7CB523C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B32EFDF-6CA7-4019-A12B-0935C7CB523C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B32EFDF-6CA7-4019-A12B-0935C7CB523C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B32EFDF-6CA7-4019-A12B-0935C7CB523C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64740CE5-68C6-4B63-B607-831BF8C205F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64740CE5-68C6-4B63-B607-831BF8C205F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64740CE5-68C6-4B63-B607-831BF8C205F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64740CE5-68C6-4B63-B607-831BF8C205F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF36DB6C-FA8F-4102-B042-9BC990202DE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF36DB6C-FA8F-4102-B042-9BC990202DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF36DB6C-FA8F-4102-B042-9BC990202DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF36DB6C-FA8F-4102-B042-9BC990202DE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

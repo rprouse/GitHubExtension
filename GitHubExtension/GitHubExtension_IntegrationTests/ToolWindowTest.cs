@@ -34,16 +34,29 @@ namespace GitHubExtension_IntegrationTests
             }
         }
 
-        /// <summary>
-        ///A test for showing the toolwindow
-        ///</summary>
         [TestMethod()]
         [HostType("VS IDE")]
-        public void ShowToolWindow()
+        public void ShowIssueListToolWindow()
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
                 CommandID toolWindowCmd = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidIssues);
+
+                TestUtils testUtils = new TestUtils();
+                testUtils.ExecuteCommand(toolWindowCmd);
+
+                Assert.IsTrue(testUtils.CanFindToolwindow(new Guid(GuidList.guidIssueListWindowPersistanceString)));
+
+            });
+        }
+
+        [TestMethod()]
+        [HostType("VS IDE")]
+        public void ShowIssueToolWindow()
+        {
+            UIThreadInvoker.Invoke((ThreadInvoker)delegate()
+            {
+                CommandID toolWindowCmd = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidIssueWindow);
 
                 TestUtils testUtils = new TestUtils();
                 testUtils.ExecuteCommand(toolWindowCmd);
