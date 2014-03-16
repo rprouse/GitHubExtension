@@ -25,20 +25,71 @@
 #region Using Directives
 
 using System;
+using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Extension.Test.Mocks;
+using Alteridem.GitHub.Extension.ViewModel;
+using Alteridem.GitHub.Model;
 using NUnit.Framework;
+using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
-    [Ignore("Incomplete")]
     [TestFixture]
     public class AddCommentTest
     {
-        [Test]
-        public void TestMethod()
+        private AddCommentViewModel _viewModel;
+
+        [SetUp]
+        public void SetUp()
         {
-            
+            Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+            Factory.Rebind<IAddComment>().To<AddCommentMock>();
+            _viewModel = Factory.Get<AddCommentViewModel>();
+        }
+
+        [Test]
+        public void TestCanCloseIssue()
+        {
+            Assert.That(_viewModel.CanCloseIssue(), Is.True);
+        }
+
+        [Test]
+        public void TestCanCommentOnIssue()
+        {
+            _viewModel.Comment = "";
+            Assert.That(_viewModel.CanCommentOnIssue(), Is.False);
+            _viewModel.Comment = "comment";
+            Assert.That(_viewModel.CanCommentOnIssue(), Is.True);
+        }
+
+        [Test]
+        public void TestCommentOnIssue()
+        {
+            var dlg = Factory.Get<IAddComment>();
+            var api = Factory.Get<GitHubApiBase>();
+            api.IssueMarkdown = "Issue body";
+
+            _viewModel.Comment = "TestCommentOnIssue";
+            _viewModel.OnCommentOnIssue(dlg);
+
+            Assert.That(api.IssueMarkdown, Contains.Substring("TestCommentOnIssue"));
+        }
+
+        [Test]
+        public void TestCloseIssue()
+        {
+            var dlg = Factory.Get<IAddComment>();
+            var api = Factory.Get<GitHubApiBase>();
+            api.Issue.State = ItemState.Open;
+            api.IssueMarkdown = "Issue body";
+
+            _viewModel.Comment = "TestCommentOnIssue";
+            _viewModel.OnCloseIssue(dlg);
+
+            Assert.That(api.Issue.State, Is.EqualTo(ItemState.Closed));
+            Assert.That(api.IssueMarkdown, Contains.Substring("TestCommentOnIssue"));
         }
     }
 }

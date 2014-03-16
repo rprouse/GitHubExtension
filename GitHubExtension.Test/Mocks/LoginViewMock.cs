@@ -22,20 +22,24 @@
 // 
 // **********************************************************************************
 
-using System.Reflection;
-using Alteridem.GitHub.Extension.ViewModel;
-using NUnit.Framework;
+using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Model;
 
-namespace Alteridem.GitHub.Extension.Test
+namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    [SetUpFixture]
-    public class AssemblySetup
+    public class LoginViewMock : ILoginView
     {
-        [SetUp]
-        public void SetUp()
+        public bool? ShowModal()
         {
-            Factory.AddAssembly(Assembly.GetAssembly(typeof(BaseViewModel)));
-            Factory.AddAssembly(Assembly.GetExecutingAssembly());
+            var api = Factory.Get<GitHubApiBase>();
+            api.Login("user", "pass");
+            return true;
         }
+
+        public void Close()
+        {
+        }
+
+        public bool IsEnabled { get; set; }
     }
 }

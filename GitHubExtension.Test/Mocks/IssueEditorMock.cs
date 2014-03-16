@@ -4,7 +4,7 @@ using Octokit;
 
 namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public class IssueEditor : IIssueEditor
+    public class IssueEditorMock : IIssueEditor
     {
         private Issue _issue;
 
@@ -31,7 +31,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
         /// <param name="issue">The issue.</param>
         public void SetIssue(Issue issue)
         {
-            _issue = issue;
+            _issue = issue ?? new Issue();
         }
     }
 }

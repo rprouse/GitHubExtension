@@ -46,7 +46,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         public void SetUp()
         {
             Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
-            Factory.Rebind<ILoginView>().To<LoginView>();
+            Factory.Rebind<ILoginView>().To<LoginViewMock>();
             _viewModel = Factory.Get<LoginViewModel>();
         }
 

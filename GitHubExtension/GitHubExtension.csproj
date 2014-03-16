@@ -187,6 +187,7 @@
     <Compile Include="IssueListToolWindow.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IssueToolWindow.cs" />
+    <Compile Include="Modules\ViewModelModule.cs" />
     <Compile Include="Modules\ViewModule.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>

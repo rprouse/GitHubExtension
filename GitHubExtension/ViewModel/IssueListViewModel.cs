@@ -107,14 +107,14 @@ namespace Alteridem.GitHub.Extension.ViewModel
             return true;
         }
 
-        private void AddIssue()
+        public void AddIssue()
         {
             var add = Factory.Get<IIssueEditor>();
             add.SetIssue(null);
             add.ShowModal();
         }
 
-        private bool CanAddIssue()
+        public bool CanAddIssue()
         {
             return Repository != null;
         }

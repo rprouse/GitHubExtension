@@ -23,23 +23,19 @@
 // **********************************************************************************
 
 using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Model;
+using Alteridem.GitHub.Extension.ViewModel;
+using Ninject.Modules;
 
-namespace Alteridem.GitHub.Extension.Test.Mocks
+namespace Alteridem.GitHub.Extension.Modules
 {
-    public class LoginView : ILoginView
+    public class ViewModelModule : NinjectModule
     {
-        public bool? ShowModal()
+        /// <summary>
+        /// Loads the module into the kernel.
+        /// </summary>
+        public override void Load()
         {
-            var api = Factory.Get<GitHubApiBase>();
-            api.Login("user", "pass");
-            return true;
+            Bind<IGravatar>().To<GravatarViewModel>();
         }
-
-        public void Close()
-        {
-        }
-
-        public bool IsEnabled { get; set; }
     }
 }

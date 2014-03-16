@@ -3,7 +3,7 @@ using Alteridem.GitHub.Model;
 
 namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public class AddComment : IAddComment
+    public class AddCommentMock : IAddComment
     {
         public bool? ShowModal()
         {

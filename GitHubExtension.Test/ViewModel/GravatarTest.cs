@@ -25,20 +25,63 @@
 #region Using Directives
 
 using System;
+using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Extension.Test.Mocks;
+using Alteridem.GitHub.Extension.ViewModel;
+using Alteridem.GitHub.Model;
 using NUnit.Framework;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
-    [Ignore("Incomplete")]
     [TestFixture]
     public class GravatarTest
     {
-        [Test]
-        public void TestMethod()
+        private IGravatar _viewModel;
+
+        [SetUp]
+        public void SetUp()
         {
-            
+            Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+            _viewModel = Factory.Get<IGravatar>();
+        }
+
+        [Test]
+        public void TestGravatarUrlIsEmptyIfSizeIsLessThanOrEqualToZero()
+        {
+            _viewModel.GravatarId = "gravatar_id";
+            _viewModel.Size = 0;
+
+            Assert.That(_viewModel.GravatarUrl, Is.Empty);
+        }
+
+        [Test]
+        public void TestGravatarUrlIsEmptyIfSizeIsNaN()
+        {
+            _viewModel.GravatarId = "gravatar_id";
+            _viewModel.Size = double.NaN;
+
+            Assert.That(_viewModel.GravatarUrl, Is.Empty);
+        }
+
+        [Test]
+        public void TestGravatarUrlIsEmptyIfGravatarIdIsEmpty()
+        {
+            _viewModel.GravatarId = "";
+            _viewModel.Size = 20;
+
+            Assert.That(_viewModel.GravatarUrl, Is.Empty);
+        }
+
+        [Test]
+        public void TestGravatarUrlContainsSizeAndGravatarId()
+        {
+            _viewModel.GravatarId = "gravatar_id";
+            _viewModel.Size = 20;
+
+            Assert.That(_viewModel.GravatarUrl, Contains.Substring("gravatar_id"));
+            Assert.That(_viewModel.GravatarUrl, Contains.Substring("20"));
         }
     }
 }

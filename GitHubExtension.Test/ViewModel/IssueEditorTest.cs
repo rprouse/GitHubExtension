@@ -25,20 +25,66 @@
 #region Using Directives
 
 using System;
+using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Extension.Test.Mocks;
+using Alteridem.GitHub.Extension.View;
+using Alteridem.GitHub.Extension.ViewModel;
+using Alteridem.GitHub.Model;
 using NUnit.Framework;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
-    [Ignore("Incomplete")]
     [TestFixture]
     public class IssueEditorTest
     {
-        [Test]
-        public void TestMethod()
+        [SetUp]
+        public void SetUp()
         {
-            
+            Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+        }
+
+        [Test]
+        public void TestCanSave()
+        {
+            var viewModel = Factory.Get<IssueEditorViewModel>();
+            viewModel.SetIssue(null);
+
+            Assert.That(viewModel.CanSave(), Is.False);
+            viewModel.Title = "title";
+            Assert.That(viewModel.CanSave(), Is.True);
+        }
+
+        [Test]
+        public void TestAddNewIssue()
+        {
+            var viewModel = Factory.Get<IssueEditorViewModel>();
+            viewModel.SetIssue(null);
+
+            viewModel.Title = "TestAddNewIssue";
+            viewModel.Save(null);
+
+            var api = Factory.Get<GitHubApiBase>();
+            Assert.That(api.Issue, Is.Not.Null);
+            Assert.That(api.Issue.Title, Is.EqualTo("TestAddNewIssue"));
+            Assert.That(api.Issue.Number, Is.EqualTo(69));
+        }
+
+        [Test]
+        public void TestUpdateIssue()
+        {
+            var api = Factory.Get<GitHubApiBase>();
+            int number = api.Issue.Number;
+            var viewModel = Factory.Get<IssueEditorViewModel>();
+            viewModel.SetIssue(api.Issue);
+
+            viewModel.Title = "TestUpdateIssue";
+            viewModel.Save(null);
+
+            Assert.That(api.Issue, Is.Not.Null);
+            Assert.That(api.Issue.Title, Is.EqualTo("TestUpdateIssue"));
+            Assert.That(api.Issue.Number, Is.EqualTo(number));
         }
     }
 }

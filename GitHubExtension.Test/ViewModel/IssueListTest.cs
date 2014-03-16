@@ -25,20 +25,52 @@
 #region Using Directives
 
 using System;
+using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Extension.Test.Mocks;
+using Alteridem.GitHub.Extension.ViewModel;
+using Alteridem.GitHub.Model;
 using NUnit.Framework;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
-    [Ignore("Incomplete")]
     [TestFixture]
     public class IssueListTest
     {
-        [Test]
-        public void TestMethod()
+        private IssueListViewModel _viewModel;
+
+        [SetUp]
+        public void SetUp()
         {
-            
+            Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+            Factory.Rebind<IIssueEditor>().To<IssueEditorMock>();
+            _viewModel = Factory.Get<IssueListViewModel>();
+        }
+
+        [Test]
+        public void CanAddIssueTest()
+        {
+            var save = _viewModel.Repository;
+            _viewModel.Repository = null;
+            Assert.That(_viewModel.CanAddIssue(), Is.False);
+
+            _viewModel.Repository = save;
+            Assert.That(_viewModel.CanAddIssue(), Is.True);
+        }
+
+        [Test]
+        public void AddIssueTest()
+        {
+            Assert.That(_viewModel.Issue, Is.Not.Null);
+            Assert.That(_viewModel.Issue.Title, Is.Not.EqualTo("new title"));
+            Assert.That(_viewModel.Issue.Body, Is.Not.EqualTo("new body"));
+
+            _viewModel.AddIssue();
+
+            Assert.That(_viewModel.Issue, Is.Not.Null);
+            Assert.That(_viewModel.Issue.Title, Is.EqualTo("new title"));
+            Assert.That(_viewModel.Issue.Body, Is.EqualTo("new body"));
         }
     }
 }

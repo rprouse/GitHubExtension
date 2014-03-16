@@ -66,7 +66,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public ICommand CloseIssueCommand { get; private set; }
         public ICommand CommentCommand { get; private set; }
 
-        private void OnCloseIssue(object o)
+        public void OnCloseIssue(object o)
         {
             GitHubApi.CloseIssue(GitHubApi.Issue, Comment);
             var closable = o as IClosable;
@@ -74,12 +74,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
                 closable.Close();
         }
 
-        private bool CanCloseIssue()
+        public bool CanCloseIssue()
         {
             return _issue != null;
         }
 
-        private void OnCommentOnIssue(object o)
+        public void OnCommentOnIssue(object o)
         {
             GitHubApi.AddComment(GitHubApi.Issue, Comment);
             var closable = o as IClosable;
@@ -87,7 +87,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
                 closable.Close();
         }
 
-        private bool CanCommentOnIssue()
+        public bool CanCommentOnIssue()
         {
             return _issue != null && !string.IsNullOrWhiteSpace(Comment);
         }

@@ -37,7 +37,7 @@ namespace Alteridem.GitHub.Extension.Test.Modules
         public override void Load()
         {
             //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
-            //Rebind<ILoginView>().To<LoginView>();
+            //Rebind<ILoginView>().To<LoginViewMock>();
         }
     }
 }

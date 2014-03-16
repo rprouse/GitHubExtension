@@ -47,7 +47,7 @@ namespace Alteridem.GitHub.Extension.View
         public Gravatar()
         {
             InitializeComponent();
-            _gravatar = new GravatarViewModel();
+            _gravatar = Factory.Get<IGravatar>();
             Avatar.DataContext = _gravatar;
         }
 

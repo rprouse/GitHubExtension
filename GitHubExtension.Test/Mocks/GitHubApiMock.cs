@@ -120,22 +120,31 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
 
         public override void UpdateIssue(Repository repository, int id, IssueUpdate update)
         {
-            throw new System.NotImplementedException();
+            Issue.Title = update.Title;
+            Issue.Body = update.Body;
         }
 
         public override void SaveIssue(Repository repository, NewIssue newIssue)
         {
-            throw new System.NotImplementedException();
+            var issue = new Issue
+            {
+                Number = 69,
+                Title = newIssue.Title,
+                Body = newIssue.Body
+            };
+            Issue = issue;
+            Issues.Add(issue);
         }
 
         public override Task<IReadOnlyList<User>> GetAssignees(Repository repository)
         {
-            throw new System.NotImplementedException();
+            return new Task<IReadOnlyList<User>>(null);
         }
 
         public override void CloseIssue(Issue issue, string comment)
         {
-            throw new System.NotImplementedException();
+            AddComment(issue, comment);
+            issue.State = ItemState.Closed;
         }
 
         public override void AddComment(Issue issue, string comment)
