@@ -31,6 +31,7 @@ using NUnit.Framework;
 
 namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
+    [Ignore("Incomplete")]
     [TestFixture]
     public class AddCommentTest
     {
