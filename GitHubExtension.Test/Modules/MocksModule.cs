@@ -22,6 +22,7 @@
 // 
 // **********************************************************************************
 
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.Test.Mocks;
 using Alteridem.GitHub.Model;
 using Ninject.Modules;
@@ -35,7 +36,8 @@ namespace Alteridem.GitHub.Extension.Test.Modules
         /// </summary>
         public override void Load()
         {
-            Rebind<GitHubApiBase>().To<GitHubApiMock>().InTransientScope();
+            //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
+            //Rebind<ILoginView>().To<LoginView>();
         }
     }
 }

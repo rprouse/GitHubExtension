@@ -22,43 +22,24 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Model;
 
-#endregion
-
-namespace Alteridem.GitHub.Extension.ViewModel
+namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class LoginView : ILoginView
     {
-        public BaseViewModel()
+        public bool? ShowModal()
         {
-            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
+            var api = Factory.Get<GitHubApiBase>();
+            api.Login("user", "pass");
+            return true;
         }
 
-        [NotNull]
-        internal GitHubApiBase GitHubApi
+        public void Close()
         {
-            get { return Factory.Get<GitHubApiBase>(); }
         }
 
-        private void GitHubApiPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // Our properties are named the same, so just chain them
-            OnPropertyChanged(e.PropertyName);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public bool IsEnabled { get; set; }
     }
 }

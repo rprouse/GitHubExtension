@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Model;
+using NUnit.Framework;
 using Octokit;
 
 namespace Alteridem.GitHub.Extension.Test.Mocks
@@ -35,7 +36,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
         public GitHubApiMock()
         {
             // Log in
-            Token = "loggedin";
+            Login("test", "test");
 
             // Set up a repository
             var repository = new Repository
@@ -63,12 +64,33 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
         public override Task<bool> Login(string username, string password)
         {
             Token = username + password;
+            User = new User
+            {
+                Login = username,
+                Name = username,
+                GravatarId = "slkdfjlksfdjsdf"
+            };
             return new Task<bool>(() => true);
         }
 
         public override void GetIssues()
         {
-            throw new System.NotImplementedException();
+            var issue = new Issue
+            {
+                Body = "##body##",
+                Number = 1,
+                State = ItemState.Open,
+                Title = "title",
+                User = new User
+                {
+                    Login = "user",
+                    Name = "name",
+                    GravatarId = "slkdfjlksfdjsdf"
+                }
+            };
+            Issue = issue;
+            IssueMarkdown = issue.Body;
+            Issues.Add(issue);
         }
 
         protected override void GetLabels()
@@ -118,12 +140,12 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
 
         public override void AddComment(Issue issue, string comment)
         {
-            throw new System.NotImplementedException();
+            IssueMarkdown += comment;
         }
 
         public override void GetComments(Issue issue)
         {
-            throw new System.NotImplementedException();
+            IssueMarkdown += "\r\nComment";
         }
     }
 }

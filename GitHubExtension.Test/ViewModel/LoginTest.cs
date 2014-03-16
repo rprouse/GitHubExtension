@@ -24,41 +24,52 @@
 
 #region Using Directives
 
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Alteridem.GitHub.Annotations;
+using System;
+using System.Windows.Controls;
+using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Extension.Test.Mocks;
+using Alteridem.GitHub.Extension.ViewModel;
 using Alteridem.GitHub.Model;
+using NUnit.Framework;
 
 #endregion
 
-namespace Alteridem.GitHub.Extension.ViewModel
+namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    [TestFixture]
+    [RequiresSTA]
+    public class LoginTest
     {
-        public BaseViewModel()
+        private LoginViewModel _viewModel;
+
+        [SetUp]
+        public void SetUp()
         {
-            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
+            Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+            Factory.Rebind<ILoginView>().To<LoginView>();
+            _viewModel = Factory.Get<LoginViewModel>();
         }
 
-        [NotNull]
-        internal GitHubApiBase GitHubApi
+        [Test]
+        public void TestCanLogon()
         {
-            get { return Factory.Get<GitHubApiBase>(); }
+            _viewModel.Username = "";
+            Assert.That(_viewModel.CanLogon(), Is.False);
+            _viewModel.Username = "user";
+            Assert.That(_viewModel.CanLogon(), Is.True);
         }
 
-        private void GitHubApiPropertyChanged(object sender, PropertyChangedEventArgs e)
+        [Test]
+        public void TestLogon()
         {
-            // Our properties are named the same, so just chain them
-            OnPropertyChanged(e.PropertyName);
-        }
+            var api = Factory.Get<GitHubApiBase>();
+            api.Logout();
+            Assert.That(api.LoggedIn, Is.False);
 
-        public event PropertyChangedEventHandler PropertyChanged;
+            _viewModel.Username = "user";
+            _viewModel.Logon(new PasswordBox());
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            Assert.That(api.LoggedIn, Is.True);
         }
     }
 }

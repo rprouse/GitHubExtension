@@ -80,12 +80,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
             }
         }
 
-        private bool CanLogon()
+        public bool CanLogon()
         {
             return !string.IsNullOrWhiteSpace(Username);
         }
 
-        private async void Logon(object parameter)
+        public async void Logon(object parameter)
         {
             Message = "Logging in...";
             // This breaks MVVM, but you can't bind to the password in a password

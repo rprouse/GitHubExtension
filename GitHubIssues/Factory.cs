@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Ninject;
 using Ninject.Parameters;
+using Ninject.Syntax;
 
 namespace Alteridem.GitHub
 {
@@ -31,6 +32,16 @@ namespace Alteridem.GitHub
         public static T Get<T>(params IParameter[] parameters)
         {
             return _kernel.Get<T>(parameters);
+        }
+
+        public static IBindingToSyntax<T> Bind<T>()
+        {
+            return _kernel.Bind<T>();
+        }
+
+        public static IBindingToSyntax<T> Rebind<T>()
+        {
+            return _kernel.Rebind<T>();
         }
     }
 }

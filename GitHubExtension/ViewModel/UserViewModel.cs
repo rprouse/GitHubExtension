@@ -65,7 +65,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             get { return GitHubApi.LoggedIn; }
         }
 
-        private void Login()
+        public void Login()
         {
             if (GitHubApi.LoggedIn)
             {

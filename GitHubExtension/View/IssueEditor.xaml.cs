@@ -34,7 +34,7 @@ using Octokit;
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for IssueEditor.xaml
+    /// Interaction logic for EditIssue.xaml
     /// </summary>
     public partial class IssueEditor : IIssueEditor
     {

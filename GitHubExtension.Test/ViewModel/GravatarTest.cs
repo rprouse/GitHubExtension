@@ -24,41 +24,20 @@
 
 #region Using Directives
 
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Model;
+using System;
+using NUnit.Framework;
 
 #endregion
 
-namespace Alteridem.GitHub.Extension.ViewModel
+namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    [TestFixture]
+    public class GravatarTest
     {
-        public BaseViewModel()
+        [Test]
+        public void TestMethod()
         {
-            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
-        }
-
-        [NotNull]
-        internal GitHubApiBase GitHubApi
-        {
-            get { return Factory.Get<GitHubApiBase>(); }
-        }
-
-        private void GitHubApiPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // Our properties are named the same, so just chain them
-            OnPropertyChanged(e.PropertyName);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            
         }
     }
 }
