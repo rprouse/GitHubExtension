@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="Alteridem.GitHub.Extension.View.Gravatar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModel:GravatarViewModel}"
+             d:DesignHeight="32" d:DesignWidth="32">
+    <Rectangle x:Name="Avatar" RadiusX="4" RadiusY="4" Width="{Binding Path=Size}" Height="{Binding Path=Size}" >
+        <Rectangle.Fill>
+            <ImageBrush ImageSource="{Binding Path=GravatarUrl}"></ImageBrush>
+        </Rectangle.Fill>
+    </Rectangle>
+</UserControl>

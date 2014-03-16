@@ -32,6 +32,7 @@ using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Model;
 using Microsoft.VisualStudio.Shell;
 using Octokit;
+using Issue = Octokit.Issue;
 
 #endregion
 

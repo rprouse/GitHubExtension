@@ -22,76 +22,54 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
-using System.Windows.Input;
+using System;
 using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.View;
-using Octokit;
-using Issue = Octokit.Issue;
-
-#endregion
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class IssueViewModel : BaseViewModel
+    public class GravatarViewModel : BaseViewModel, IGravatar
     {
-        private ICommand _addCommentCommand;
-        private ICommand _editIssueCommand;
+        private string _gravatarId;
+        private double _size;
 
-        public IssueViewModel()
+        public double Size
         {
-            AddCommentCommand = new RelayCommand(p => AddComment(), p => CanAddComment());
-            EditIssueCommand = new RelayCommand(p => IssueEditor(), p => CanEditIssue());
-        }
-
-        public Issue Issue { get { return GitHubApi.Issue; } }
-
-        public string IssueMarkdown { get { return GitHubApi.IssueMarkdown; } }
-
-        public ICommand AddCommentCommand
-        {
-            get { return _addCommentCommand; }
-            private set
-            {
-                if (Equals(value, _addCommentCommand)) return;
-                _addCommentCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand EditIssueCommand
-        {
-            get { return _editIssueCommand; }
+            get { return _size; }
             set
             {
-                if (Equals(value, _editIssueCommand)) return;
-                _editIssueCommand = value;
+                _size = value;
                 OnPropertyChanged();
+                if ( _size > 0 && !Double.IsNaN(_size) )
+                    OnPropertyChanged("GravatarUrl");
             }
         }
 
-        private void AddComment()
+        public string GravatarId
         {
-            var dlg = Factory.Get<IAddComment>();
-            dlg.ShowModal();
+            get { return _gravatarId; }
+            set
+            {
+                if (value == _gravatarId) return;
+                _gravatarId = value;
+                OnPropertyChanged();
+                OnPropertyChanged("GravatarUrl");
+            }
         }
 
-        private bool CanAddComment()
+        public string GravatarUrl
         {
-            return GitHubApi.Issue != null;
-        }
+            get
+            {
+                if (string.IsNullOrWhiteSpace(GravatarId) || Size <= 0 || Double.IsNaN(Size) )
+                    return string.Empty;
 
-        private void IssueEditor()
-        {
-            var dlg = Factory.Get<IIssueEditor>();
-            dlg.SetIssue(GitHubApi.Issue);
-            dlg.ShowModal();
-        }
-
-        private bool CanEditIssue()
-        {
-            return GitHubApi.Issue != null;
+                string gravatar =
+                    string.Format(
+                        "https://www.gravatar.com/avatar/{0}?s={1}&r=x",
+                        GravatarId,
+                        Size);
+                return gravatar;
+            }
         }
     }
 }

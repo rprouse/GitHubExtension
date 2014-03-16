@@ -16,11 +16,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Rectangle RadiusX="4" RadiusY="4" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6,6,3,6">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="{Binding User.AvatarUrl}"></ImageBrush>
-            </Rectangle.Fill>
-        </Rectangle>
+        <view:Gravatar GravatarId="{Binding User.GravatarId, Mode=OneWay}" Size="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6,6,3,6" />
         <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,0,3,6" FontSize="14" Text="{Binding User.Login}" />
         <Button x:Name="LoginOut" 
                 VerticalAlignment="Center" 

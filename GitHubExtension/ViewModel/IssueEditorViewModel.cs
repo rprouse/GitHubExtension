@@ -33,6 +33,7 @@ using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Octokit;
+using Issue = Octokit.Issue;
 
 #endregion
 

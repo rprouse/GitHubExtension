@@ -24,38 +24,21 @@
 
 #region Using Directives
 
-using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
-using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for IssueEditor.xaml
+    /// Interaction logic for Issue.xaml
     /// </summary>
-    public partial class IssueEditor : IIssueEditor
+    public partial class Issue
     {
-        private readonly IssueEditorViewModel _viewModel;
-
-        public IssueEditor()
+        public Issue()
         {
             InitializeComponent();
-            _viewModel = Factory.Get<IssueEditorViewModel>();
-            DataContext = _viewModel;
-        }
-
-        public Window Window { get { return this; } }
-
-        /// <summary>
-        /// Sets the issue to add/edit. If null, we are adding, if set, we edit
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        public void SetIssue(Octokit.Issue issue)
-        {
-            _viewModel.SetIssue(issue);
+            DataContext = Factory.Get<IssueViewModel>();
         }
     }
 }

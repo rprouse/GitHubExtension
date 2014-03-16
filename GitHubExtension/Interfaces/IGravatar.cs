@@ -21,24 +21,12 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 // **********************************************************************************
-
-#region Using Directives
-
-using Alteridem.GitHub.Extension.ViewModel;
-
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.Interfaces
 {
-    /// <summary>
-    /// Interaction logic for IssueControl.xaml
-    /// </summary>
-    public partial class IssueControl
+    public interface IGravatar
     {
-        public IssueControl()
-        {
-            InitializeComponent();
-            DataContext = Factory.Get<IssueViewModel>();
-        }
+        double Size { get; set; }
+        string GravatarId { get; set; }
+        string GravatarUrl { get; }
     }
 }

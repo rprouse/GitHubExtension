@@ -24,38 +24,69 @@
 
 #region Using Directives
 
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
+using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.ViewModel;
-using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for IssueEditor.xaml
+    /// Interaction logic for Gravatar.xaml
     /// </summary>
-    public partial class IssueEditor : IIssueEditor
+    public partial class Gravatar
     {
-        private readonly IssueEditorViewModel _viewModel;
+        private readonly IGravatar _gravatar;
 
-        public IssueEditor()
+        public Gravatar()
         {
             InitializeComponent();
-            _viewModel = Factory.Get<IssueEditorViewModel>();
-            DataContext = _viewModel;
+            _gravatar = new GravatarViewModel();
+            Avatar.DataContext = _gravatar;
         }
 
-        public Window Window { get { return this; } }
-
-        /// <summary>
-        /// Sets the issue to add/edit. If null, we are adding, if set, we edit
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        public void SetIssue(Octokit.Issue issue)
+        internal IGravatar GravatarViewModel
         {
-            _viewModel.SetIssue(issue);
+            get { return _gravatar; }
+        }
+
+        public double Size
+        {
+            get { return _gravatar.Size; }
+            set
+            {
+                _gravatar.Size = value;
+                Width = value;
+                Height = value;
+            }
+        }
+
+        public string GravatarId
+        {
+            get { return GetValue(GravatarIdProperty) as string; }
+            set { SetValue(GravatarIdProperty, value); }
+        }
+
+        public static readonly DependencyProperty GravatarIdProperty =
+            DependencyProperty.Register(
+                "GravatarId",
+                typeof (string),
+                typeof (Gravatar),
+                new FrameworkPropertyMetadata(OnGravatarIdChanged));
+
+        private static void OnGravatarIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var gravatar = d as Gravatar;
+            if (gravatar == null || gravatar.GravatarViewModel == null)
+                return;
+
+            gravatar.GravatarViewModel.GravatarId = e.NewValue as string;
         }
     }
 }
