@@ -158,3 +158,5 @@ $RECYCLE.BIN/
 #Nuget Packages
 packages/
 !packages/repositories.config
+
+GitHubExtension/ViewModel/LocalMachine/
