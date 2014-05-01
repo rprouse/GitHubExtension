@@ -18,3 +18,17 @@ I am just about ready for an alpha release. If you would like to try out the ext
 
 - Bug Icon by [David Vignoni](http://www.icon-king.com/) (LGPL)
 - Button and application images by [Font Awesome](http://fortawesome.github.io/Font-Awesome/) ([SIL OFL 1.1](http://scripts.sil.org/OFL))
+
+## Screenshots ##
+
+### Login Window ###
+
+![Login](http://i.imgur.com/1kmTNER.png)
+
+### Issue List ###
+
+![Issue List](http://i.imgur.com/jmVsdcR.png)
+
+### Issue Window ###
+
+![Issue Window](http://i.imgur.com/qKAGjGs.png)
