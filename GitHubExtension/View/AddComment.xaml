@@ -16,7 +16,7 @@
     <platformUi:DialogWindow.Resources>
         <converters:MarkdownConverter x:Key="MarkdownConverter" />
         <Style x:Key="FontAwesome">
-            <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
+            <Setter Property="TextElement.FontFamily" Value="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome" />
         </Style>
     </platformUi:DialogWindow.Resources>
     <Grid>

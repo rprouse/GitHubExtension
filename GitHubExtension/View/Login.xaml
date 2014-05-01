@@ -18,7 +18,7 @@
         d:DataContext="{d:DesignInstance viewModel:LoginViewModel}" >
     <platformUi:DialogWindow.Resources>
         <Style x:Key="FontAwesome">
-            <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
+            <Setter Property="TextElement.FontFamily" Value="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome" />
         </Style>
     </platformUi:DialogWindow.Resources>
     <Border Background="White" CornerRadius="12">

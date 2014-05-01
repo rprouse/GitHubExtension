@@ -86,7 +86,7 @@
             <Button 
                 Command="{Binding Path=RefreshCommand}"
                 Content="&#xf021;"
-                FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
+                FontFamily="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome"
                 FontSize="14" 
                 Width="26" Height="26" 
                 Margin="3,6" 
@@ -96,7 +96,7 @@
             <Button 
                 Command="{Binding Path=AddIssueCommand}"
                 Content="&#xf067;"
-                FontFamily="/GitHubExtension;Component/Fonts/#FontAwesome"
+                FontFamily="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome"
                 FontSize="14" 
                 Width="26" Height="26" 
                 Margin="3,6" 

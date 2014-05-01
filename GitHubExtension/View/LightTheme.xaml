@@ -18,7 +18,7 @@
     </DataTemplate>
     
     <Style x:Key="FontAwesome">
-        <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
+        <Setter Property="TextElement.FontFamily" Value="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome" />
     </Style>
     
     <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">

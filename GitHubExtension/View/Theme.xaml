@@ -6,7 +6,7 @@
     <converters:StringToColorConverter x:Key="ColorConverter" />
     <converters:MarkdownConverter x:Key="MarkdownConverter" />
     <Style x:Key="FontAwesome">
-        <Setter Property="TextElement.FontFamily" Value="/GitHubExtension;Component/Fonts/#FontAwesome" />
+        <Setter Property="TextElement.FontFamily" Value="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome" />
     </Style>
 
     <Style x:Key="FocusVisualStyle" TargetType="{x:Type Control}">
