@@ -13,7 +13,7 @@ namespace Alteridem.GitHub.Modules
                 .WithConstructorArgument("productInformation", c => new ProductHeaderValue("GitHubExtension"));
 
 
-            Bind<GitHubApi>()
+            Bind<GitHubApiBase>()
                 .To<GitHubApi>()
                 .InSingletonScope();
         }

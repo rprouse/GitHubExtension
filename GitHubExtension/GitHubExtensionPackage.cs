@@ -74,7 +74,6 @@ namespace Alteridem.GitHub.Extension
         public GitHubExtensionPackage()
         {
             Factory.AddAssembly(Assembly.GetExecutingAssembly());
-            Cache.ApplicationName = "GitHubExtension";
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this));
             
             var container = this as IServiceContainer;
@@ -168,6 +167,17 @@ namespace Alteridem.GitHub.Extension
                 mcs.AddCommand(menuIssueWin);
             }
         }
+
+        /// <summary>
+        /// Releases the resources used by the <see cref="T:Microsoft.VisualStudio.Shell.Package"/> object.
+        /// </summary>
+        /// <param name="disposing">true if the object is being disposed, false if it is being finalized.</param>
+        protected override void Dispose(bool disposing)
+        {
+            Cache.Save();
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         /// <summary>

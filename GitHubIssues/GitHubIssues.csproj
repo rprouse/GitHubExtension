@@ -100,19 +100,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Akavache\JsonSerializationMixin.cs" />
     <Compile Include="Model\Cache.cs" />
-    <Compile Include="Akavache\BlobCache.cs" />
-    <Compile Include="Akavache\CacheIndexEntry.cs" />
-    <Compile Include="Akavache\EncryptedBlobCache.cs" />
-    <Compile Include="Akavache\IBlobCache.cs" />
-    <Compile Include="Akavache\IFilesystemProvider.cs" />
-    <Compile Include="Akavache\MD5.cs" />
-    <Compile Include="Akavache\MD5Managed.cs" />
-    <Compile Include="Akavache\MemoizingMRUCache.cs" />
-    <Compile Include="Akavache\PersistentBlobCache.cs" />
-    <Compile Include="Akavache\SimpleFilesystemProvider.cs" />
-    <Compile Include="Akavache\Utility.cs" />
     <Compile Include="Converters\MarkdownConverter.cs" />
     <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
@@ -123,7 +111,6 @@
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />
-    <Compile Include="Modules\CacheModule.cs" />
     <Compile Include="Modules\GitHubModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
   </ItemGroup>
@@ -158,9 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GitHub.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Akavache\Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

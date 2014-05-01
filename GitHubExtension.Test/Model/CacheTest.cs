@@ -25,39 +25,37 @@
 #region Using Directives
 
 using System;
-using NLog;
-using Octokit;
+using Alteridem.GitHub.Model;
+using NUnit.Framework;
 
 #endregion
 
-namespace Alteridem.GitHub.Model
+namespace Alteridem.GitHub.Extension.Test.Model
 {
-    public static class Cache
+    [TestFixture]
+    public class CacheTest
     {
-        public static CredentialCache Credentials
+        [Test]
+        public void TestRepository()
         {
-            get
-            {
-                string cached = Properties.Settings.Default.Credentials;
-                return CredentialCache.FromString(cached);
-            }
-            set { Properties.Settings.Default.Credentials = value != null ? value.ToString() : null; }
+            Cache.Repository = 0;
+            Assert.That(Cache.Repository, Is.EqualTo(0));
+
+            Cache.Repository = 2;
+            Assert.That(Cache.Repository, Is.EqualTo(2));
         }
 
-        public static int Repository
+        [Test]
+        public void TestCredentials()
         {
-            get { return Properties.Settings.Default.Repository; }
-            set { Properties.Settings.Default.Repository = value; }
-        }
+            Cache.Credentials = new CredentialCache { Logon = "user", Password = "password" };
+            var cached = Cache.Credentials;
+            Assert.That(cached, Is.Not.Null);
+            Assert.That(cached.Logon, Is.EqualTo("user"));
+            Assert.That(cached.Password, Is.EqualTo("password"));
 
-        public static void SaveCredentials(string logon, string password)
-        {
-            Credentials = new CredentialCache { Logon = logon, Password = password };
-        }
-
-        public static void Save()
-        {
-            Properties.Settings.Default.Save();
+            Cache.Credentials = null;
+            Assert.That(Cache.Credentials, Is.Null);
         }
     }
 }

@@ -59,7 +59,9 @@
     <Compile Include="Converters\StringToColorConverterTest.cs" />
     <Compile Include="Mocks\GitHubApiMock.cs" />
     <Compile Include="Mocks\LoginViewMock.cs" />
-    <Compile Include="Model\TestRepositoryWrapper.cs" />
+    <Compile Include="Model\CacheTest.cs" />
+    <Compile Include="Model\CredentialCacheTest.cs" />
+    <Compile Include="Model\RepositoryWrapperTest.cs" />
     <Compile Include="Modules\MocksModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mocks\AddCommentMock.cs" />

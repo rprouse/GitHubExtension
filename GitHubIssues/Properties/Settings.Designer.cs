@@ -22,5 +22,29 @@ namespace Alteridem.GitHub.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Credentials {
+            get {
+                return ((string)(this["Credentials"]));
+            }
+            set {
+                this["Credentials"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Repository {
+            get {
+                return ((int)(this["Repository"]));
+            }
+            set {
+                this["Repository"] = value;
+            }
+        }
     }
 }

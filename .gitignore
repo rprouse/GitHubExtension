@@ -160,3 +160,4 @@ packages/
 !packages/repositories.config
 
 GitHubExtension/ViewModel/LocalMachine/
+README.html

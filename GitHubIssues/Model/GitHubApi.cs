@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
@@ -54,7 +55,7 @@ namespace Alteridem.GitHub.Model
         {
             _github = github;
 
-            _allLabels = new Label {Color = "00000000", Name = "All Labels"};
+            _allLabels = new Label { Color = "00000000", Name = "All Labels" };
             _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
             _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
 
@@ -73,7 +74,7 @@ namespace Alteridem.GitHub.Model
         {
             log.Info("Logging out of GitHub");
             base.Logout();
-            Cache.DeleteCredentials();
+            Cache.Credentials = null;
             User = null;
             Repositories.Clear();
             Organizations.Clear();
@@ -98,9 +99,9 @@ namespace Alteridem.GitHub.Model
                 if (Label != null && Label != _allLabels)
                     request.Labels.Add(Label.Name);
 
-                if ( Milestone == _noMilestone )
+                if (Milestone == _noMilestone)
                     request.Milestone = "none";
-                else if ( Milestone == _allMilestones )
+                else if (Milestone == _allMilestones)
                     request.Milestone = "*";
                 else if (Milestone != null)
                     request.Milestone = Milestone.Number.ToString(CultureInfo.InvariantCulture);
@@ -110,7 +111,7 @@ namespace Alteridem.GitHub.Model
             _gettingIssues = false;
         }
 
-        public override async void GetComments( Issue issue )
+        public override async void GetComments(Issue issue)
         {
             if (issue == null)
                 return;
@@ -120,7 +121,7 @@ namespace Alteridem.GitHub.Model
             if (issue.Comments == 0 || Repository == null)
                 return;
 
-            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number );
+            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number);
             AppendComments(comments);
         }
 
@@ -129,15 +130,15 @@ namespace Alteridem.GitHub.Model
             if (Repository == null)
                 return;
 
-            var newComment = await _github.Issue.Comment.Create( Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, comment );
+            var newComment = await _github.Issue.Comment.Create(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, comment);
 
             // Append the current comment
-            AppendComments(new []{ newComment });
+            AppendComments(new[] { newComment });
         }
 
         public override async void CloseIssue(Issue issue, string comment)
         {
-            if ( !string.IsNullOrWhiteSpace(comment))
+            if (!string.IsNullOrWhiteSpace(comment))
                 AddComment(issue, comment);
 
             if (Repository == null)
@@ -191,10 +192,11 @@ namespace Alteridem.GitHub.Model
 
         #region Private members
 
-        private void LoginFromCache()
+        private async void LoginFromCache()
         {
-            Cache.GetCredentials()
-                 .Subscribe(async credentials => await Login(new Credentials(credentials.Logon, credentials.Password)));
+            var credentials = Cache.Credentials;
+            if ( credentials != null )
+                await Login(new Credentials(credentials.Logon, credentials.Password));
         }
 
         private async Task<bool> Login([NotNull] Credentials credentials)
@@ -275,15 +277,13 @@ namespace Alteridem.GitHub.Model
         private void OnRepositoriesComplete()
         {
             log.Info("Finished fetching organizations for current user");
-            Cache.GetRepository()
-                 .Subscribe(r =>
-                 {
-                     var wrapper = new RepositoryWrapper(r);
-                     if (Repositories.Contains(wrapper))
-                         Repository = wrapper;
-                     else
-                         SetDefaultRepository();
-                 }, ex => SetDefaultRepository());
+            int id = Cache.Repository;
+
+            var wrapper = (from r in Repositories where r.Repository.Id == id select r).FirstOrDefault();
+            if (wrapper != null)
+                Repository = wrapper;
+            else
+                SetDefaultRepository();
         }
 
         private void SetDefaultRepository()
@@ -298,7 +298,7 @@ namespace Alteridem.GitHub.Model
             if (Repository != null && Repository.Repository != null)
             {
                 var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
-                Labels.Add( _allLabels );
+                Labels.Add(_allLabels);
                 foreach (var label in labels)
                     Labels.Add(label);
 
@@ -312,8 +312,8 @@ namespace Alteridem.GitHub.Model
             Milestone = null;
             if (Repository != null && Repository.Repository != null)
             {
-                Milestones.Add( _allMilestones );
-                Milestones.Add( _noMilestone );
+                Milestones.Add(_allMilestones);
+                Milestones.Add(_noMilestone);
                 var request = new MilestoneRequest();
                 request.State = ItemState.Open;
                 request.SortProperty = MilestoneSort.DueDate;

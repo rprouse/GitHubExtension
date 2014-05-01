@@ -18,4 +18,3 @@ I am just about ready for an alpha release. If you would like to try out the ext
 
 - Bug Icon by [David Vignoni](http://www.icon-king.com/) (LGPL)
 - Button and application images by [Font Awesome](http://fortawesome.github.io/Font-Awesome/) ([SIL OFL 1.1](http://scripts.sil.org/OFL))
-- Caching by [Akavache](https://github.com/akavache/Akavache)

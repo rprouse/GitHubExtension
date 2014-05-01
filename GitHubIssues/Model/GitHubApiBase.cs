@@ -89,9 +89,9 @@ namespace Alteridem.GitHub.Model
             {
                 if (Equals(value, _repository)) return;
                 if (value != null)
-                    Cache.SaveRepository(value.Repository);
+                    Cache.Repository = value.Repository.Id; // Save
                 else
-                    Cache.DeleteRepository();
+                    Cache.Repository = 0;   // Delete
                 _repository = value;
                 GetRepositoryInfo();
                 OnPropertyChanged();

@@ -27,50 +27,45 @@
 using System;
 using Alteridem.GitHub.Model;
 using NUnit.Framework;
-using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.Test.Model
 {
     [TestFixture]
-    public class TestRepositoryWrapper
+    public class CredentialCacheTest
     {
-        private RepositoryWrapper _one;
-        private RepositoryWrapper _two;
-        private RepositoryWrapper _three;
-
-        [TestFixtureSetUp]
-        public void FixtureSetUp()
+        [Test]
+        public void TestRoundTrip()
         {
-            _one = CreateWrapper(1, "test");
-            _two = CreateWrapper(1, "test");
-            _three = CreateWrapper(3, "three");
-        }
+            var credentials = new CredentialCache { Logon = "user", Password = "password" };
+            var cache = credentials.ToString();
+            Assert.That(cache, Is.Not.Null);
+            Assert.That(cache, Is.StringContaining("user"));
+            Assert.That(cache, Is.Not.StringContaining("password"));
 
-        private RepositoryWrapper CreateWrapper(int id, string name)
-        {
-            var repository = new Repository
-            {
-                Id = id,
-                Name = name
-            };
-            return new RepositoryWrapper(repository);
-            
+            var parsed = CredentialCache.FromString(cache);
+            Assert.That(parsed, Is.Not.Null);
+            Assert.That(parsed.Logon, Is.EqualTo("user"));
+            Assert.That(parsed.Password, Is.EqualTo("password"));
         }
 
         [Test]
-        public void TestEquals()
+        public void FromNullStringReturnsNull()
         {
-            Assert.That(_one, Is.EqualTo(_two));
-            Assert.That(_one.Equals(_two), Is.True);
+            Assert.That(CredentialCache.FromString(null), Is.Null);
         }
 
         [Test]
-        public void TestNotEquals()
+        public void FromEmptyStringReturnsNull()
         {
-            Assert.That(_one, Is.Not.EqualTo(_three));
-            Assert.That(_one.Equals(_three), Is.False);
+            Assert.That(CredentialCache.FromString(string.Empty), Is.Null);
+        }
+
+        [Test]
+        public void FromBlankStringReturnsNull()
+        {
+            Assert.That(CredentialCache.FromString("   "), Is.Null);
         }
     }
 }
