@@ -27,8 +27,8 @@ I am just about ready for an alpha release. If you would like to try out the ext
 
 ### Issue List ###
 
-![Issue List](http://i.imgur.com/jmVsdcR.png)
+![Issue List](/images/issue_list.png)
 
 ### Issue Window ###
 
-![Issue Window](http://i.imgur.com/qKAGjGs.png)
+![Issue Window](/images/issue.png)
