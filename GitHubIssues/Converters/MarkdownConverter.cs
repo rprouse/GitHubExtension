@@ -58,7 +58,7 @@ namespace Alteridem.GitHub.Converters
             }
             catch (FormatException e)
             {
-                log.ErrorException( "Failed to create HTML", e );
+                log.Error( "Failed to create HTML", e );
             }
             return string.Empty;
         }

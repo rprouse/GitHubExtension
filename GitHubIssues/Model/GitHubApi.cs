@@ -221,7 +221,7 @@ namespace Alteridem.GitHub.Model
             }
             catch (Exception ex)
             {
-                log.WarnException("Failed to login", ex);
+                log.Warn("Failed to login", ex);
                 Logout();
                 throw;
             }
@@ -243,7 +243,7 @@ namespace Alteridem.GitHub.Model
             }
             catch (Exception ex)
             {
-                log.ErrorException("Failed to fetch current user", ex);
+                log.Error("Failed to fetch current user", ex);
             }
         }
 
@@ -339,7 +339,7 @@ namespace Alteridem.GitHub.Model
             }
             catch (Exception ex)
             {
-                log.ErrorException("Failed to fetch issues", ex);
+                log.Error("Failed to fetch issues", ex);
             }
         }
 

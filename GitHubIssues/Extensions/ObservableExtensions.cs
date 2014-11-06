@@ -12,7 +12,7 @@ namespace Alteridem.GitHub.Extensions
             return Observable.Catch<T, Exception>(This, ex =>
             {
                 Logger log = LogManager.GetLogger(typeof(TObj).FullName);
-                log.WarnException(message ?? "", ex);
+                log.Warn(message ?? "", ex);
                 return next;
             });
         }
