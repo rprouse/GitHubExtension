@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
              xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" FontFamily="Verdana" FontSize="11"
              d:DataContext="{d:DesignInstance viewModel:IssueViewModel}"
              d:DesignHeight="500" d:DesignWidth="600">
     <UserControl.Resources>
@@ -28,25 +28,25 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding Path=Issue.Title}" FontWeight="Bold" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Path=Issue.Title}" FontWeight="Bold" Margin="3,6,3,3" />
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Number:" />
-        <Label Grid.Row="1" Grid.Column="1" Content="{Binding Path=Issue.Number}" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Number:" Margin="3" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Issue.Number}" Margin="3" />
 
-        <Label Grid.Row="2" Grid.Column="0" Content="State:" />
-        <Label Grid.Row="2" Grid.Column="1" Content="{Binding Path=Issue.State}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="State:" Margin="3" />
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Issue.State}" Margin="3" />
 
-        <Label Grid.Row="1" Grid.Column="2" Content="Assigned To:" />
-        <Label Grid.Row="1" Grid.Column="3" Content="{Binding Path=Issue.Assignee.Login}" />
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Assigned To:" Margin="3" />
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Path=Issue.Assignee.Login}" Margin="3" />
 
-        <Label Grid.Row="2" Grid.Column="2" Content="Reported By:" />
-        <Label Grid.Row="2" Grid.Column="3" Content="{Binding Path=Issue.User.Login}" />
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="Reported By:" Margin="3" />
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Path=Issue.User.Login}" Margin="3" />
 
-        <Label Grid.Row="4" Grid.Column="0" Content="Milestone:" />
-        <Label Grid.Row="4" Grid.Column="1" Content="{Binding Path=Issue.Milestone.Title}" />
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Milestone:" Margin="3" />
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Path=Issue.Milestone.Title}" Margin="3" />
 
-        <Label Grid.Row="4" Grid.Column="2" Content="Entered:" />
-        <Label Grid.Row="4" Grid.Column="3" Content="{Binding Path=Issue.CreatedAt.Date,StringFormat=d}" />
+        <TextBlock Grid.Row="4" Grid.Column="2" Text="Entered:" />
+        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding Path=Issue.CreatedAt.Date,StringFormat=d}" />
 
         <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" BorderThickness="1" Padding="0">
             <WebBrowser OpacityMask="White" ScrollViewer.VerticalScrollBarVisibility="Auto" view:WebBrowserBehavior.Html="{Binding Path=IssueMarkdown, Converter={StaticResource MarkdownConverter}}" />

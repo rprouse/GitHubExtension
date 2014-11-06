@@ -17,7 +17,8 @@
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
         <view:Avatar AvatarUrl="{Binding User.AvatarUrl, Mode=OneWay}" Size="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6,6,3,6" />
-        <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,0,3,6" FontSize="14" Text="{Binding User.Login}" />
+    <TextBlock x:Name="Login" VerticalAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="3,0,3,6" 
+                      FontFamily="Verdana" FontSize="12" Text="{Binding User.Login}" />
         <Button x:Name="LoginOut" 
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Right"

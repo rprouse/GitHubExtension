@@ -58,58 +58,82 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="38"/>
-            <RowDefinition Height="38"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-            <ComboBox x:Name="Repositories"  Width="200" Height="26" Margin="6,6,3,6" 
-                      HorizontalContentAlignment="Stretch"
-                      ItemsSource="{Binding Path=Repositories}" 
-                      SelectedItem="{Binding Path=Repository}" 
-                      ItemTemplate="{StaticResource RepositoryTemplate}"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="6,6,6,3">
             <Button 
                 Command="{Binding Path=RefreshCommand}"
                 Content="&#xf021;"
                 FontFamily="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome"
                 FontSize="14" 
-                Width="26" Height="26" 
-                Margin="3,6" 
-                ToolTip="Refresh List" 
+                VerticalAlignment="Center" 
                 HorizontalAlignment="Right"
-                IsEnabled="True" />
+                Margin="3,0" 
+                ToolTip="Refresh List" 
+                IsEnabled="True"
+                FocusVisualStyle="{x:Null}" >
+              <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                  <ContentPresenter />
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
             <Button 
                 Command="{Binding Path=AddIssueCommand}"
                 Content="&#xf067;"
                 FontFamily="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome"
                 FontSize="14" 
-                Width="26" Height="26" 
-                Margin="3,6" 
-                ToolTip="Add Issue" 
+                VerticalAlignment="Center" 
                 HorizontalAlignment="Right"
-                IsEnabled="True" />
+                Margin="3,0" 
+                ToolTip="New Issue" 
+                IsEnabled="True"
+                FocusVisualStyle="{x:Null}" >
+              <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                  <ContentPresenter />
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+            <ComboBox x:Name="Repositories"  Width="Auto" Height="26" Margin="3,0" 
+                      HorizontalContentAlignment="Stretch"
+                      FontFamily="Verdana"
+                      FontSize="11"
+                      ItemsSource="{Binding Path=Repositories}" 
+                      SelectedItem="{Binding Path=Repository}" 
+                      ItemTemplate="{StaticResource RepositoryTemplate}"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="1" 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="2" 
+                    Margin="6,3">
             <!--<ComboBox x:Name="Filter" Margin="3,6"
                       Width="120" Height="26"
                       ItemsSource="{Binding Source={StaticResource IssueFilterDataProvider}}"
                       SelectedItem="{Binding Path=Filter}" >
       </ComboBox>-->
-            <ComboBox x:Name="Label" Margin="3,6"
-                      Width="120" Height="26"
+            <ComboBox x:Name="Label" Margin="0,0,3,0"
+                      Width="120"
+                      FontSize="10"
+                      FontFamily="Verdana"
                       ItemsSource="{Binding Path=Labels}"
                       SelectedItem="{Binding Path=Label}"
                       ItemTemplate="{StaticResource LabelTemplate}" />
-            <ComboBox x:Name="Milestone" Margin="3,6"
-                      Width="120" Height="26"
+            <ComboBox x:Name="Milestone" Margin="3,0"
+                      Width="120"
+                      FontSize="10"
+                      FontFamily="Verdana"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding Path=Milestones}"
                       SelectedItem="{Binding Path=Milestone}"
                       ItemTemplate="{StaticResource MilestoneTemplate}" />
         </StackPanel>
 
-        <view:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
+        <view:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right" Margin="0,6,0,0"/>
 
         <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
                   Name="Issues"
@@ -148,7 +172,11 @@
                             Grid.Row="0" 
                             Grid.RowSpan="3" 
                             Margin="0,0,6,0">
-                            <TextBlock Text="{Binding Path=Number}" Width="30" FontWeight="Bold" HorizontalAlignment="Center" />
+                            <Label Content="{Binding Path=Number}" 
+                                   Width="30"
+                                   FontWeight="Bold"
+                                   Padding="0"
+                                   HorizontalContentAlignment="Center"/>
                             <ListBox ItemsSource="{Binding Path=Labels}"
                                      Padding="0"
                                      Background="{DynamicResource {x:Static view:Theme.BackgroundKey}}"
