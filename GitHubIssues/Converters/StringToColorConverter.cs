@@ -43,7 +43,7 @@ namespace Alteridem.GitHub.Converters
             try
             {
                 var colorString = value as string;
-                if (colorString != null)
+                if (!string.IsNullOrWhiteSpace(colorString))
                 {
                     object color = ColorConverter.ConvertFromString( "#" + colorString);
                     if (color != null)
@@ -53,7 +53,7 @@ namespace Alteridem.GitHub.Converters
             catch (FormatException)
             {
             }
-            return null;
+            return new SolidColorBrush(Color.FromArgb(0,0,0,0));
         }
 
         /// <summary>

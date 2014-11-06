@@ -13,16 +13,16 @@
              d:DataContext="{d:DesignInstance viewModel:IssueListViewModel}"
              d:DesignHeight="800" 
              d:DesignWidth="400">
-  <UserControl.Resources>
-    <converters:StringToColorConverter x:Key="ColorConverter" />
-    <DataTemplate x:Key="RepositoryTemplate">
-      <Grid HorizontalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Repository.FullName}" />
-        <Border 
+    <UserControl.Resources>
+        <converters:StringToColorConverter x:Key="ColorConverter" />
+        <DataTemplate x:Key="RepositoryTemplate">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Repository.FullName}" />
+                <Border 
                     Grid.Column="1" 
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center" 
@@ -30,45 +30,45 @@
                     BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}"
                     CornerRadius="2" 
                     BorderThickness="1" >
-          <TextBlock Text="{Binding Path=Repository.OpenIssuesCount}" Margin="2" FontSize="10" />
-        </Border>
-      </Grid>
-    </DataTemplate>
-    <DataTemplate x:Key="LabelTemplate">
-      <StackPanel Orientation="Horizontal">
-        <Border Background="{Binding Path=Color, Converter={StaticResource ColorConverter}}" CornerRadius="2" Width="6" Height="16" Margin="3,0" />
-        <TextBlock Margin="3,0" Text="{Binding Path=Name}"/>
-      </StackPanel>
-    </DataTemplate>
-    <DataTemplate x:Key="MilestoneTemplate">
-      <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Title}" />
-    </DataTemplate>
-    <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="IssueFilterDataProvider">
-      <ObjectDataProvider.MethodParameters>
-        <x:Type TypeName="octokit:IssueFilter" />
-      </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-  </UserControl.Resources>
-  <Grid>
-    <Grid.Resources>
-      <ResourceDictionary Source="Theme.xaml" />
-    </Grid.Resources>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="38"/>
-      <RowDefinition Height="38"/>
-      <RowDefinition/>
-    </Grid.RowDefinitions>
-    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-      <ComboBox x:Name="Repositories"  Width="200" Height="26" Margin="6,6,3,6" 
+                    <TextBlock Text="{Binding Path=Repository.OpenIssuesCount}" Margin="2" FontSize="10" />
+                </Border>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LabelTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border Background="{Binding Path=Color, Converter={StaticResource ColorConverter}}" CornerRadius="2" Width="6" Height="16" Margin="3,0" />
+                <TextBlock Margin="3,0" Text="{Binding Path=Name}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="MilestoneTemplate">
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Title}" />
+        </DataTemplate>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="IssueFilterDataProvider">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="octokit:IssueFilter" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary Source="Theme.xaml" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="38"/>
+            <RowDefinition Height="38"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <ComboBox x:Name="Repositories"  Width="200" Height="26" Margin="6,6,3,6" 
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding Path=Repositories}" 
                       SelectedItem="{Binding Path=Repository}" 
                       ItemTemplate="{StaticResource RepositoryTemplate}"/>
-      <Button 
+            <Button 
                 Command="{Binding Path=RefreshCommand}"
                 Content="&#xf021;"
                 FontFamily="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome"
@@ -78,7 +78,7 @@
                 ToolTip="Refresh List" 
                 HorizontalAlignment="Right"
                 IsEnabled="True" />
-      <Button 
+            <Button 
                 Command="{Binding Path=AddIssueCommand}"
                 Content="&#xf067;"
                 FontFamily="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome"
@@ -88,30 +88,30 @@
                 ToolTip="Add Issue" 
                 HorizontalAlignment="Right"
                 IsEnabled="True" />
-    </StackPanel>
+        </StackPanel>
 
-    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-      <!--<ComboBox x:Name="Filter" Margin="3,6"
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <!--<ComboBox x:Name="Filter" Margin="3,6"
                       Width="120" Height="26"
                       ItemsSource="{Binding Source={StaticResource IssueFilterDataProvider}}"
                       SelectedItem="{Binding Path=Filter}" >
       </ComboBox>-->
-      <ComboBox x:Name="Label" Margin="3,6"
+            <ComboBox x:Name="Label" Margin="3,6"
                       Width="120" Height="26"
                       ItemsSource="{Binding Path=Labels}"
                       SelectedItem="{Binding Path=Label}"
                       ItemTemplate="{StaticResource LabelTemplate}" />
-      <ComboBox x:Name="Milestone" Margin="3,6"
+            <ComboBox x:Name="Milestone" Margin="3,6"
                       Width="120" Height="26"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding Path=Milestones}"
                       SelectedItem="{Binding Path=Milestone}"
                       ItemTemplate="{StaticResource MilestoneTemplate}" />
-    </StackPanel>
+        </StackPanel>
 
-    <view:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
+        <view:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right"/>
 
-    <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
                   Name="Issues"
                   Margin="6,0,6,6"
                   ItemsSource="{Binding Path=Issues}"
@@ -123,67 +123,89 @@
                   Background="{DynamicResource {x:Static view:Theme.BackgroundKey}}"
                   Foreground="{DynamicResource {x:Static view:Theme.ForegroundKey}}"
                   BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" >
-      <ListBox.ItemContainerStyle>
-        <Style TargetType="ListBoxItem">
-          <Setter Property="HorizontalContentAlignment"
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment"
                    Value="Stretch" />
-        </Style>
-      </ListBox.ItemContainerStyle>
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <Grid Margin="0,3,0,3">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto" />
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Vertical" 
-                        Grid.Column="0" 
-                        Grid.Row="0" 
-                        Grid.RowSpan="3" 
-                        Margin="0,0,6,0">
-              <TextBlock Text="{Binding Path=Number}" 
-                         FontWeight="Bold" />
-            </StackPanel>
-            <TextBlock Text="{Binding Path=State}" 
-                       Grid.Column="1" 
-                       Grid.Row="0" 
-                       Grid.ColumnSpan="3" 
-                       FontSize="9" 
-                       HorizontalAlignment="Right"
-                       Margin="0,2,0,2"
-                       Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
-            <TextBlock Text="{Binding Path=Title}" 
-                       Grid.Column="1" 
-                       Grid.Row="1" 
-                       Grid.ColumnSpan="3" 
-                       FontSize="12" 
-                       TextTrimming="CharacterEllipsis" 
-                       HorizontalAlignment="Stretch" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,3,0,3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical" 
+                            Grid.Column="0" 
+                            Grid.Row="0" 
+                            Grid.RowSpan="3" 
+                            Margin="0,0,6,0">
+                            <TextBlock Text="{Binding Path=Number}" Width="30" FontWeight="Bold" HorizontalAlignment="Center" />
+                            <ListBox ItemsSource="{Binding Path=Labels}"
+                                     Padding="0"
+                                     Background="{DynamicResource {x:Static view:Theme.BackgroundKey}}"
+                                     Foreground="{DynamicResource {x:Static view:Theme.ForegroundKey}}"
+                                     BorderBrush="{DynamicResource {x:Static view:Theme.BackgroundKey}}"
+                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemContainerStyle>
+                                  <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Padding" Value="0" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <DataTemplate.Resources>
+                                            <converters:StringToColorConverter x:Key="ColorConverter" />
+                                        </DataTemplate.Resources>
+                                        <Border Background="{Binding Path=Color, Converter={StaticResource ColorConverter}}" Height="2" Margin="0,1,0,0"  />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Path=State}" 
+                           Grid.Column="1" 
+                           Grid.Row="0" 
+                           Grid.ColumnSpan="3" 
+                           FontSize="9" 
+                           HorizontalAlignment="Right"
+                           Margin="0,2,0,2"
+                           Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
+                        <TextBlock Text="{Binding Path=Title}" 
+                           Grid.Column="1" 
+                           Grid.Row="1" 
+                           Grid.ColumnSpan="3" 
+                           FontSize="12" 
+                           TextTrimming="CharacterEllipsis" 
+                           HorizontalAlignment="Stretch" />
 
-            <TextBlock Text="{Binding Path=User.Login}" 
-                       Grid.Column="1" 
-                       Grid.Row="2"
-                       Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
-            <TextBlock Text="{Binding Path=UpdatedAt.Date,StringFormat=d}" 
-                       Grid.Column="2" 
-                       Grid.Row="2" 
-                       FontStyle="Italic"
-                       Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
-            <TextBlock Text="{Binding Path=Comments}" 
-                       Grid.Column="3" 
-                       Grid.Row="2" 
-                       HorizontalAlignment="Right"
-                       Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
-          </Grid>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
-  </Grid>
+                        <TextBlock Text="{Binding Path=User.Login}" 
+                           Grid.Column="1" 
+                           Grid.Row="2"
+                           Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
+                        <TextBlock Text="{Binding Path=UpdatedAt.Date,StringFormat=d}" 
+                           Grid.Column="2" 
+                           Grid.Row="2" 
+                           FontStyle="Italic"
+                           Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
+                        <TextBlock Text="{Binding Path=Comments}" 
+                           Grid.Column="3" 
+                           Grid.Row="2" 
+                           HorizontalAlignment="Right"
+                           Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>
