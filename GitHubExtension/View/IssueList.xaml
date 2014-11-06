@@ -206,7 +206,7 @@
                            Grid.ColumnSpan="3" 
                            FontSize="12" 
                            TextTrimming="CharacterEllipsis" 
-                           HorizontalAlignment="Stretch" />
+                           HorizontalAlignment="Stretch" Margin="0,0,0,6" />
 
                         <TextBlock Text="{Binding Path=User.Login}" 
                            Grid.Column="1" 
@@ -217,11 +217,16 @@
                            Grid.Row="1" 
                            FontStyle="Italic"
                            Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
-                        <TextBlock Text="{Binding Path=Comments}" 
-                           Grid.Column="3" 
-                           Grid.Row="1" 
-                           HorizontalAlignment="Right"
-                           Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
+                        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="1" 
+                                    HorizontalAlignment="Right">
+                          <TextBlock VerticalAlignment="Center" 
+                             Style="{StaticResource FontAwesome}"
+                             FontSize="11"
+                             Text="&#xf086;"
+                             Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" Margin="0,0,6,0"  />
+                          <TextBlock Text="{Binding Path=Comments}" 
+                             Foreground="{DynamicResource {x:Static view:Theme.GrayTextKey}}" />
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
