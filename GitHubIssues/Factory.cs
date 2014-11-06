@@ -26,7 +26,14 @@ namespace Alteridem.GitHub
 
         public static T Get<T>()
         {
-            return _kernel.Get<T>();
+            try
+            {
+                return _kernel.Get<T>();
+            }
+            catch(ActivationException)
+            {
+                return default(T);
+            }
         }
 
         public static T Get<T>(params IParameter[] parameters)

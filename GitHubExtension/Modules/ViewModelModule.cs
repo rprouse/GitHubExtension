@@ -35,7 +35,7 @@ namespace Alteridem.GitHub.Extension.Modules
         /// </summary>
         public override void Load()
         {
-            Bind<IGravatar>().To<GravatarViewModel>();
+            Bind<IAvatar>().To<AvatarViewModel>();
         }
     }
 }

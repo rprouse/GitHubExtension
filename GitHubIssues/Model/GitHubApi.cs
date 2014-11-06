@@ -348,17 +348,13 @@ namespace Alteridem.GitHub.Model
             var builder = new StringBuilder(IssueMarkdown);
             foreach (var comment in comments)
             {
-                string gravatar =
-                    string.Format(
-                        "https://www.gravatar.com/avatar/{0}?s={1}&r=x",
-                        comment.User.GravatarId,
-                        22);
+                string avatar = comment.User.AvatarUrl + "&size=22";
 
                 builder.AppendFormat(
-                    "{0}<div class=\"header\">{0}<div class=\"user\"><img align=\"left\" alt=\"{1}\" src=\"{2}\">&nbsp; {1}</div><div class=\"date\">{3:d}</div>{0}</div>{0}{0}{4}",
+                    "{0}<div class=\"header\">{0}<div class=\"user\"><img align=\"left\" alt=\"{1}\" src=\"{2}\" width=\"22\" height=\"22\">&nbsp; {1}</div><div class=\"date\">{3:d}</div>{0}</div>{0}{0}{4}",
                     Environment.NewLine,
                     comment.User.Login,
-                    gravatar,
+                    avatar,
                     comment.CreatedAt,
                     comment.Body
                     );

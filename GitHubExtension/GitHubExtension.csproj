@@ -178,7 +178,7 @@
     <Compile Include="Interfaces\IAddComment.cs" />
     <Compile Include="Interfaces\IClosable.cs" />
     <Compile Include="Interfaces\IEnableable.cs" />
-    <Compile Include="Interfaces\IGravatar.cs" />
+    <Compile Include="Interfaces\IAvatar.cs" />
     <Compile Include="Interfaces\IIssueEditor.cs" />
     <Compile Include="Interfaces\IIssueToolWindow.cs" />
     <Compile Include="Interfaces\IIssueViewer.cs" />
@@ -200,7 +200,7 @@
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="ViewModel\AddCommentViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\GravatarViewModel.cs" />
+    <Compile Include="ViewModel\AvatarViewModel.cs" />
     <Compile Include="ViewModel\IssueEditorViewModel.cs" />
     <Compile Include="ViewModel\IssueListViewModel.cs" />
     <Compile Include="ViewModel\IssueViewModel.cs" />
@@ -209,8 +209,8 @@
     <Compile Include="View\AddComment.xaml.cs">
       <DependentUpon>AddComment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Gravatar.xaml.cs">
-      <DependentUpon>Gravatar.xaml</DependentUpon>
+    <Compile Include="View\Avatar.xaml.cs">
+      <DependentUpon>Avatar.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IssueEditor.xaml.cs">
       <DependentUpon>IssueEditor.xaml</DependentUpon>
@@ -285,7 +285,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Gravatar.xaml">
+    <Page Include="View\Avatar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

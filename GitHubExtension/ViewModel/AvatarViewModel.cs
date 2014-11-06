@@ -22,14 +22,13 @@
 // 
 // **********************************************************************************
 
-using System;
 using Alteridem.GitHub.Extension.Interfaces;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class GravatarViewModel : BaseViewModel, IGravatar
+    public class AvatarViewModel : BaseViewModel, IAvatar
     {
-        private string _gravatarId;
+        private string _avatarUrl;
         private double _size;
 
         public double Size
@@ -39,36 +38,17 @@ namespace Alteridem.GitHub.Extension.ViewModel
             {
                 _size = value;
                 OnPropertyChanged();
-                if ( _size > 0 && !Double.IsNaN(_size) )
-                    OnPropertyChanged("GravatarUrl");
+                OnPropertyChanged("AvatarUrl");
             }
         }
 
-        public string GravatarId
+        public string AvatarUrl
         {
-            get { return _gravatarId; }
+            get { return string.Format( "{0}&size={1}", _avatarUrl, 22 ); }
             set
             {
-                if (value == _gravatarId) return;
-                _gravatarId = value;
+                _avatarUrl = value;
                 OnPropertyChanged();
-                OnPropertyChanged("GravatarUrl");
-            }
-        }
-
-        public string GravatarUrl
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(GravatarId) || Size <= 0 || Double.IsNaN(Size) )
-                    return string.Empty;
-
-                string gravatar =
-                    string.Format(
-                        "https://www.gravatar.com/avatar/{0}?s={1}&r=x",
-                        GravatarId,
-                        Size);
-                return gravatar;
             }
         }
     }

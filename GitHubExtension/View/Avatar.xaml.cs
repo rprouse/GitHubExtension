@@ -38,55 +38,55 @@ using Alteridem.GitHub.Extension.ViewModel;
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for Gravatar.xaml
+    /// Interaction logic for Avatar.xaml
     /// </summary>
-    public partial class Gravatar
+    public partial class Avatar
     {
-        private readonly IGravatar _gravatar;
+        private readonly IAvatar _avatar;
 
-        public Gravatar()
+        public Avatar()
         {
             InitializeComponent();
-            _gravatar = Factory.Get<IGravatar>();
-            Avatar.DataContext = _gravatar;
+            _avatar = Factory.Get<IAvatar>();
+            Image.DataContext = _avatar;
         }
 
-        internal IGravatar GravatarViewModel
+        internal IAvatar AvatarViewModel
         {
-            get { return _gravatar; }
+            get { return _avatar; }
         }
 
         public double Size
         {
-            get { return _gravatar.Size; }
+            get { return _avatar != null ? _avatar.Size : Width; }
             set
             {
-                _gravatar.Size = value;
+                if ( _avatar != null ) _avatar.Size = value;
                 Width = value;
                 Height = value;
             }
         }
 
-        public string GravatarId
+        public string AvatarUrl
         {
-            get { return GetValue(GravatarIdProperty) as string; }
-            set { SetValue(GravatarIdProperty, value); }
+            get { return GetValue(AvatarUrlProperty) as string; }
+            set { SetValue(AvatarUrlProperty, value); }
         }
 
-        public static readonly DependencyProperty GravatarIdProperty =
+        public static readonly DependencyProperty AvatarUrlProperty =
             DependencyProperty.Register(
-                "GravatarId",
+                "AvatarUrl",
                 typeof (string),
-                typeof (Gravatar),
-                new FrameworkPropertyMetadata(OnGravatarIdChanged));
+                typeof (Avatar),
+                new FrameworkPropertyMetadata(OnAvatarUrlChanged));
 
-        private static void OnGravatarIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnAvatarUrlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var gravatar = d as Gravatar;
-            if (gravatar == null || gravatar.GravatarViewModel == null)
+            var avatar = d as Avatar;
+            if (avatar == null || avatar.AvatarViewModel == null)
                 return;
 
-            gravatar.GravatarViewModel.GravatarId = e.NewValue as string;
+            avatar.AvatarViewModel.AvatarUrl = e.NewValue as string;
         }
     }
 }

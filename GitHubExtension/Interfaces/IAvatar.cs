@@ -23,10 +23,9 @@
 // **********************************************************************************
 namespace Alteridem.GitHub.Extension.Interfaces
 {
-    public interface IGravatar
+    public interface IAvatar
     {
+        string AvatarUrl { get; set; }
         double Size { get; set; }
-        string GravatarId { get; set; }
-        string GravatarUrl { get; }
     }
 }

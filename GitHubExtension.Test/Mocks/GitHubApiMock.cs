@@ -68,7 +68,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             {
                 Login = username,
                 Name = username,
-                GravatarId = "slkdfjlksfdjsdf"
+                AvatarUrl = "https://avatars.githubusercontent.com/u/493828?v=1"
             };
             return new Task<bool>(() => true);
         }
@@ -85,7 +85,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
                 {
                     Login = "user",
                     Name = "name",
-                    GravatarId = "slkdfjlksfdjsdf"
+                    AvatarUrl = "https://avatars.githubusercontent.com/u/493828?v=1"
                 }
             };
             Issue = issue;
