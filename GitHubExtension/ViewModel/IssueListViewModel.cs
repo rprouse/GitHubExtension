@@ -38,7 +38,7 @@ using Issue = Octokit.Issue;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class IssueListViewModel : BaseViewModel
+    public class IssueListViewModel : BaseUserViewModel
     {
         public IssueListViewModel()
         {

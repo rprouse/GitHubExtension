@@ -15,6 +15,7 @@
              d:DesignWidth="400">
     <UserControl.Resources>
         <converters:StringToColorConverter x:Key="ColorConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <DataTemplate x:Key="RepositoryTemplate">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -135,8 +136,27 @@
 
         <view:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right" Margin="0,6,0,0"/>
 
-        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                  Name="Issues"
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center"
+                Margin="6,6,6,6"
+                FontSize="128" 
+                Content="&#xf090;"
+                ToolTip="Log In"
+                FocusVisualStyle="{x:Null}"
+                Foreground="{DynamicResource {x:Static view:Theme.ForegroundKey}}"
+                Command="{Binding Path=LoginCommand}" >
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource FontAwesome}" />
+            </Button.Style>
+        </Button>
+        
+        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                   Margin="6,0,6,6"
                   ItemsSource="{Binding Path=Issues}"
                   SelectedItem="{Binding Path=Issue}"
@@ -144,6 +164,7 @@
                   FontFamily="Verdana"
                   MouseDoubleClick="OnRowDoubleClick"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Visibility="{Binding Path=LoggedIn, Converter={StaticResource BoolToVis}}"
                   Background="{DynamicResource {x:Static view:Theme.BackgroundKey}}"
                   Foreground="{DynamicResource {x:Static view:Theme.ForegroundKey}}"
                   BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" >

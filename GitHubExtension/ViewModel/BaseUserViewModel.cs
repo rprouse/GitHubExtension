@@ -1,4 +1,4 @@
-﻿// **********************************************************************************
+// **********************************************************************************
 // The MIT License (MIT)
 // 
 // Copyright (c) 2014 Rob Prouse
@@ -28,17 +28,47 @@ using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
-using Octokit;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class UserViewModel : BaseUserViewModel
+    public class BaseUserViewModel : BaseViewModel
     {
-        public User User
+        private ICommand _loginCommand;
+
+        public BaseUserViewModel()
         {
-            get { return GitHubApi.User; }
+            LoginCommand = new RelayCommand(p => Login(), p => true);
+        }
+
+        [NotNull]
+        public ICommand LoginCommand
+        {
+            get { return _loginCommand; }
+            set
+            {
+                if (Equals(value, _loginCommand)) return;
+                _loginCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool LoggedIn
+        {
+            get { return GitHubApi.LoggedIn; }
+        }
+
+        public void Login()
+        {
+            if (GitHubApi.LoggedIn)
+            {
+                GitHubApi.Logout();
+                return;
+            }
+
+            var dlg = Factory.Get<ILoginView>();
+            dlg.ShowModal();
         }
     }
 }
