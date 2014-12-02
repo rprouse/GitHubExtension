@@ -56,11 +56,12 @@ namespace Alteridem.GitHub.Extension.Test.Converters
         [TestCase("")]
         [TestCase("#FFFFFF")]
         [TestCase("Red")]
-        public void TestInvalidColorReturnsNull(string str)
+        public void TestInvalidColorReturnsTransparent(string str)
         {
             var converter = new StringToColorConverter();
             var result = converter.Convert(str, typeof(SolidColorBrush), null, CultureInfo.CurrentCulture) as SolidColorBrush;
-            Assert.That(result, Is.Null);
+            Assert.That( result, Is.Not.Null );
+            Assert.That( result.Color.A, Is.EqualTo( 0x00 ) );
         }
     }
 }
