@@ -201,6 +201,7 @@
     <Compile Include="View\Avatar.xaml.cs">
       <DependentUpon>Avatar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ErrorReporter.cs" />
     <Compile Include="View\IssueEditor.xaml.cs">
       <DependentUpon>IssueEditor.xaml</DependentUpon>
     </Compile>

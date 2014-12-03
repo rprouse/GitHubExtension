@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="Converters\ColorExtensions.cs" />
     <Compile Include="Converters\StringToInverseColorConverter.cs" />
+    <Compile Include="Interfaces\IErrorReporter.cs" />
     <Compile Include="Model\Cache.cs" />
     <Compile Include="Converters\MarkdownConverter.cs" />
     <Compile Include="Converters\StringToColorConverter.cs" />

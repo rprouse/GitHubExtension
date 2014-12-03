@@ -22,24 +22,23 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.Test.Mocks;
-using Alteridem.GitHub.Interfaces;
-using Alteridem.GitHub.Model;
-using Ninject.Modules;
+using System;
 
-namespace Alteridem.GitHub.Extension.Test.Modules
+namespace Alteridem.GitHub.Interfaces
 {
-    public class MocksModule : NinjectModule
+    public interface IErrorReporter
     {
         /// <summary>
-        /// Loads the module into the kernel.
+        /// Shows the specified message to the user.
         /// </summary>
-        public override void Load()
-        {
-            //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
-            //Rebind<ILoginView>().To<LoginViewMock>();
-            Rebind<IErrorReporter>().To<ErrorReporterMock>().InSingletonScope();
-        }
+        /// <param name="message">The message.</param>
+        void Show( string message );
+
+        /// <summary>
+        /// Shows the specified message to the user along with the exception information.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="ex">The exception.</param>
+        void Show( string message, Exception ex );
     }
 }

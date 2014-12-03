@@ -59,6 +59,7 @@
     <Compile Include="AssemblySetup.cs" />
     <Compile Include="Converters\MarkdownConverterTest.cs" />
     <Compile Include="Converters\StringToColorConverterTest.cs" />
+    <Compile Include="Mocks\ErrorReporterMock.cs" />
     <Compile Include="Mocks\GitHubApiMock.cs" />
     <Compile Include="Mocks\LoginViewMock.cs" />
     <Compile Include="Model\CacheTest.cs" />

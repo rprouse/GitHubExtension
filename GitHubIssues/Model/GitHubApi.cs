@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Interfaces;
 using NLog;
 using Octokit;
 
@@ -44,6 +45,7 @@ namespace Alteridem.GitHub.Model
 
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
+        private readonly IErrorReporter _error;
         private bool _gettingIssues;
         private readonly Label _allLabels;
         private readonly Milestone _noMilestone;
@@ -51,9 +53,10 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApi(GitHubClient github)
+        public GitHubApi(GitHubClient github, IErrorReporter reporter)
         {
             _github = github;
+            _error = reporter;
 
             _allLabels = new Label { Color = "00000000", Name = "All Labels" };
             _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
@@ -121,8 +124,15 @@ namespace Alteridem.GitHub.Model
             if (issue.Comments == 0 || Repository == null)
                 return;
 
-            IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number);
-            AppendComments(comments);
+            try
+            {
+                IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number);
+                AppendComments(comments);
+            }
+            catch ( Exception exception )
+            {
+                _error.Show( "Failed to fetch comments for issue.", exception );
+            }
         }
 
         public override async void AddComment(Issue issue, string comment)
@@ -130,10 +140,17 @@ namespace Alteridem.GitHub.Model
             if (Repository == null)
                 return;
 
-            var newComment = await _github.Issue.Comment.Create(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, comment);
+            try
+            {
+                var newComment = await _github.Issue.Comment.Create(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, comment);
 
-            // Append the current comment
-            AppendComments(new[] { newComment });
+                // Append the current comment
+                AppendComments(new[] { newComment });
+            }
+            catch ( Exception exception )
+            {
+                _error.Show( "Failed to add comment to issue.", exception );
+            }
         }
 
         public override async void CloseIssue(Issue issue, string comment)
@@ -146,45 +163,74 @@ namespace Alteridem.GitHub.Model
 
             var update = new IssueUpdate();
             update.State = ItemState.Closed;
-            var updatedIssue = await _github.Issue.Update(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, update);
-            if (updatedIssue.State == ItemState.Closed)
+            try
             {
-                Issue = null;
-                Issues.Remove(issue);
-                IssueMarkdown = string.Empty;
+                var updatedIssue = await _github.Issue.Update(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, update);
+                if (updatedIssue.State == ItemState.Closed)
+                {
+                    Issue = null;
+                    Issues.Remove(issue);
+                    IssueMarkdown = string.Empty;
+                }
+            }
+            catch ( Exception exception )
+            {
+                _error.Show( "Failed to update issue.", exception );
             }
         }
 
         public override async Task<IReadOnlyList<User>> GetAssignees(Repository repository)
         {
-            return await _github.Issue.Assignee.GetForRepository(repository.Owner.Login, repository.Name);
+            try
+            {
+                return await _github.Issue.Assignee.GetForRepository(repository.Owner.Login, repository.Name);
+            }
+            catch ( Exception exception )
+            {
+                log.Error( "Failed to fetch assignees", exception );
+                return new List<User>( );
+            }
         }
 
         public override async void SaveIssue(Repository repository, NewIssue newIssue)
         {
-            Issue issue = await _github.Issue.Create(repository.Owner.Login, repository.Name, newIssue);
-            if (issue != null && Repository != null && repository.Id == Repository.Repository.Id)
+            try
             {
-                Issues.Insert(0, issue);
-                Issue = issue;
+                Issue issue = await _github.Issue.Create(repository.Owner.Login, repository.Name, newIssue);
+                if (issue != null && Repository != null && repository.Id == Repository.Repository.Id)
+                {
+                    Issues.Insert(0, issue);
+                    Issue = issue;
+                }
+            }
+            catch ( Exception exception )
+            {
+                _error.Show( "Failed to save issue.", exception );
             }
         }
 
         public override async void UpdateIssue(Repository repository, int id, IssueUpdate update)
         {
-            Issue issueUpdate = await _github.Issue.Update(repository.Owner.Login, repository.Name, id, update);
-            if (Repository != null && repository.Id == Repository.Repository.Id)
+            try
             {
-                foreach (var issue in Issues)
+                Issue issueUpdate = await _github.Issue.Update(repository.Owner.Login, repository.Name, id, update);
+                if (Repository != null && repository.Id == Repository.Repository.Id)
                 {
-                    if (issue.Number == issueUpdate.Number)
+                    foreach (var issue in Issues)
                     {
-                        Issues.Remove(issue);
-                        Issues.Insert(0, issueUpdate);
-                        Issue = issueUpdate;
-                        break;
+                        if (issue.Number == issueUpdate.Number)
+                        {
+                            Issues.Remove(issue);
+                            Issues.Insert(0, issueUpdate);
+                            Issue = issueUpdate;
+                            break;
+                        }
                     }
                 }
+            }
+            catch ( Exception exception )
+            {
+                _error.Show( "Failed to save issue.", exception );
             }
         }
 
@@ -253,15 +299,22 @@ namespace Alteridem.GitHub.Model
             Repositories.Clear();
             Organizations.Clear();
 
-            var repositories = await _github.Repository.GetAllForCurrent();
-            AddRepositories(repositories);
-            var organizations = await _github.Organization.GetAllForCurrent();
-            foreach (var organization in organizations)
+            try
             {
-                repositories = await _github.Repository.GetAllForOrg(organization.Login);
+                var repositories = await _github.Repository.GetAllForCurrent();
                 AddRepositories(repositories);
+                var organizations = await _github.Organization.GetAllForCurrent();
+                foreach (var organization in organizations)
+                {
+                    repositories = await _github.Repository.GetAllForOrg(organization.Login);
+                    AddRepositories(repositories);
+                }
+                OnRepositoriesComplete();
             }
-            OnRepositoriesComplete();
+            catch ( Exception exception )
+            {
+                log.Error( "Failed to get repository data", exception );
+            }
         }
 
         private void AddRepositories([NotNull] IEnumerable<Repository> repositories)
@@ -297,12 +350,19 @@ namespace Alteridem.GitHub.Model
             Label = null;
             if (Repository != null && Repository.Repository != null)
             {
-                var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
-                Labels.Add(_allLabels);
-                foreach (var label in labels)
-                    Labels.Add(label);
+                try
+                {
+                    var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
+                    Labels.Add(_allLabels);
+                    foreach (var label in labels)
+                        Labels.Add(label);
 
-                Label = _allLabels;
+                    Label = _allLabels;
+                }
+                catch ( Exception exception )
+                {
+                    log.Error( "Failed to get labels for repository", exception );
+                }
             }
         }
 
@@ -318,11 +378,18 @@ namespace Alteridem.GitHub.Model
                 request.State = ItemState.Open;
                 request.SortProperty = MilestoneSort.DueDate;
                 request.SortDirection = SortDirection.Ascending;
-                var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name, request);
-                foreach (var milestone in milestones)
-                    Milestones.Add(milestone);
+                try
+                {
+                    var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name, request);
+                    foreach (var milestone in milestones)
+                        Milestones.Add(milestone);
 
-                Milestone = _allMilestones;
+                    Milestone = _allMilestones;
+                }
+                catch ( Exception exception )
+                {
+                    log.Error( "Failed to get milestones for repository", exception );
+                }
             }
         }
 

@@ -22,24 +22,40 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.Test.Mocks;
+using System;
 using Alteridem.GitHub.Interfaces;
-using Alteridem.GitHub.Model;
-using Ninject.Modules;
+using NLog;
 
-namespace Alteridem.GitHub.Extension.Test.Modules
+namespace Alteridem.GitHub.Extension.View
 {
-    public class MocksModule : NinjectModule
+    public class ErrorReporter : IErrorReporter
     {
+        private static readonly Logger log = LogManager.GetCurrentClassLogger( );
+
+        #region Implementation of IErrorReporter
+
         /// <summary>
-        /// Loads the module into the kernel.
+        /// Shows the specified message to the user.
         /// </summary>
-        public override void Load()
+        /// <param name="message">The message.</param>
+        public void Show( string message )
         {
-            //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
-            //Rebind<ILoginView>().To<LoginViewMock>();
-            Rebind<IErrorReporter>().To<ErrorReporterMock>().InSingletonScope();
+            log.Error( message );
+            VisualStudioMessageBox.Show( message );
         }
+
+        /// <summary>
+        /// Shows the specified message to the user along with the exception information.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="ex">The exception.</param>
+        public void Show( string message, Exception ex )
+        {
+            log.Error( message, ex );
+            string formatted = string.Format( "{0}\r\n\r\n{1}:\r\n{2}", message, ex.GetType( ).Name, ex.Message );
+            VisualStudioMessageBox.Show( formatted );
+        }
+
+        #endregion
     }
 }
