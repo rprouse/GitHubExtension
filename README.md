@@ -1,6 +1,8 @@
 GitHub Visual Studio Extension
 ===============
 
+[![Build status](https://ci.appveyor.com/api/projects/status/cq3t38xds110oxb8/branch/master?svg=true)](https://ci.appveyor.com/project/rprouse/githubextension/branch/master)
+
 A visual studio extension for working with issues on GitHub. 
 
 Access and manage GitHub issues for repositories that you have commit access to. You can filter and view issues for a repository, edit issues, add comments and close issue. This is the first Alpha release, more features are coming. 

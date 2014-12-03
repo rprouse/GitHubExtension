@@ -3,11 +3,12 @@
     <Metadata>
         <Identity Id="dae607b6-043f-400a-bd24-ffda143b13f4" Version="0.1.6" Language="en-US" Publisher="Rob Prouse" />
         <DisplayName>GitHub Extension</DisplayName>
-        <Description xml:space="preserve">Allows you to work with GitHub repositories and issues from within Visual Studio</Description>
+        <Description xml:space="preserve">Access and manage GitHub issues for repositories that you have commit access to. You can filter and view issues for a repository, edit issues, add comments and close issues.</Description>
         <MoreInfo>http://www.alteridem.net</MoreInfo>
         <License>License.rtf</License>
-        <ReleaseNotes>Changelog.txt</ReleaseNotes>
         <Icon>Resources\Package.ico</Icon>
+        <PreviewImage>Resources\Preview.png</PreviewImage>
+        <Tags>bug tracking, integration, github, issue tracking</Tags>
     </Metadata>
     <Installation InstalledByMsi="false">
         <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[12.0, 14.0]" />

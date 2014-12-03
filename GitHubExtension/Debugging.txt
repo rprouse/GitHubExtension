@@ -1,4 +1,0 @@
-﻿Open the Project's properties
-Go to the Debug Tab
-Start an external program: C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe
-Command line arguments: /rootsuffix Exp
