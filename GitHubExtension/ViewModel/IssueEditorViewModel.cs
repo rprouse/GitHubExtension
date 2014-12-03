@@ -205,6 +205,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
             }
         }
 
+        public IEnumerable<LabelModel> SelectedLabels
+        {
+            get { return _labels.Where(l => l.Checked); }
+        }
+
         public Milestone Milestone
         {
             get { return _milestone; }
@@ -294,7 +299,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
             issue.Milestone = Milestone != null ? Milestone.Number : 0;
 
-            foreach (var label in Labels.Where(l => l.Checked))
+            foreach (var label in SelectedLabels)
                 issue.Labels.Add(label.Name);
 
             GitHubApi.SaveIssue(_repository, issue);
@@ -308,7 +313,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
             issue.Milestone = Milestone != null ? Milestone.Number : 0;
 
-            foreach (var label in Labels.Where(l => l.Checked))
+            foreach (var label in SelectedLabels)
                 issue.AddLabel(label.Name);
 
             GitHubApi.UpdateIssue(_repository, _issueNumber, issue);
@@ -324,6 +329,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             var dlg = Factory.Get<ILabelPicker>();
             dlg.SetViewModel(this);
             dlg.ShowModal();
+            OnPropertyChanged("SelectedLabels");
         }
 
         private void CloseLabelPicker(object o)
