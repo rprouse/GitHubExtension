@@ -61,6 +61,14 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             GetMilestones();
         }
 
+        public override bool HasClientId
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override Task<bool> Login(string username, string password, string accessToken)
         {
             Token = username + password;

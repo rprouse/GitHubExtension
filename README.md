@@ -55,8 +55,10 @@ If you ever want to revoke the token, visit the GitHub Applications settings pag
 
 This project supports Visual Studio 2012 and newer. You will need the Visual Studio SDK installed for the particular version of Visual Studio you are testing.
 
-Set the GitHub `CLIENT_ID` and `CLIENT_SECRET` in `Secrets.cs` which is in the 
-`Model` folder of the `GitHubIssues` project.
+Optionally, set the GitHub `CLIENT_ID` and `CLIENT_SECRET` in `Secrets.cs` which is in the
+`Model` folder of the `GitHubIssues` project. Note that if these values are not set, the
+only supported authentication method will be specifying an access token generated according
+to the steps described in **Two Factor Authentication**, above.
 
 To debug, 
 

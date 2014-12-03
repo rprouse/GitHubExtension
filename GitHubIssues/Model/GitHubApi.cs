@@ -68,6 +68,14 @@ namespace Alteridem.GitHub.Model
 
         #region Public API
 
+        public override bool HasClientId
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(Secrets.CLIENT_ID);
+            }
+        }
+
         public override async Task<bool> Login(string username, string password, string accessToken)
         {
             Credentials credentials;

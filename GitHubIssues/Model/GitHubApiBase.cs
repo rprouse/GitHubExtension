@@ -198,6 +198,11 @@ namespace Alteridem.GitHub.Model
 
         #region Abstract public API
 
+        public abstract bool HasClientId
+        {
+            get;
+        }
+
         public virtual void Logout()
         {
             Token = string.Empty;

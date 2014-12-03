@@ -48,6 +48,14 @@ namespace Alteridem.GitHub.Extension.ViewModel
             LogonCommand = new RelayCommand(Logon, p => CanLogon());
         }
 
+        public bool HasClientId
+        {
+            get
+            {
+                return GitHubApi.HasClientId;
+            }
+        }
+
         public string Username
         {
             get { return _username; }

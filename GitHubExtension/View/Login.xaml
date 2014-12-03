@@ -45,10 +45,10 @@
             <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="6,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Username/Password"/>
 
             <TextBlock Grid.Column="0" Grid.Row="2" Text="Username:" VerticalAlignment="Center" Margin="6,10" Height="16" />
-            <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Margin="6" Text="{Binding Path=Username, Mode=OneWayToSource}" />
+            <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Margin="6" Text="{Binding Path=Username, Mode=OneWayToSource}" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
 
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Password:" VerticalAlignment="Center" Margin="6,10" Height="16" />
-            <PasswordBox x:Name="PassText" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" ToolTip="Password"  Margin="6" />
+            <PasswordBox x:Name="PassText" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" ToolTip="Password"  Margin="6" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
 
             <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Margin="6,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Or Access Token"/>
 
