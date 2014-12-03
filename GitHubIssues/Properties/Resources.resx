@@ -122,11 +122,12 @@
 &lt;/html&gt;</value>
   </data>
   <data name="IssueHtmlHeader" xml:space="preserve">
-    <value>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt;
+    <value>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;GitHub Issue&lt;/title&gt;
 &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+&lt;meta http-equiv="x-ua-compatible" content="IE=edge"&gt;
 &lt;style type="text/css"&gt;
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
 /* Author: Nicolas Hery - http://nicolashery.com */
@@ -418,9 +419,14 @@ div.user {
   float:left;
 }
 
+div.user img {
+  border-radius: 4px;
+}
+
 div.date {
   float:right;    
   font-style: italic;
+  margin-right: 4px;
 }
 
 div.header {
@@ -429,6 +435,8 @@ div.header {
   white-space: nowrap;
   background-color: #293133;
   color: #EFEFEF;
+  border-radius: 4px;
+  box-shadow: #CCC 2px 2px 5px;
 }
 
 &lt;/style&gt;
