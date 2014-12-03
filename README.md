@@ -3,7 +3,11 @@ GitHub Visual Studio Extension
 
 A visual studio extension for working with issues on GitHub. 
 
-I am just about ready for an alpha release. If you would like to try out the extension and influence its development, add a comment to https://github.com/rprouse/GitHubExtension/issues/47 and I will get in touch.
+Access and manage GitHub issues for repositories that you have commit access to. You can filter and view issues for a repository, edit issues, add comments and close issue. This is the first Alpha release, more features are coming. 
+
+## Download ##
+
+The easiest way to download is by going to *Tools | Extensions* in Visual Studio and searching for the GitHub Extension. It is also available in the [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/e4ba5ebd-bcd5-4e20-8375-bb8cbdd71d7e) and in the [GitHub Releases](https://github.com/rprouse/GitHubExtension/releases) for the project. 
 
 ## Instructions ##
 
