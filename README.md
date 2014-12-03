@@ -18,6 +18,18 @@ The easiest way to download is by going to *Tools | Extensions* in Visual Studio
 - Edit an issue with the edit button on the Issue window
 - Add comments to, or close and issue with the comment button on the issue window
 
+## Two Factor Authentication ##
+
+We do not currently support GitHub's Two-Factor Authentication system. However, you can generate a Personal Access Token to log in to your GitHub account instead.
+
+1. Visit the following URL: https://github.com/settings/tokens/new
+2. Enter a description in the Token description field, like "Visual Studio token".
+3. Click Create Token.
+4. Your new Personal Access token will be displayed.
+5. Copy this token, and enter it as your GitHub password in the logon dialog. You can now log in as usual.
+
+If you ever want to revoke the token, visit the GitHub Applications settings page and click Delete next to the key you wish to remove.
+
 ## Credits ##
 
 - Bug Icon by [David Vignoni](http://www.icon-king.com/) (LGPL)
