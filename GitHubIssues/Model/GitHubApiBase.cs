@@ -203,7 +203,7 @@ namespace Alteridem.GitHub.Model
             Token = string.Empty;
         }
 
-        public abstract Task<bool> Login(string username, string password);
+        public abstract Task<bool> Login(string username, string password, string accessToken);
 
         public abstract void GetIssues();
 

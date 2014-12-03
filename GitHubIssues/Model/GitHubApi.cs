@@ -68,9 +68,15 @@ namespace Alteridem.GitHub.Model
 
         #region Public API
 
-        public override async Task<bool> Login(string username, string password)
+        public override async Task<bool> Login(string username, string password, string accessToken)
         {
-            return await Login(new Credentials(username, password));
+            Credentials credentials;
+            if (!string.IsNullOrEmpty(accessToken))
+                credentials = new Credentials(accessToken);
+            else
+                credentials = new Credentials(username, password);
+
+            return await Login(credentials);
         }
 
         public override void Logout()
@@ -241,15 +247,20 @@ namespace Alteridem.GitHub.Model
         private async void LoginFromCache()
         {
             var credentials = Cache.Credentials;
-            if ( credentials != null )
-                await Login(new Credentials(credentials.Logon, credentials.Password));
+            if (credentials != null)
+            {
+                if (!string.IsNullOrEmpty(credentials.AccessToken))
+                    await Login(new Credentials(credentials.AccessToken));
+                else if (!string.IsNullOrEmpty(credentials.Logon))
+                    await Login(new Credentials(credentials.Logon, credentials.Password));
+            }
         }
 
         private async Task<bool> Login([NotNull] Credentials credentials)
         {
             log.Info("Logging in with credentials");
             _github.Credentials = credentials;
-            Cache.SaveCredentials(credentials.Login, credentials.Password);
+            Cache.SaveCredentials(credentials.Login, credentials.Password, credentials.GetToken());
             var newAuth = new NewAuthorization
             {
                 Scopes = new[] { "user", "repo" },
@@ -259,9 +270,14 @@ namespace Alteridem.GitHub.Model
 
             try
             {
-                var auth = await _github.Authorization.GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth);
-                log.Info("Successfully logged in to GitHub");
-                Token = auth.Token;
+                Token = credentials.GetToken();
+                if (string.IsNullOrEmpty(Token))
+                {
+                    var auth = await _github.Authorization.GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth);
+                    log.Info("Successfully logged in to GitHub");
+                    Token = auth.Token;
+                }
+
                 LoadData();
                 return true;
             }

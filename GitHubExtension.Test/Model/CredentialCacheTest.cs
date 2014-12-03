@@ -38,7 +38,7 @@ namespace Alteridem.GitHub.Extension.Test.Model
         [Test]
         public void TestRoundTrip()
         {
-            var credentials = new CredentialCache { Logon = "user", Password = "password" };
+            var credentials = new CredentialCache { Logon = "user", Password = "password", AccessToken = string.Empty };
             var cache = credentials.ToString();
             Assert.That(cache, Is.Not.Null);
             Assert.That(cache, Is.StringContaining("user"));
@@ -48,6 +48,7 @@ namespace Alteridem.GitHub.Extension.Test.Model
             Assert.That(parsed, Is.Not.Null);
             Assert.That(parsed.Logon, Is.EqualTo("user"));
             Assert.That(parsed.Password, Is.EqualTo("password"));
+            Assert.That(parsed.AccessToken, Is.EqualTo(string.Empty));
         }
 
         [Test]

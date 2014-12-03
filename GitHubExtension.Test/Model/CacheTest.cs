@@ -48,11 +48,12 @@ namespace Alteridem.GitHub.Extension.Test.Model
         [Test]
         public void TestCredentials()
         {
-            Cache.Credentials = new CredentialCache { Logon = "user", Password = "password" };
+            Cache.Credentials = new CredentialCache { Logon = "user", Password = "password", AccessToken = string.Empty };
             var cached = Cache.Credentials;
             Assert.That(cached, Is.Not.Null);
             Assert.That(cached.Logon, Is.EqualTo("user"));
             Assert.That(cached.Password, Is.EqualTo("password"));
+            Assert.That(cached.AccessToken, Is.EqualTo(string.Empty));
 
             Cache.Credentials = null;
             Assert.That(Cache.Credentials, Is.Null);

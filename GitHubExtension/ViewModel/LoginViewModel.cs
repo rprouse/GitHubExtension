@@ -38,6 +38,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
     {
         private ILoginView _view;
         private string _username;
+        private string _accessToken;
         private string _message;
         private ICommand _logonCommand;
 
@@ -54,6 +55,17 @@ namespace Alteridem.GitHub.Extension.ViewModel
             {
                 if (value == _username) return;
                 _username = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string AccessToken
+        {
+            get { return _accessToken; }
+            set
+            {
+                if (value == _accessToken) return;
+                _accessToken = value;
                 OnPropertyChanged();
             }
         }
@@ -82,7 +94,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public bool CanLogon()
         {
-            return !string.IsNullOrWhiteSpace(Username);
+            return !string.IsNullOrWhiteSpace(Username)
+                || !string.IsNullOrEmpty(AccessToken);
         }
 
         public async void Logon(object parameter)
@@ -98,7 +111,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
             try
             {
-                if ( await GitHubApi.Login(Username, pass.Password) )
+                if ( await GitHubApi.Login(Username, pass.Password, AccessToken) )
                     _view.Close();
             }
             catch (Exception e)
