@@ -35,7 +35,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public LabelModel(Label label)
         {
-            Checked = false;
+            _checked = false;
             _label = label;
         }
 
