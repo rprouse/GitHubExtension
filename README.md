@@ -53,9 +53,12 @@ If you ever want to revoke the token, visit the GitHub Applications settings pag
 
 ## Building ##
 
-You will need the Visual Studio 2013 SDK installed.
+This project supports Visual Studio 2012 and newer. You will need the Visual Studio SDK installed for the particular version of Visual Studio you are testing.
 
 Set the GitHub `CLIENT_ID` and `CLIENT_SECRET` in `Secrets.cs` which is in the 
 `Model` folder of the `GitHubIssues` project.
 
-To debug, simply set `GitHubExtension` as the startup project and hit F5
+To debug, 
+
+1. Set `GitHubExtension` as the startup project
+2. Select **Debug** &rarr; **Start Debugging**
