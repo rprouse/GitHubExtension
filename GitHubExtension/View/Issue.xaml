@@ -61,7 +61,7 @@
                 FontSize="16" 
                 Width="30" Height="30" 
                 Margin="6px" 
-                ToolTip="Add Comment"/>
+                ToolTip="Add Comment or Close Issue"/>
             <Button 
                 DockPanel.Dock="Right"
                 Command="{Binding Path=EditIssueCommand}"
