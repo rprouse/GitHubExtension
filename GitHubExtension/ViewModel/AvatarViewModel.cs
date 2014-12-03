@@ -26,7 +26,7 @@ using Alteridem.GitHub.Extension.Interfaces;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class AvatarViewModel : BaseViewModel, IAvatar
+    public class AvatarViewModel : BaseGitHubViewModel, IAvatar
     {
         private string _avatarUrl;
         private double _size;

@@ -40,23 +40,23 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
     [RequiresSTA]
     public class LoginTest
     {
-        private LoginViewModel _viewModel;
+        private LoginViewModel _gitHubViewModel;
 
         [SetUp]
         public void SetUp()
         {
             Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
             Factory.Rebind<ILoginView>().To<LoginViewMock>();
-            _viewModel = Factory.Get<LoginViewModel>();
+            _gitHubViewModel = Factory.Get<LoginViewModel>();
         }
 
         [Test]
         public void TestCanLogon()
         {
-            _viewModel.Username = "";
-            Assert.That(_viewModel.CanLogon(), Is.False);
-            _viewModel.Username = "user";
-            Assert.That(_viewModel.CanLogon(), Is.True);
+            _gitHubViewModel.Username = "";
+            Assert.That(_gitHubViewModel.CanLogon(), Is.False);
+            _gitHubViewModel.Username = "user";
+            Assert.That(_gitHubViewModel.CanLogon(), Is.True);
         }
 
         [Test]
@@ -66,8 +66,8 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
             api.Logout();
             Assert.That(api.LoggedIn, Is.False);
 
-            _viewModel.Username = "user";
-            _viewModel.Logon(new PasswordBox());
+            _gitHubViewModel.Username = "user";
+            _gitHubViewModel.Logon(new PasswordBox());
 
             Assert.That(api.LoggedIn, Is.True);
         }

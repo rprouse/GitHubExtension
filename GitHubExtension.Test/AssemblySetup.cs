@@ -34,7 +34,7 @@ namespace Alteridem.GitHub.Extension.Test
         [SetUp]
         public void SetUp()
         {
-            Factory.AddAssembly(Assembly.GetAssembly(typeof(BaseViewModel)));
+            Factory.AddAssembly(Assembly.GetAssembly(typeof(BaseGitHubViewModel)));
             Factory.AddAssembly(Assembly.GetExecutingAssembly());
         }
     }

@@ -39,29 +39,29 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
     [TestFixture]
     public class AddCommentTest
     {
-        private AddCommentViewModel _viewModel;
+        private AddCommentViewModel _gitHubViewModel;
 
         [SetUp]
         public void SetUp()
         {
             Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
             Factory.Rebind<IAddComment>().To<AddCommentMock>();
-            _viewModel = Factory.Get<AddCommentViewModel>();
+            _gitHubViewModel = Factory.Get<AddCommentViewModel>();
         }
 
         [Test]
         public void TestCanCloseIssue()
         {
-            Assert.That(_viewModel.CanCloseIssue(), Is.True);
+            Assert.That(_gitHubViewModel.CanCloseIssue(), Is.True);
         }
 
         [Test]
         public void TestCanCommentOnIssue()
         {
-            _viewModel.Comment = "";
-            Assert.That(_viewModel.CanCommentOnIssue(), Is.False);
-            _viewModel.Comment = "comment";
-            Assert.That(_viewModel.CanCommentOnIssue(), Is.True);
+            _gitHubViewModel.Comment = "";
+            Assert.That(_gitHubViewModel.CanCommentOnIssue(), Is.False);
+            _gitHubViewModel.Comment = "comment";
+            Assert.That(_gitHubViewModel.CanCommentOnIssue(), Is.True);
         }
 
         [Test]
@@ -71,8 +71,8 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
             var api = Factory.Get<GitHubApiBase>();
             api.IssueMarkdown = "Issue body";
 
-            _viewModel.Comment = "TestCommentOnIssue";
-            _viewModel.OnCommentOnIssue(dlg);
+            _gitHubViewModel.Comment = "TestCommentOnIssue";
+            _gitHubViewModel.OnCommentOnIssue(dlg);
 
             Assert.That(api.IssueMarkdown, Contains.Substring("TestCommentOnIssue"));
         }
@@ -85,8 +85,8 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
             api.Issue.State = ItemState.Open;
             api.IssueMarkdown = "Issue body";
 
-            _viewModel.Comment = "TestCommentOnIssue";
-            _viewModel.OnCloseIssue(dlg);
+            _gitHubViewModel.Comment = "TestCommentOnIssue";
+            _gitHubViewModel.OnCloseIssue(dlg);
 
             Assert.That(api.Issue.State, Is.EqualTo(ItemState.Closed));
             Assert.That(api.IssueMarkdown, Contains.Substring("TestCommentOnIssue"));

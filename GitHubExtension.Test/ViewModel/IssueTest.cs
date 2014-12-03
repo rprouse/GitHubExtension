@@ -38,7 +38,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
     [TestFixture]
     public class IssueTest
     {
-        private IssueViewModel _viewModel;
+        private IssueViewModel _gitHubViewModel;
 
         [SetUp]
         public void SetUp()
@@ -47,32 +47,32 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
             Factory.Rebind<ILoginView>().To<LoginViewMock>();
             Factory.Rebind<IIssueEditor>().To<IssueEditorMock>();
             Factory.Rebind<IAddComment>().To<AddCommentMock>();
-            _viewModel = Factory.Get<IssueViewModel>();
+            _gitHubViewModel = Factory.Get<IssueViewModel>();
         }
 
         [Test]
         public void TestIssue()
         {
-            Assert.That(_viewModel.Issue, Is.Not.Null);
-            Assert.That(_viewModel.Issue.Title, Is.EqualTo("title"));
+            Assert.That(_gitHubViewModel.Issue, Is.Not.Null);
+            Assert.That(_gitHubViewModel.Issue.Title, Is.EqualTo("title"));
         }
 
         [Test]
         public void TestIssueMarkdown()
         {
-            Assert.That(_viewModel.IssueMarkdown, Is.EqualTo("##body##"));
+            Assert.That(_gitHubViewModel.IssueMarkdown, Is.EqualTo("##body##"));
         }
 
         [Test]
         public void TestCanAddComment()
         {
-            Assert.That(_viewModel.CanAddComment(), Is.True);
+            Assert.That(_gitHubViewModel.CanAddComment(), Is.True);
         }
 
         [Test]
         public void TestCanEditIssue()
         {
-            Assert.That(_viewModel.CanEditIssue(), Is.True);
+            Assert.That(_gitHubViewModel.CanEditIssue(), Is.True);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
             var api = Factory.Get<GitHubApiBase>();
             api.IssueMarkdown = "body";
 
-            _viewModel.AddComment();
+            _gitHubViewModel.AddComment();
 
             Assert.That(api.IssueMarkdown, Contains.Substring("new comment"));
         }
@@ -94,7 +94,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
             api.Issue.Title = "title";
             api.Issue.Body = "body";
 
-            _viewModel.EditIssue();
+            _gitHubViewModel.EditIssue();
 
             Assert.That(api.Issue.Title, Contains.Substring("new title"));
             Assert.That(api.Issue.Body, Contains.Substring("new body"));

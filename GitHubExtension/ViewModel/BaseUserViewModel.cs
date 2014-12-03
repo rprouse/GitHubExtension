@@ -33,7 +33,7 @@ using Alteridem.GitHub.Extension.View;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class BaseUserViewModel : BaseViewModel
+    public class BaseUserViewModel : BaseGitHubViewModel
     {
         private ICommand _loginCommand;
 

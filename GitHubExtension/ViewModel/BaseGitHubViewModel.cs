@@ -24,38 +24,31 @@
 
 #region Using Directives
 
-using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
-using Octokit;
+using System.ComponentModel;
+using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Model;
 
 #endregion
 
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.ViewModel
 {
-    /// <summary>
-    /// Interaction logic for EditIssue.xaml
-    /// </summary>
-    public partial class IssueEditor : IIssueEditor
+    public class BaseGitHubViewModel : BaseViewModel
     {
-        private readonly IssueEditorViewModel _gitHubViewModel;
-
-        public IssueEditor()
+        public BaseGitHubViewModel()
         {
-            InitializeComponent();
-            _gitHubViewModel = Factory.Get<IssueEditorViewModel>();
-            DataContext = _gitHubViewModel;
+            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
         }
 
-        public Window Window { get { return this; } }
-
-        /// <summary>
-        /// Sets the issue to add/edit. If null, we are adding, if set, we edit
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        public void SetIssue(Octokit.Issue issue)
+        [NotNull]
+        internal GitHubApiBase GitHubApi
         {
-            _gitHubViewModel.SetIssue(issue);
+            get { return Factory.Get<GitHubApiBase>(); }
+        }
+
+        private void GitHubApiPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Our properties are named the same, so just chain them
+            OnPropertyChanged(e.PropertyName);
         }
     }
 }

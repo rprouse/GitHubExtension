@@ -34,7 +34,7 @@ using Alteridem.GitHub.Extension.View;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : BaseGitHubViewModel
     {
         private ILoginView _view;
         private string _username;

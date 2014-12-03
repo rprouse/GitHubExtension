@@ -39,17 +39,16 @@ using Issue = Octokit.Issue;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class IssueEditorViewModel : BaseViewModel
+    public class IssueEditorViewModel : BaseGitHubViewModel
     {
         private readonly Repository _repository;
-        private BindingList<Label> _labels;
+        private BindingList<LabelModel> _labels;
         private int _issueNumber;
         private Milestone _milestone;
         private User _assignee;
         private string _body = string.Empty;
         private string _title = string.Empty;
         private BindingList<Milestone> _milestones;
-        private BindingList<Label> _allLabels;
         private BindingList<User> _assignees;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -60,16 +59,16 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
             Assignees = new BindingList<User>();
 
-            Labels = new BindingList<Label>();
-            AllLabels = new BindingList<Label>();
+            Labels = new BindingList<LabelModel>();
             foreach (var label in GitHubApi.Labels)
-                AllLabels.Add(label);
+                Labels.Add(new LabelModel(label, false));
+
             Milestones = new BindingList<Milestone>();
             foreach (var milestone in GitHubApi.Milestones)
                 Milestones.Add(milestone);
 
             // The lists contain non-items
-            if (AllLabels.Count > 0) AllLabels.RemoveAt(0);
+            if (Labels.Count > 0) Labels.RemoveAt(0);
             if (Milestones.Count > 0) Milestones.RemoveAt(0);
             if (Milestones.Count > 0) Milestones.RemoveAt(0);
 
@@ -77,6 +76,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
             CancelCommand = new RelayCommand(Cancel, p => true);
             ClearAssigneeCommand = new RelayCommand(p => Assignee = null, p => Assignee != null);
             ClearMilestoneCommand = new RelayCommand(p => Milestone = null, p => Milestone != null);
+            SetLabelsCommand = new RelayCommand(SetLabels, p => true);
+            CloseLabelPickerCommand = new RelayCommand(CloseLabelPicker, p => true);
         }
 
         /// <summary>
@@ -108,10 +109,10 @@ namespace Alteridem.GitHub.Extension.ViewModel
         /// <param name="label"></param>
         private void AddLabel(Label label)
         {
-            var labels = from l in AllLabels
+            var labels = from l in Labels
                          where l.Url == label.Url
                          select l;
-            labels.ToList().ForEach(l => Labels.Add(l));
+            labels.ToList().ForEach(l => l.Checked = true);
         }
 
         /// <summary>
@@ -157,6 +158,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public ICommand CancelCommand { get; private set; }
         public ICommand ClearAssigneeCommand { get; private set; }
         public ICommand ClearMilestoneCommand { get; private set; }
+        public ICommand SetLabelsCommand { get; private set; }
+        public ICommand CloseLabelPickerCommand { get; private set; }
 
         public string Title
         {
@@ -191,7 +194,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             }
         }
 
-        public BindingList<Label> Labels
+        public BindingList<LabelModel> Labels
         {
             get { return _labels; }
             set
@@ -209,20 +212,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
             {
                 if (Equals(value, _milestone)) return;
                 _milestone = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// All the labels available
-        /// </summary>
-        public BindingList<Label> AllLabels
-        {
-            get { return _allLabels; }
-            set
-            {
-                if (Equals(value, _allLabels)) return;
-                _allLabels = value;
                 OnPropertyChanged();
             }
         }
@@ -305,7 +294,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
             issue.Milestone = Milestone != null ? Milestone.Number : 0;
 
-            foreach (var label in Labels)
+            foreach (var label in Labels.Where(l => l.Checked))
                 issue.Labels.Add(label.Name);
 
             GitHubApi.SaveIssue(_repository, issue);
@@ -319,8 +308,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
             issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
             issue.Milestone = Milestone != null ? Milestone.Number : 0;
 
-            foreach (var label in Labels)
-                issue.Labels.Add(label.Name);
+            foreach (var label in Labels.Where(l => l.Checked))
+                issue.AddLabel(label.Name);
 
             GitHubApi.UpdateIssue(_repository, _issueNumber, issue);
         }
@@ -328,6 +317,20 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public bool CanSave()
         {
             return _repository != null && !string.IsNullOrWhiteSpace(Title);
+        }
+
+        private void SetLabels(object obj)
+        {
+            var dlg = Factory.Get<ILabelPicker>();
+            dlg.SetViewModel(this);
+            dlg.ShowModal();
+        }
+
+        private void CloseLabelPicker(object o)
+        {
+            var closable = o as IClosable;
+            if (closable != null)
+                closable.Close();
         }
     }
 }

@@ -34,7 +34,7 @@ using Issue = Octokit.Issue;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class AddCommentViewModel : BaseViewModel
+    public class AddCommentViewModel : BaseGitHubViewModel
     {
         private readonly Issue _issue;
         private string _comment;

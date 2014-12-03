@@ -22,40 +22,46 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
-using System.Windows;
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
+using System;
 using Octokit;
 
-#endregion
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.ViewModel
 {
-    /// <summary>
-    /// Interaction logic for EditIssue.xaml
-    /// </summary>
-    public partial class IssueEditor : IIssueEditor
+    public class LabelModel : BaseViewModel
     {
-        private readonly IssueEditorViewModel _gitHubViewModel;
+        private readonly Label _label;
+        private bool _checked;
 
-        public IssueEditor()
+        public LabelModel(Label label, bool isChecked)
         {
-            InitializeComponent();
-            _gitHubViewModel = Factory.Get<IssueEditorViewModel>();
-            DataContext = _gitHubViewModel;
+            Checked = isChecked;
+            _label = label;
         }
 
-        public Window Window { get { return this; } }
-
-        /// <summary>
-        /// Sets the issue to add/edit. If null, we are adding, if set, we edit
-        /// </summary>
-        /// <param name="issue">The issue.</param>
-        public void SetIssue(Octokit.Issue issue)
+        public string Name
         {
-            _gitHubViewModel.SetIssue(issue);
+            get { return _label.Name; }
+        }
+
+        public string Color
+        {
+            get { return _label.Color; }
+        }
+
+        public Uri Url
+        {
+            get { return _label.Url; }
+        }
+
+        public bool Checked
+        {
+            get { return _checked; }
+            set
+            {
+                if (Equals(value, _checked)) return;
+                _checked = value;
+                OnPropertyChanged();
+            }
         }
     }
 }

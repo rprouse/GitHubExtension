@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
         xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
         xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.12.0"
@@ -21,20 +20,13 @@
         <TextBox DockPanel.Dock="Top" Style="{StaticResource TextBox}" Text="{Binding Path=Title, Mode=TwoWay}" />
 
         <Label DockPanel.Dock="Top" Content="Labels" Style="{StaticResource Label}"/>
-        <xctk:CheckComboBox Name="IssuesCombo"
-            DockPanel.Dock="Top" 
-            Style="{StaticResource CheckComboBox}"
-            DisplayMemberPath="Name"
-            ItemsSource="{Binding Path=AllLabels}"
-            SelectedItemsOverride="{Binding Path=Labels, Mode=TwoWay}" >
-            <xctk:CheckComboBox.Background>
-                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
-                </LinearGradientBrush>
-            </xctk:CheckComboBox.Background>
-        </xctk:CheckComboBox>
-
+        <Button DockPanel.Dock="Top" 
+                Content="Labels" 
+                Command="{Binding Path=SetLabelsCommand}"
+                Height="30" 
+                Foreground="#FF333333" 
+                Margin="12,0,12,0" />
+        
         <Label DockPanel.Dock="Top" Content="Assignee" Style="{StaticResource Label}"/>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource ComboBoxDockPanel}">
             <Button 

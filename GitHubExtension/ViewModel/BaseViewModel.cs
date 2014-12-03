@@ -27,7 +27,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Model;
 
 #endregion
 
@@ -35,23 +34,6 @@ namespace Alteridem.GitHub.Extension.ViewModel
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public BaseViewModel()
-        {
-            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
-        }
-
-        [NotNull]
-        internal GitHubApiBase GitHubApi
-        {
-            get { return Factory.Get<GitHubApiBase>(); }
-        }
-
-        private void GitHubApiPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // Our properties are named the same, so just chain them
-            OnPropertyChanged(e.PropertyName);
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
