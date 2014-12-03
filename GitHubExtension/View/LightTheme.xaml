@@ -3,6 +3,7 @@
                     xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub">
 
     <converters:StringToColorConverter x:Key="ColorConverter" />
+    <converters:StringToInverseColorConverter x:Key="InverseColorConverter" />
     <converters:MarkdownConverter x:Key="MarkdownConverter" />
     
     <DataTemplate x:Key="LabelTemplate">

@@ -23,18 +23,19 @@
 // **********************************************************************************
 
 using System;
+using Alteridem.GitHub.Extension.Interfaces;
 using Octokit;
 
 namespace Alteridem.GitHub.Extension.ViewModel
 {
-    public class LabelModel : BaseViewModel
+    public class LabelModel : BaseViewModel, ILabel
     {
         private readonly Label _label;
         private bool _checked;
 
-        public LabelModel(Label label, bool isChecked)
+        public LabelModel(Label label)
         {
-            Checked = isChecked;
+            Checked = false;
             _label = label;
         }
 

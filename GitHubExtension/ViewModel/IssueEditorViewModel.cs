@@ -61,7 +61,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
             Labels = new BindingList<LabelModel>();
             foreach (var label in GitHubApi.Labels)
-                Labels.Add(new LabelModel(label, false));
+                Labels.Add(new LabelModel(label));
 
             Milestones = new BindingList<Milestone>();
             foreach (var milestone in GitHubApi.Milestones)

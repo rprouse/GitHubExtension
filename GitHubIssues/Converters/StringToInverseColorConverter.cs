@@ -1,4 +1,4 @@
-﻿// **********************************************************************************
+// **********************************************************************************
 // The MIT License (MIT)
 // 
 // Copyright (c) 2014 Rob Prouse
@@ -22,14 +22,18 @@
 // 
 // **********************************************************************************
 
+#region Using Directives
+
 using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
+#endregion
+
 namespace Alteridem.GitHub.Converters
 {
-    public class StringToColorConverter : IValueConverter
+    public class StringToInverseColorConverter : IValueConverter
     {
         /// <summary>
         /// Converts a value. 
@@ -41,8 +45,16 @@ namespace Alteridem.GitHub.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var colorString = value as string;
-            var color = colorString.ParseColor();
-            return new SolidColorBrush(color);
+            var background = colorString.ParseColor();
+            var hsb = background.ToHsb();
+            var foreground = Colors.White;
+
+            if ( (hsb.B > 0.6 && hsb.S < 0.4) || (hsb.B > 0.7 && hsb.H > 40 && hsb.H < 200))
+            {
+                hsb.B = 0.4F;
+                foreground = hsb.ToRgb();
+            }
+            return new SolidColorBrush(foreground);
         }
 
         /// <summary>

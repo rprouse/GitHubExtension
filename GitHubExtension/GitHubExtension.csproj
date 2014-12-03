@@ -166,6 +166,7 @@
     <Compile Include="Interfaces\IIssueEditor.cs" />
     <Compile Include="Interfaces\IIssueToolWindow.cs" />
     <Compile Include="Interfaces\IIssueViewer.cs" />
+    <Compile Include="Interfaces\ILabel.cs" />
     <Compile Include="Interfaces\ILabelPicker.cs" />
     <Compile Include="Interfaces\ILoginView.cs" />
     <Compile Include="Interfaces\IDialogWindow.cs" />
