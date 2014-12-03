@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
         xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
-        xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.12.0"
+        xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.11.0"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModel:IssueEditorViewModel}"
         WindowStartupLocation="CenterOwner"
