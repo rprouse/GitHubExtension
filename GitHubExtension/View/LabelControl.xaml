@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Alteridem.GitHub.Extension.View.LabelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub"
+             xmlns:interfaces="clr-namespace:Alteridem.GitHub.Extension.Interfaces"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance interfaces:ILabel}"
+             d:DesignHeight="20" d:DesignWidth="100">
+    <UserControl.Resources>
+        <converters:StringToColorConverter x:Key="ColorConverter" />
+        <converters:StringToInverseColorConverter x:Key="InverseColorConverter" />
+    </UserControl.Resources>
+    <Border Background="{Binding Path=Color, Converter={StaticResource ColorConverter}}" CornerRadius="2" >
+        <TextBlock Foreground="{Binding Path=Color, Converter={StaticResource InverseColorConverter}}" Text="{Binding Path=Name}" Margin="3,1,3,3"/>
+    </Border>
+</UserControl>

@@ -207,6 +207,9 @@
     <Compile Include="View\Issue.xaml.cs">
       <DependentUpon>Issue.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LabelControl.xaml.cs">
+      <DependentUpon>LabelControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LabelPicker.xaml.cs">
       <DependentUpon>LabelPicker.xaml</DependentUpon>
     </Compile>
@@ -286,6 +289,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Issue.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LabelControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

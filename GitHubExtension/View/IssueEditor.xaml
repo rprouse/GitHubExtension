@@ -42,9 +42,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <HierarchicalDataTemplate>
-                        <Border Background="{Binding Path=Color, Converter={StaticResource ColorConverter}}" CornerRadius="2" >
-                            <TextBlock Foreground="{Binding Path=Color, Converter={StaticResource InverseColorConverter}}" Text="{Binding Path=Name}" Margin="3,1,3,3"/>
-                        </Border>
+                        <view:LabelControl />
                     </HierarchicalDataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
