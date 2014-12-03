@@ -56,10 +56,4 @@ You will need the Visual Studio 2013 SDK installed.
 Set the GitHub `CLIENT_ID` and `CLIENT_SECRET` in `Secrets.cs` which is in the 
 `Model` folder of the `GitHubIssues` project.
 
-To debug, 
-
-1. Set `GitHubExtension` as the startup project
-2. Open the Project's properties
-3. Go to the Debug Tab
-4. **Start an external program:** C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe
-5. **Command line arguments:** /rootsuffix Exp 
+To debug, simply set `GitHubExtension` as the startup project and hit F5
