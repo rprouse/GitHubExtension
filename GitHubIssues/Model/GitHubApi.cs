@@ -58,7 +58,7 @@ namespace Alteridem.GitHub.Model
             _github = github;
             _error = reporter;
 
-            _allLabels = new Label { Color = "00000000", Name = "All Labels" };
+            _allLabels = new Label { Color = "FFFFFFFF", Name = "All Labels" };
             _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
             _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
 

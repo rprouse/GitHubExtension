@@ -36,7 +36,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
     {
         public BaseGitHubViewModel()
         {
-            GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
+            if(GitHubApi != null)
+                GitHubApi.PropertyChanged += GitHubApiPropertyChanged;
         }
 
         [NotNull]

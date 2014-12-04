@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
         xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.11.0"
         Title="Login to GitHub" 
-        Height="316" Width="300" 
+        Height="310" Width="379" 
         Foreground="#FF333333" 
         WindowStyle="None" 
         WindowStartupLocation="CenterOwner" 
@@ -21,46 +21,48 @@
             <Setter Property="TextElement.FontFamily" Value="/Alteridem.GitHub.Extension;Component/Fonts/#FontAwesome" />
         </Style>
     </platformUi:DialogWindow.Resources>
-    <Border Background="White" CornerRadius="12">
-        <Grid Margin="0,0,0,-5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="62" />
-                <RowDefinition Height="36" />
-                <RowDefinition Height="36" />
-                <RowDefinition Height="36" />
-                <RowDefinition Height="36" />
-                <RowDefinition Height="36" />
-                <RowDefinition Height="23"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="72"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="62"/>
-            </Grid.ColumnDefinitions>
+    <Border Background="#293133" CornerRadius="12" Padding="1">
+        <Border Background="White" CornerRadius="11">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="62" />
+                    <RowDefinition Height="32" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="32" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="23"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="62"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource FontAwesome}" FontSize="36" Text="&#xf09b;" />
-            <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="24" Text="Login to GitHub" />
+                <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource FontAwesome}" FontSize="36" Text="&#xf09b;" />
+                <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="24" Text="Login to GitHub" />
 
-            <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="6,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Username/Password"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="12,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Username/Password" FontWeight="Bold"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="Username:" VerticalAlignment="Center" Margin="6,10" Height="16" />
-            <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Margin="6" Text="{Binding Path=Username, Mode=OneWayToSource}" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Username:" VerticalAlignment="Center" Margin="18,10,6,10" Height="16" />
+                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Margin="6,6,12,6" Text="{Binding Path=Username, Mode=OneWayToSource}" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
 
-            <TextBlock Grid.Column="0" Grid.Row="3" Text="Password:" VerticalAlignment="Center" Margin="6,10" Height="16" />
-            <PasswordBox x:Name="PassText" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" ToolTip="Password"  Margin="6" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="Password:" VerticalAlignment="Center" Margin="18,10,6,10" Height="16" />
+                <PasswordBox x:Name="PassText" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" ToolTip="Password"  Margin="6,6,12,6" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
 
-            <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Margin="6,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Or Access Token"/>
+                <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Margin="12,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Or Access Token" FontWeight="Bold"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="5" Text="Token:" VerticalAlignment="Center" Margin="6,10" Height="16" />
-            <TextBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" ToolTip="User-specified Access Token" Margin="6" Text="{Binding Path=AccessToken, Mode=OneWayToSource}"/>
+                <TextBlock Grid.Column="0" Grid.Row="5" Text="Token:" VerticalAlignment="Center" Margin="18,10,6,10" Height="16" />
+                <TextBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" ToolTip="User-specified Access Token" Margin="6,6,12,6" Text="{Binding Path=AccessToken, Mode=OneWayToSource}"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" Margin="6,6,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Text="{Binding Path=Message, Mode=OneWay}"/>
+                <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" Margin="6,6,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Text="{Binding Path=Message, Mode=OneWay}"/>
 
-            <DockPanel Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" HorizontalAlignment="Right">
-                <Button Content="Login" Command="{Binding Path=LogonCommand}" CommandParameter="{Binding ElementName=PassText}" IsDefault="True" ToolTip="Login to GitHub" Padding="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,3,6" />
-                <Button Content="Cancel" IsCancel="True" Padding="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3,6,6,6" />
-            </DockPanel>
-        </Grid>
+                <DockPanel Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+                    <Button Content="Login" Command="{Binding Path=LogonCommand}" CommandParameter="{Binding ElementName=PassText}" IsDefault="True" ToolTip="Login to GitHub" Padding="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,3,6" />
+                    <Button Content="Cancel" IsCancel="True" Padding="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3,6,12,6" />
+                </DockPanel>
+            </Grid>
+        </Border>
     </Border>
 </platformUi:DialogWindow>

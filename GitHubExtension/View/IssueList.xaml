@@ -21,7 +21,7 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Repository.FullName}" />
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Repository.FullName}" Margin="0,0,3,0"/>
                 <Border 
                     Grid.Column="1" 
                     HorizontalAlignment="Right"
@@ -100,7 +100,7 @@
                       FontSize="11"
                       ItemsSource="{Binding Path=Repositories}" 
                       SelectedItem="{Binding Path=Repository}" 
-                      ItemTemplate="{StaticResource RepositoryTemplate}"/>
+                      ItemTemplate="{StaticResource RepositoryTemplate}" MinWidth="100"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" 
