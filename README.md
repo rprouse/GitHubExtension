@@ -13,10 +13,10 @@ The easiest way to download is by going to *Tools | Extensions* in Visual Studio
 
 ## Instructions ##
 
-- To view a list of open issues, go to *View | Other Windows | GitHub Issue List* (Ctrl+W, Ctrl+G)
+- To view a list of open issues, go to **View | Other Windows | GitHub Issue List** (Ctrl+W, Ctrl+G)
 - Log in to GitHub by clicking the logon icon at the upper right of the issue list window
-- Open the issue window by double clicking an issue in the list, or by going to *View | Other Windows | GitHub Issue Window* (Ctrl+W, Ctrl+H)
-- Add a new issue to the selected repository with the + button in the issue list, or from *Tools | New Issue on GitHub* (Ctrl+W, Ctrl+I)
+- Open the issue window by double clicking an issue in the list, or by going to **View | Other Windows | GitHub Issue Window** (Ctrl+W, Ctrl+H)
+- Add a new issue to the selected repository with the + button in the issue list, or from **Tools | New Issue on GitHub** (Ctrl+W, Ctrl+I)
 - Edit an issue with the edit button on the Issue window
 - Add comments to, or close and issue with the comment button on the issue window
 
@@ -28,7 +28,7 @@ We do not currently support GitHub's Two-Factor Authentication system. However, 
 2. Enter a description in the Token description field, like "Visual Studio token".
 3. Click Create Token.
 4. Your new Personal Access token will be displayed.
-5. Copy this token, and enter it as your GitHub password in the logon dialog. You can now log in as usual.
+5. Copy this token, and enter it in the Token text box in the logon dialog. You can now log in as usual.
 
 If you ever want to revoke the token, visit the GitHub Applications settings page and click Delete next to the key you wish to remove.
 
@@ -40,7 +40,7 @@ If you ever want to revoke the token, visit the GitHub Applications settings pag
 
 ### Login Window ###
 
-![Login](http://i.imgur.com/1kmTNER.png)
+![Login](/images/logon.png)
 
 ### Issue List ###
 
