@@ -22,6 +22,7 @@
 // 
 // **********************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -46,8 +47,12 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApiBase()
+        protected GitHubApiBase(Cache settingsCache)
         {
+            if (settingsCache == null)
+                throw new ArgumentNullException("settingsCache");
+
+            SettingsCache = settingsCache;
             _filter = IssueFilter.Assigned;
             Repositories = new BindingList<RepositoryWrapper>();
             Organizations = new BindingList<Organization>();
@@ -86,9 +91,9 @@ namespace Alteridem.GitHub.Model
             {
                 if (Equals(value, _repository)) return;
                 if (value != null)
-                    Cache.Repository = value.Repository.Id; // Save
+                    SettingsCache.Repository = value.Repository.Id; // Save
                 else
-                    Cache.Repository = 0;   // Delete
+                    SettingsCache.Repository = 0;   // Delete
                 _repository = value;
                 GetRepositoryInfo();
                 OnPropertyChanged();
@@ -189,6 +194,13 @@ namespace Alteridem.GitHub.Model
                 GetComments( _issue );
                 OnPropertyChanged();
             }
+        }
+
+        [NotNull]
+        protected Cache SettingsCache
+        {
+            get;
+            private set;
         }
 
         #endregion

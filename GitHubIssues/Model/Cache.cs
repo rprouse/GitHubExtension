@@ -22,37 +22,73 @@
 // 
 // **********************************************************************************
 
+#region Using Directives
+
+using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Settings;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Settings;
+
+#endregion
+
 namespace Alteridem.GitHub.Model
 {
-    public static class Cache
+    [Export]
+    public class Cache
     {
-        public static CredentialCache Credentials
+        private readonly SVsServiceProvider _serviceProvider;
+
+        [ImportingConstructor]
+        private Cache([Import] SVsServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        private WritableSettingsStore WritableSettingsStore
         {
             get
             {
-                string cached = Properties.Settings.Default.Credentials;
+                ShellSettingsManager shellSettingsManager = new ShellSettingsManager(_serviceProvider);
+                return shellSettingsManager.GetWritableSettingsStore(SettingsScope.UserSettings);
+            }
+        }
+
+        public CredentialCache Credentials
+        {
+            get
+            {
+                string cached = WritableSettingsStore.GetString("Alteridem.GitHubExtension", "Credentials", "");
                 return CredentialCache.FromString(cached);
             }
-            set { Properties.Settings.Default.Credentials = value != null ? value.ToString() : null; }
+
+            set
+            {
+                string credentials = value != null ? value.ToString() : null;
+                WritableSettingsStore.CreateCollection("Alteridem.GitHubExtension");
+                WritableSettingsStore.SetString("Alteridem.GitHubExtension", "Credentials", credentials ?? string.Empty);
+            }
         }
 
-        public static int Repository
+        public int Repository
         {
-            get { return Properties.Settings.Default.Repository; }
-            set { Properties.Settings.Default.Repository = value; }
+            get
+            {
+                return WritableSettingsStore.GetInt32("Alteridem.GitHubExtension", "Repository", 0);
+            }
+
+            set
+            {
+                WritableSettingsStore.CreateCollection("Alteridem.GitHubExtension");
+                WritableSettingsStore.SetInt32("Alteridem.GitHubExtension", "Repository", value);
+            }
         }
 
-        public static void SaveCredentials(string logon, string password, string accessToken)
+        public void SaveCredentials(string logon, string password, string accessToken)
         {
             if(!string.IsNullOrEmpty(logon) && !string.IsNullOrEmpty(password))
                 Credentials = new CredentialCache { Logon = logon, Password = password, AccessToken = string.Empty };
             else
                 Credentials = new CredentialCache { Logon = string.Empty, Password = string.Empty, AccessToken = accessToken };
-        }
-
-        public static void Save()
-        {
-            Properties.Settings.Default.Save();
         }
     }
 }
