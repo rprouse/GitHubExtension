@@ -64,7 +64,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         public void TestCanLogout()
         {
             var api = Factory.Get<GitHubApiBase>();
-            api.Login("user", "pass");
+            api.Login("user", "pass", null);
             Assert.That(api.LoggedIn, Is.True);
 
             _viewModel.Login();

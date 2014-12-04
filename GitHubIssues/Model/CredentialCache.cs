@@ -42,13 +42,14 @@ namespace Alteridem.GitHub.Model
 
         public string Logon { get; set; }
         public string Password { get; set; }
+        public string AccessToken { get; set; }
 
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         public override string ToString()
         {
-            return string.Format("{0}\t{1}", Logon, Encrypt(Password));
+            return string.Format("{0}\t{1}\t{2}", Logon, Encrypt(Password), Encrypt(AccessToken));
         }
 
         public static CredentialCache FromString(string cached)
@@ -56,13 +57,14 @@ namespace Alteridem.GitHub.Model
             if (String.IsNullOrWhiteSpace(cached))
                 return null;
 
-            var split = cached.Split(new[] { '\t' }, 2);
-            if (split.Length != 2)
+            var split = cached.Split(new[] { '\t' }, 3);
+            if (split.Length < 2 || split.Length > 3)
                 return null;
 
             try
             {
-                return new CredentialCache { Logon = split[0], Password = Decrypt(split[1]) };
+                string encryptedAccessToken = split.Length > 2 ? split[2] : null;
+                return new CredentialCache { Logon = split[0], Password = Decrypt(split[1]), AccessToken = Decrypt(encryptedAccessToken) };
             }
             catch (Exception)
             {
@@ -72,6 +74,9 @@ namespace Alteridem.GitHub.Model
 
         private static string Encrypt(string text)
         {
+            if (text == null)
+                return null;
+
             byte[] strBytes = Encoding.Unicode.GetBytes(text);
             byte[] encryptedBytes = ProtectedData.Protect(strBytes, s_entropy, DataProtectionScope.CurrentUser);
             return Convert.ToBase64String(encryptedBytes);
@@ -79,6 +84,9 @@ namespace Alteridem.GitHub.Model
 
         private static string Decrypt(string text)
         {
+            if (text == null)
+                return null;
+
             try
             {
                 byte[] strBytes = Convert.FromBase64String(text);

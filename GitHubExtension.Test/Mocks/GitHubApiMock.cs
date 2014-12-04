@@ -36,7 +36,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
         public GitHubApiMock()
         {
             // Log in
-            Login("test", "test");
+            Login("test", "test", null);
 
             // Set up a repository
             var repository = new Repository
@@ -61,7 +61,15 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             GetMilestones();
         }
 
-        public override Task<bool> Login(string username, string password)
+        public override bool HasClientId
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override Task<bool> Login(string username, string password, string accessToken)
         {
             Token = username + password;
             User = new User

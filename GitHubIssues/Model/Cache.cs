@@ -50,9 +50,9 @@ namespace Alteridem.GitHub.Model
             set { Properties.Settings.Default.Repository = value; }
         }
 
-        public static void SaveCredentials(string logon, string password)
+        public static void SaveCredentials(string logon, string password, string accessToken)
         {
-            Credentials = new CredentialCache { Logon = logon, Password = password };
+            Credentials = new CredentialCache { Logon = logon, Password = password, AccessToken = accessToken };
         }
 
         public static void Save()
