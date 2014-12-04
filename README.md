@@ -34,7 +34,6 @@ If you ever want to revoke the token, visit the GitHub Applications settings pag
 
 ## Credits ##
 
-- Bug Icon by [David Vignoni](http://www.icon-king.com/) (LGPL)
 - Button and application images by [Font Awesome](http://fortawesome.github.io/Font-Awesome/) ([SIL OFL 1.1](http://scripts.sil.org/OFL))
 
 ## Screenshots ##
