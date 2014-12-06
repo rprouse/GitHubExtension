@@ -22,22 +22,39 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Test.Mocks;
-using Alteridem.GitHub.Logging;
-using Ninject.Modules;
+#region Using Directives
 
-namespace Alteridem.GitHub.Extension.Test.Modules
+using Alteridem.GitHub.Logging;
+
+#endregion
+
+namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public class MocksModule : NinjectModule
+    public class OutputWriterMock : BaseOutputWriter
     {
+        public bool WriteMessageCalled { get; set; }
+        public bool ShowMessageCalled { get; set; }
+        public string LastMessageWritten { get; set; }
+        public string LastMessageShown { get; set; }
+
         /// <summary>
-        /// Loads the module into the kernel.
+        /// Logs the specified message.
         /// </summary>
-        public override void Load()
+        /// <param name="message">The message.</param>
+        protected override void WriteMessage(string message)
         {
-            //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
-            //Rebind<ILoginView>().To<LoginViewMock>();
-            Rebind<IOutputWriter>().To<OutputWriterMock>().InSingletonScope();
+            WriteMessageCalled = true;
+            LastMessageWritten = message;
+        }
+
+        /// <summary>
+        /// Shows the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected override void ShowMessage(string message)
+        {
+            ShowMessageCalled = true;
+            LastMessageShown = message;
         }
     }
 }

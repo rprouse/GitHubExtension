@@ -22,40 +22,17 @@
 // 
 // **********************************************************************************
 
-using System;
-using Alteridem.GitHub.Interfaces;
-using NLog;
-
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Logging
 {
-    public class ErrorReporter : IErrorReporter
+    /// <summary>
+    /// The level to log messages out
+    /// </summary>
+    public enum LogLevel
     {
-        private static readonly Logger log = LogManager.GetCurrentClassLogger( );
-
-        #region Implementation of IErrorReporter
-
-        /// <summary>
-        /// Shows the specified message to the user.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public void Show( string message )
-        {
-            log.Error( message );
-            VisualStudioMessageBox.Show( message );
-        }
-
-        /// <summary>
-        /// Shows the specified message to the user along with the exception information.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="ex">The exception.</param>
-        public void Show( string message, Exception ex )
-        {
-            log.Error( message, ex );
-            string formatted = string.Format( "{0}\r\n\r\n{1}:\r\n{2}", message, ex.GetType( ).Name, ex.Message );
-            VisualStudioMessageBox.Show( formatted );
-        }
-
-        #endregion
+        Debug = 0,
+        Info = 1,
+        Warn = 2,
+        Error = 3,
+        Fatal = 4
     }
 }

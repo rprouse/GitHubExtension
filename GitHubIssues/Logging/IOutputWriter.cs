@@ -22,22 +22,36 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Test.Mocks;
-using Alteridem.GitHub.Logging;
-using Ninject.Modules;
+using System;
 
-namespace Alteridem.GitHub.Extension.Test.Modules
+namespace Alteridem.GitHub.Logging
 {
-    public class MocksModule : NinjectModule
+    /// <summary>
+    /// Interface for logging and showing messages to the user
+    /// </summary>
+    public interface IOutputWriter
     {
         /// <summary>
-        /// Loads the module into the kernel.
+        /// Shows the specified message to the user.
         /// </summary>
-        public override void Load()
-        {
-            //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
-            //Rebind<ILoginView>().To<LoginViewMock>();
-            Rebind<IOutputWriter>().To<OutputWriterMock>().InSingletonScope();
-        }
+        /// <param name="level">The level at which to log the message</param>
+        /// <param name="message">The message.</param>
+        void Write(LogLevel level, string message);
+
+        /// <summary>
+        /// Shows the specified message to the user.
+        /// </summary>
+        /// <param name="level">The level at which to log the message</param>
+        /// <param name="message">The message.</param>
+        /// <param name="args">Arguments to the message</param>
+        void Write(LogLevel level, string message, params object[] args);
+
+        /// <summary>
+        /// Shows the specified message to the user along with the exception information.
+        /// </summary>
+        /// <param name="level">The level at which to log the message</param>
+        /// <param name="message">The message.</param>
+        /// <param name="ex">The exception.</param>
+        void Write(LogLevel level, string message, Exception ex);
     }
 }

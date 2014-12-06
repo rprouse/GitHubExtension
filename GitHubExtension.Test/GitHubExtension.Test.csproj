@@ -125,13 +125,15 @@
     <Compile Include="AssemblySetup.cs" />
     <Compile Include="Converters\MarkdownConverterTest.cs" />
     <Compile Include="Converters\StringToColorConverterTest.cs" />
-    <Compile Include="Mocks\ErrorReporterMock.cs" />
+    <Compile Include="Mocks\ResponseMock.cs" />
+    <Compile Include="Mocks\OutputWriterMock.cs" />
     <Compile Include="Mocks\GitHubApiMock.cs" />
     <Compile Include="Mocks\LoginViewMock.cs" />
     <Compile Include="Model\CacheTest.cs" />
     <Compile Include="Model\CredentialCacheTest.cs" />
     <Compile Include="Model\RepositoryWrapperTest.cs" />
     <Compile Include="Modules\MocksModule.cs" />
+    <Compile Include="OutputWriterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mocks\AddCommentMock.cs" />
     <Compile Include="ViewModel\AddCommentTest.cs" />

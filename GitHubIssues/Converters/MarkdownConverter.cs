@@ -25,13 +25,13 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using NLog;
+using Alteridem.GitHub.Logging;
 
 namespace Alteridem.GitHub.Converters
 {
     public class MarkdownConverter : IValueConverter
     {
-        private static readonly Logger log = LogManager.GetCurrentClassLogger( );
+        private static IOutputWriter _log = Factory.Get<IOutputWriter>();
 
         /// <summary>
         /// Converts a value. 
@@ -58,7 +58,7 @@ namespace Alteridem.GitHub.Converters
             }
             catch (FormatException e)
             {
-                log.Error( "Failed to create HTML", e );
+                _log.Write(LogLevel.Warn, "Failed to create Markdown HTML", e );
             }
             return string.Empty;
         }

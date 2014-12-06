@@ -23,22 +23,24 @@
 // **********************************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.Net;
+using Octokit;
 
-namespace Alteridem.GitHub.Interfaces
+namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public interface IErrorReporter
+    public class ResponseMock : IResponse
     {
-        /// <summary>
-        /// Shows the specified message to the user.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        void Show( string message );
-
-        /// <summary>
-        /// Shows the specified message to the user along with the exception information.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="ex">The exception.</param>
-        void Show( string message, Exception ex );
+        public ResponseMock()
+        {
+            Headers = new Dictionary<string, string>();
+        }
+        public object BodyAsObject { get; set; }
+        public string Body { get; set; }
+        public Dictionary<string, string> Headers { get; private set; }
+        public Uri ResponseUri { get; set; }
+        public ApiInfo ApiInfo { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
+        public string ContentType { get; set; }
     }
 }

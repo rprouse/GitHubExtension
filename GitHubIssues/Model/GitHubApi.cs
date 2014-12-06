@@ -31,8 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Interfaces;
-using NLog;
+using Alteridem.GitHub.Logging;
 using Octokit;
 
 #endregion
@@ -43,9 +42,8 @@ namespace Alteridem.GitHub.Model
     {
         #region Members
 
-        private static readonly Logger log = LogManager.GetCurrentClassLogger();
         private readonly GitHubClient _github;
-        private readonly IErrorReporter _error;
+        private readonly IOutputWriter _log;
         private bool _gettingIssues;
         private readonly Label _allLabels;
         private readonly Milestone _noMilestone;
@@ -53,10 +51,10 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApi(GitHubClient github, IErrorReporter reporter)
+        public GitHubApi(GitHubClient github, IOutputWriter logWriter)
         {
             _github = github;
-            _error = reporter;
+            _log = logWriter;
 
             _allLabels = new Label { Color = "FFFFFFFF", Name = "All Labels" };
             _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
@@ -89,7 +87,7 @@ namespace Alteridem.GitHub.Model
 
         public override void Logout()
         {
-            log.Info("Logging out of GitHub");
+            _log.Write(LogLevel.Info, "Logging out of GitHub");
             base.Logout();
             Cache.Credentials = null;
             User = null;
@@ -145,7 +143,7 @@ namespace Alteridem.GitHub.Model
             }
             catch ( Exception exception )
             {
-                _error.Show( "Failed to fetch comments for issue.", exception );
+                _log.Write( LogLevel.Error, "Failed to fetch comments for issue.", exception );
             }
         }
 
@@ -163,7 +161,7 @@ namespace Alteridem.GitHub.Model
             }
             catch ( Exception exception )
             {
-                _error.Show( "Failed to add comment to issue.", exception );
+                _log.Write(LogLevel.Error, "Failed to add comment to issue.", exception );
             }
         }
 
@@ -189,7 +187,7 @@ namespace Alteridem.GitHub.Model
             }
             catch ( Exception exception )
             {
-                _error.Show( "Failed to update issue.", exception );
+                _log.Write(LogLevel.Error, "Failed to update issue.", exception );
             }
         }
 
@@ -201,7 +199,7 @@ namespace Alteridem.GitHub.Model
             }
             catch ( Exception exception )
             {
-                log.Error( "Failed to fetch assignees", exception );
+                _log.Write(LogLevel.Warn, "Failed to fetch assignees", exception);
                 return new List<User>( );
             }
         }
@@ -219,7 +217,7 @@ namespace Alteridem.GitHub.Model
             }
             catch ( Exception exception )
             {
-                _error.Show( "Failed to save issue.", exception );
+                _log.Write(LogLevel.Error, "Failed to save issue.", exception);
             }
         }
 
@@ -244,7 +242,7 @@ namespace Alteridem.GitHub.Model
             }
             catch ( Exception exception )
             {
-                _error.Show( "Failed to save issue.", exception );
+                _log.Write(LogLevel.Error, "Failed to save issue.", exception);
             }
         }
 
@@ -266,7 +264,7 @@ namespace Alteridem.GitHub.Model
 
         private async Task<bool> Login([NotNull] Credentials credentials)
         {
-            log.Info("Logging in with credentials");
+            _log.Write(LogLevel.Debug, "Logging in with credentials");
             _github.Credentials = credentials;
             Cache.SaveCredentials(credentials.Login, credentials.Password, credentials.GetToken());
             var newAuth = new NewAuthorization
@@ -282,7 +280,7 @@ namespace Alteridem.GitHub.Model
                 if (string.IsNullOrEmpty(Token))
                 {
                     var auth = await _github.Authorization.GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth);
-                    log.Info("Successfully logged in to GitHub");
+                    _log.Write(LogLevel.Info, "Successfully logged in to GitHub");
                     Token = auth.Token;
                 }
 
@@ -291,7 +289,7 @@ namespace Alteridem.GitHub.Model
             }
             catch (Exception ex)
             {
-                log.Warn("Failed to login", ex);
+                _log.Write(LogLevel.Warn, "Failed to login", ex);
                 Logout();
                 throw;
             }
@@ -305,21 +303,21 @@ namespace Alteridem.GitHub.Model
 
         private async void GetUser()
         {
-            log.Info("Fetching current user");
+            _log.Write(LogLevel.Debug, "Fetching current user");
             try
             {
                 User = await _github.User.Current();
-                log.Info("Finished fetching current user");
+                _log.Write(LogLevel.Debug, "Finished fetching current user");
             }
             catch (Exception ex)
             {
-                log.Error("Failed to fetch current user", ex);
+                _log.Write(LogLevel.Warn, "Failed to fetch current user", ex);
             }
         }
 
         private async void GetRepositories()
         {
-            log.Info("Fetching repositories for current user");
+            _log.Write(LogLevel.Debug, "Fetching repositories for current user");
             Repositories.Clear();
             Organizations.Clear();
 
@@ -337,7 +335,7 @@ namespace Alteridem.GitHub.Model
             }
             catch ( Exception exception )
             {
-                log.Error( "Failed to get repository data", exception );
+                _log.Write(LogLevel.Warn, "Failed to get repository data", exception);
             }
         }
 
@@ -345,7 +343,7 @@ namespace Alteridem.GitHub.Model
         {
             foreach (var repository in repositories)
             {
-                log.Debug("Fetched repository {0}", repository.FullName);
+                _log.Write(LogLevel.Debug, "Fetched repository {0}", repository.FullName);
                 if (repository.HasIssues)
                     Repositories.Add(new RepositoryWrapper(repository));
             }
@@ -353,7 +351,7 @@ namespace Alteridem.GitHub.Model
 
         private void OnRepositoriesComplete()
         {
-            log.Info("Finished fetching organizations for current user");
+            _log.Write(LogLevel.Debug, "Finished fetching organizations for current user");
             int id = Cache.Repository;
 
             var wrapper = (from r in Repositories where r.Repository.Id == id select r).FirstOrDefault();
@@ -385,7 +383,7 @@ namespace Alteridem.GitHub.Model
                 }
                 catch ( Exception exception )
                 {
-                    log.Error( "Failed to get labels for repository", exception );
+                    _log.Write(LogLevel.Warn, "Failed to get labels for repository", exception);
                 }
             }
         }
@@ -412,14 +410,14 @@ namespace Alteridem.GitHub.Model
                 }
                 catch ( Exception exception )
                 {
-                    log.Error( "Failed to get milestones for repository", exception );
+                    _log.Write(LogLevel.Warn, "Failed to get milestones for repository", exception);
                 }
             }
         }
 
         private async Task GetIssues(string owner, string name, RepositoryIssueRequest request)
         {
-            log.Info("Fetching repositories for {0}/{1}", owner, name);
+            _log.Write(LogLevel.Debug, "Fetching repositories for {0}/{1}", owner, name);
             try
             {
                 var issues = await _github.Issue.GetForRepository(owner, name, request);
@@ -430,7 +428,7 @@ namespace Alteridem.GitHub.Model
             }
             catch (Exception ex)
             {
-                log.Error("Failed to fetch issues", ex);
+                _log.Write(LogLevel.Warn, "Failed to fetch issues", ex);
             }
         }
 

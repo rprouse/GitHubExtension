@@ -1,6 +1,6 @@
 ﻿using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
-using Alteridem.GitHub.Interfaces;
+using Alteridem.GitHub.Logging;
 using Ninject.Modules;
 
 namespace Alteridem.GitHub.Extension.Modules
@@ -13,7 +13,7 @@ namespace Alteridem.GitHub.Extension.Modules
             Bind<IAddComment>().To<AddComment>();
             Bind<IIssueEditor>().To<IssueEditor>();
             Bind<ILabelPicker>().To<LabelPicker>();
-            Bind<IErrorReporter>().To<ErrorReporter>().InSingletonScope();
+            Bind<IOutputWriter>().To<OutputWriter>().InSingletonScope();
         }
     }
 }

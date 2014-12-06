@@ -22,22 +22,28 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Test.Mocks;
 using Alteridem.GitHub.Logging;
-using Ninject.Modules;
 
-namespace Alteridem.GitHub.Extension.Test.Modules
+namespace Alteridem.GitHub.Extension.View
 {
-    public class MocksModule : NinjectModule
+    public class OutputWriter : BaseOutputWriter
     {
         /// <summary>
-        /// Loads the module into the kernel.
+        /// Logs the specified message.
         /// </summary>
-        public override void Load()
+        /// <param name="message">The message.</param>
+        protected override void WriteMessage(string message)
         {
-            //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
-            //Rebind<ILoginView>().To<LoginViewMock>();
-            Rebind<IOutputWriter>().To<OutputWriterMock>().InSingletonScope();
+            // TODO: Log to the console window
+        }
+
+        /// <summary>
+        /// Shows the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected override void ShowMessage(string message)
+        {
+            VisualStudioMessageBox.Show(message);
         }
     }
 }

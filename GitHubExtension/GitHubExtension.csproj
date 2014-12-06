@@ -119,10 +119,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="Octokit, Version=0.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Octokit.0.5.2\lib\net45\Octokit.dll</HintPath>
@@ -160,6 +156,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Tvl.VisualStudio.OutputWindow.Interfaces">
+      <HintPath>..\packages\Tvl.VisualStudio.OutputWindow.Interfaces.2.0.0\lib\net40\Tvl.VisualStudio.OutputWindow.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="System.Xaml" />
@@ -207,7 +207,7 @@
     <Compile Include="View\Avatar.xaml.cs">
       <DependentUpon>Avatar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ErrorReporter.cs" />
+    <Compile Include="View\OutputWriter.cs" />
     <Compile Include="View\IssueEditor.xaml.cs">
       <DependentUpon>IssueEditor.xaml</DependentUpon>
     </Compile>
@@ -259,9 +259,6 @@
     </Content>
     <Resource Include="Fonts\fontawesome-webfont.ttf" />
     <None Include="app.config" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
