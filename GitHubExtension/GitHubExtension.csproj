@@ -15,7 +15,6 @@
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <NuGetPackageImportStamp>833be615</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Common debugging support -->
