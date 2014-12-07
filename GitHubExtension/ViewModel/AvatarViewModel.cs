@@ -44,7 +44,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public string AvatarUrl
         {
-            get { return string.Format( "{0}&size={1}", _avatarUrl, 22 ); }
+            get { return string.IsNullOrEmpty(_avatarUrl) ? "https://github.com/identicons/unknown.png" : string.Format("{0}&size={1}", _avatarUrl, _size); }
             set
             {
                 _avatarUrl = value;

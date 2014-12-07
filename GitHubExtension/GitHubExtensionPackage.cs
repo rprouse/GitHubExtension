@@ -225,30 +225,25 @@ namespace Alteridem.GitHub.Extension
         public int OnShellPropertyChange(int propid, object var)
         {
             // when zombie state changes to false, finish package initialization
-            if ((int)__VSSPROPID.VSSPROPID_Zombie == propid)
+            if ((int)__VSSPROPID.VSSPROPID_Zombie == propid && (bool)var == false)
             {
-                if ((bool)var == false)
-                {
-                    // zombie state dependent code
-                    // This code is a bit of a hack to bridge MEF created components and Ninject mangaged components
-                    OutputWindowPane gitHubPane = CreateOutputPane("GitHub");
-                    Factory.Rebind<OutputWindowPane>().ToConstant(gitHubPane);
+                // zombie state dependent code
+                // This code is a bit of a hack to bridge MEF created components and Ninject mangaged components
+                OutputWindowPane gitHubPane = CreateOutputPane("GitHub");
+                Factory.Rebind<OutputWindowPane>().ToConstant(gitHubPane);
 
-                    // eventlistener no longer needed
-                    IVsShell shellService = GetService(typeof(SVsShell)) as IVsShell;
+                // eventlistener no longer needed
+                IVsShell shellService = GetService(typeof(SVsShell)) as IVsShell;
 
-                    if (shellService != null)
-                        ErrorHandler.ThrowOnFailure(shellService.UnadviseShellPropertyChanges(cookie));
+                if (shellService != null)
+                    ErrorHandler.ThrowOnFailure(shellService.UnadviseShellPropertyChanges(cookie));
 
-                    cookie = 0;
-                }
-
+                cookie = 0;
             }
-
             return VSConstants.S_OK;
         }
 
-        OutputWindowPane CreateOutputPane(string title)
+        private OutputWindowPane CreateOutputPane(string title)
         {
             DTE2 dte = GetService(typeof(SDTE)) as DTE2;
             if (dte != null)
