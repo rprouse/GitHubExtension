@@ -22,23 +22,30 @@
 // 
 // **********************************************************************************
 
-using System;
+using System.ComponentModel.Composition;
 using Alteridem.GitHub.Logging;
-using EnvDTE;
+using Microsoft.VisualStudio.Utilities;
+using Tvl.VisualStudio.OutputWindow.Interfaces;
 
 namespace Alteridem.GitHub.Extension.View
 {
     public class OutputWriter : BaseOutputWriter
     {
+        public const string GitHubOutputWindowPaneName = "GitHub";
+
+        [Export]
+        [Name(GitHubOutputWindowPaneName)]
+        private static OutputWindowDefinition GitHubOutputWindowDefinition;
+
         /// <summary>
         /// Logs the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         protected override void WriteMessage(string message)
         {
-            var pane = Factory.Get<OutputWindowPane>();
+            var pane = Factory.Get<IOutputWindowPane>();
             if (pane != null)
-                pane.OutputString(message + Environment.NewLine);
+                pane.WriteLine(message);
         }
 
         /// <summary>
