@@ -33,9 +33,11 @@ namespace Alteridem.GitHub.Extension.View
     {
         public const string GitHubOutputWindowPaneName = "GitHub";
 
+#pragma warning disable 169 // The field 'fieldName' is never used
         [Export]
         [Name(GitHubOutputWindowPaneName)]
         private static OutputWindowDefinition GitHubOutputWindowDefinition;
+#pragma warning restore 169
 
         /// <summary>
         /// Logs the specified message.
