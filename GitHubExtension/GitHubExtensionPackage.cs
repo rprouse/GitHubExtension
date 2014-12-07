@@ -187,7 +187,11 @@ namespace Alteridem.GitHub.Extension
         /// <param name="disposing">true if the object is being disposed, false if it is being finalized.</param>
         protected override void Dispose(bool disposing)
         {
-            Cache.Save();
+            if (disposing)
+            {
+                Cache.Save();
+            }
+
             base.Dispose(disposing);
         }
 
