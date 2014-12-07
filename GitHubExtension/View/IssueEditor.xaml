@@ -6,6 +6,7 @@
         xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
         xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
         xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.11.0"
+        xmlns:controls="clr-namespace:Alteridem.GitHub.Extension.View.Controls"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModel:IssueEditorViewModel}"
         WindowStartupLocation="CenterOwner"
@@ -42,7 +43,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <HierarchicalDataTemplate>
-                        <view:LabelControl />
+                        <controls:LabelControl />
                     </HierarchicalDataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

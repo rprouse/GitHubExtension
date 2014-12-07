@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.View.Controls
 {
     /// <summary>
-    /// Interaction logic for LabelControl.xaml
+    /// Interaction logic for IssueListItem.xaml
     /// </summary>
-    public partial class LabelControl : UserControl
+    public partial class IssueListItem : UserControl
     {
-        public LabelControl()
+        public IssueListItem()
         {
             InitializeComponent();
         }
