@@ -24,22 +24,24 @@
 
 #region Using Directives
 
-using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
+using Alteridem.GitHub.Logging;
+using EnvDTE;
 using Ninject.Modules;
 
 #endregion
 
 namespace Alteridem.GitHub.Extension.Modules
 {
-    public class ViewModule : NinjectModule
+    public class UtilityModules : NinjectModule
     {
+        /// <summary>
+        /// Loads the module into the kernel.
+        /// </summary>
         public override void Load()
         {
-            Bind<ILoginView>().To<Login>();
-            Bind<IAddComment>().To<AddComment>();
-            Bind<IIssueEditor>().To<IssueEditor>();
-            Bind<ILabelPicker>().To<LabelPicker>();
+            Bind<IOutputWriter>().To<OutputWriter>().InSingletonScope();
+            Bind<OutputWindowPane>().ToConstant((OutputWindowPane)null);
         }
     }
 }
