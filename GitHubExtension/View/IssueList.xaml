@@ -9,6 +9,7 @@
              xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub"
              xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
              xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
+             xmlns:controls="clr-namespace:Alteridem.GitHub.Extension.View.Controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModel:IssueListViewModel}"
              d:DesignHeight="800" 
@@ -35,7 +36,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="LabelTemplate">
-            <view:LabelControl />
+            <controls:LabelControl />
         </DataTemplate>
         <DataTemplate x:Key="MilestoneTemplate">
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Title}" />
@@ -60,6 +61,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="6,6,6,3">
+            
+            <!-- Refresh List Button -->
             <Button 
                 Command="{Binding Path=RefreshCommand}"
                 Content="&#xf021;"
@@ -77,6 +80,8 @@
                 </ControlTemplate>
               </Button.Template>
             </Button>
+
+            <!-- Add Issue Button -->
             <Button 
                 Command="{Binding Path=AddIssueCommand}"
                 Content="&#xf067;"
@@ -94,7 +99,9 @@
                 </ControlTemplate>
               </Button.Template>
             </Button>
-            <ComboBox x:Name="Repositories"  Width="Auto" Height="26" Margin="3,0" 
+
+            <!-- Repository Filter -->
+            <ComboBox Width="Auto" Height="26" Margin="3,0" 
                       HorizontalContentAlignment="Stretch"
                       FontFamily="Verdana"
                       FontSize="11"
@@ -113,14 +120,18 @@
                       ItemsSource="{Binding Source={StaticResource IssueFilterDataProvider}}"
                       SelectedItem="{Binding Path=Filter}" >
       </ComboBox>-->
-            <ComboBox x:Name="Label" Margin="0,0,3,0"
+            
+            <!-- Label Filter -->
+            <ComboBox Margin="0,0,3,0"
                       Width="120"
                       FontSize="10"
                       FontFamily="Verdana"
                       ItemsSource="{Binding Path=Labels}"
                       SelectedItem="{Binding Path=Label}"
                       ItemTemplate="{StaticResource LabelTemplate}" />
-            <ComboBox x:Name="Milestone" Margin="3,0"
+            
+            <!-- Milestones Filter -->
+            <ComboBox Margin="3,0"
                       Width="120"
                       FontSize="10"
                       FontFamily="Verdana"
@@ -130,7 +141,7 @@
                       ItemTemplate="{StaticResource MilestoneTemplate}" />
         </StackPanel>
 
-        <view:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right" Margin="0,6,0,0"/>
+        <controls:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right" Margin="0,6,0,0"/>
 
         <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                 VerticalAlignment="Center" 

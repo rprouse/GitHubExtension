@@ -28,7 +28,7 @@ using Alteridem.GitHub.Extension.ViewModel;
 
 #endregion
 
-namespace Alteridem.GitHub.Extension.View
+namespace Alteridem.GitHub.Extension.View.Controls
 {
     /// <summary>
     /// Interaction logic for UserView.xaml

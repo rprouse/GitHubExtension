@@ -243,7 +243,7 @@
     <Compile Include="View\Issue.xaml.cs">
       <DependentUpon>Issue.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LabelControl.xaml.cs">
+    <Compile Include="View\Controls\LabelControl.xaml.cs">
       <DependentUpon>LabelControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LabelPicker.xaml.cs">
@@ -251,7 +251,7 @@
     </Compile>
     <Compile Include="View\RelayCommand.cs" />
     <Compile Include="View\Theme.cs" />
-    <Compile Include="View\UserView.xaml.cs">
+    <Compile Include="View\Controls\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IssueList.xaml.cs">
@@ -328,7 +328,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LabelControl.xaml">
+    <Page Include="View\Controls\LabelControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -348,7 +348,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UserView.xaml">
+    <Page Include="View\Controls\UserView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
