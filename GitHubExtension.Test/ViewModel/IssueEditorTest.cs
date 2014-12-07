@@ -39,36 +39,41 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
     [TestFixture]
     public class IssueEditorTest
     {
+        private IssueEditorViewModel _viewModel;
+
         [SetUp]
         public void SetUp()
         {
             Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+            _viewModel = Factory.Get<IssueEditorViewModel>();
         }
 
         [Test]
         public void TestCanSave()
         {
-            var viewModel = Factory.Get<IssueEditorViewModel>();
-            viewModel.SetIssue(null);
+            _viewModel.SetIssue(null);
 
-            Assert.That(viewModel.CanSave(), Is.False);
-            viewModel.Title = "title";
-            Assert.That(viewModel.CanSave(), Is.True);
+            Assert.That(_viewModel.CanSave(), Is.False);
+            _viewModel.Title = "title";
+            Assert.That(_viewModel.CanSave(), Is.True);
         }
 
         [Test]
         public void TestAddNewIssue()
         {
-            var viewModel = Factory.Get<IssueEditorViewModel>();
-            viewModel.SetIssue(null);
+            _viewModel.SetIssue(null);
 
-            viewModel.Title = "TestAddNewIssue";
-            viewModel.Save(null);
+            _viewModel.Title = "TestAddNewIssue";
+            _viewModel.Save(null);
 
             var api = Factory.Get<GitHubApiBase>();
             Assert.That(api.Issue, Is.Not.Null);
             Assert.That(api.Issue.Title, Is.EqualTo("TestAddNewIssue"));
             Assert.That(api.Issue.Number, Is.EqualTo(69));
+
+            // Issue 81 - Creating new issue fails
+            Assert.That(api.Issue.Assignee, Is.Null);
+            Assert.That(api.Issue.Milestone, Is.Null);
         }
 
         [Test]
@@ -76,15 +81,18 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         {
             var api = Factory.Get<GitHubApiBase>();
             int number = api.Issue.Number;
-            var viewModel = Factory.Get<IssueEditorViewModel>();
-            viewModel.SetIssue(api.Issue);
+            _viewModel.SetIssue(api.Issue);
 
-            viewModel.Title = "TestUpdateIssue";
-            viewModel.Save(null);
+            _viewModel.Title = "TestUpdateIssue";
+            _viewModel.Save(null);
 
             Assert.That(api.Issue, Is.Not.Null);
             Assert.That(api.Issue.Title, Is.EqualTo("TestUpdateIssue"));
             Assert.That(api.Issue.Number, Is.EqualTo(number));
+
+            // Issue 81 - Creating new issue fails
+            Assert.That(api.Issue.Assignee, Is.Null);
+            Assert.That(api.Issue.Milestone, Is.Null);
         }
     }
 }

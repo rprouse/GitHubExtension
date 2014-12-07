@@ -123,6 +123,11 @@ namespace Alteridem.GitHub.Extension.ViewModel
         /// <param name="milestone"></param>
         private void SetMilestone(Milestone milestone)
         {
+            if (milestone == null)
+            {
+                Milestone = null;
+                return;
+            }
             Milestone = (from m in Milestones
                          where m.Url == milestone.Url
                          select m).FirstOrDefault();
@@ -296,8 +301,10 @@ namespace Alteridem.GitHub.Extension.ViewModel
         {
             var issue = new NewIssue(Title);
             issue.Body = Body;
-            issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
-            issue.Milestone = Milestone != null ? Milestone.Number : 0;
+            if (Assignee != null)
+                issue.Assignee = Assignee.Login;
+            if (Milestone != null)
+                issue.Milestone = Milestone.Number;
 
             foreach (var label in SelectedLabels)
                 issue.Labels.Add(label.Name);
@@ -310,8 +317,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
             var issue = new IssueUpdate();
             issue.Title = Title;
             issue.Body = Body;
-            issue.Assignee = Assignee != null ? Assignee.Login : string.Empty;
-            issue.Milestone = Milestone != null ? Milestone.Number : 0;
+            issue.Assignee = Assignee != null ? Assignee.Login : null;
+            issue.Milestone = Milestone != null ? (int?)Milestone.Number : null;
 
             foreach (var label in SelectedLabels)
                 issue.AddLabel(label.Name);

@@ -69,7 +69,6 @@
         </DockPanel>
 
         <Label DockPanel.Dock="Top" Content="Milestone" Style="{StaticResource Label}"/>
-        <!--
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource ComboBoxDockPanel}">
             <Button 
                 DockPanel.Dock="Right"
@@ -80,18 +79,14 @@
                 Width="30" Height="30" 
                 Foreground="#FF333333" 
                 Margin="6,0,0,0" 
-                ToolTip="Clear Assignee"/>
-        -->
+                ToolTip="Clear Milestone"/>
             <ComboBox 
-            DockPanel.Dock="Top" 
-            Margin="12,3,12,0"
-            Style="{StaticResource ComboBox}"
-            ItemTemplate="{StaticResource MilestoneTemplate}"
-            ItemsSource="{Binding Path=Milestones}"
-            SelectedValue="{Binding Path=Milestone}" />
-        <!--
+                DockPanel.Dock="Top" 
+                Style="{StaticResource ComboBox}"
+                ItemTemplate="{StaticResource MilestoneTemplate}"
+                ItemsSource="{Binding Path=Milestones}"
+                SelectedValue="{Binding Path=Milestone}" />
         </DockPanel>
-        -->
 
         <Label DockPanel.Dock="Top" Content="Description" Style="{StaticResource Label}"/>
 
