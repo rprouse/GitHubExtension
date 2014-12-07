@@ -25,7 +25,6 @@
 #region Using Directives
 
 using System;
-using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
@@ -33,11 +32,10 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Model;
-using EnvDTE;
-using EnvDTE80;
-using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Tvl.VisualStudio.OutputWindow.Interfaces;
 
 #endregion
 
@@ -66,11 +64,13 @@ namespace Alteridem.GitHub.Extension
     [ProvideToolWindow(typeof(IssueToolWindow))]
     [ProvideService(typeof(IIssueToolWindow))]
     [Guid(GuidList.guidGitHubExtensionPkgString)]
-    public sealed class GitHubExtensionPackage : Package, IVsShellPropertyEvents
+    public sealed class GitHubExtensionPackage : Package
     {
-        [Import] internal SVsServiceProvider ServiceProvider;
-
-        private uint cookie;
+        /// <summary>
+        /// This error list provider is used to warn developers if the VSBase Services Debugging Support extension is
+        /// not installed.
+        /// </summary>
+        private ErrorListProvider vsbaseWarningProvider;
 
         /// <summary>
         /// Default constructor of the package.
@@ -157,11 +157,6 @@ namespace Alteridem.GitHub.Extension
             Debug.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", ToString()));
             base.Initialize();
 
-            // set an eventlistener for shell property changes
-            IVsShell shellService = GetService(typeof(SVsShell)) as IVsShell;
-            if (shellService != null)
-                ErrorHandler.ThrowOnFailure(shellService.AdviseShellPropertyChanges(this, out cookie));
-
             // Add our command handlers for menu (commands must exist in the .vsct file)
             var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if ( null != mcs )
@@ -179,6 +174,32 @@ namespace Alteridem.GitHub.Extension
                 var menuIssueWin = new MenuCommand(ShowIssueToolWindow, issueWndCommandID);
                 mcs.AddCommand(menuIssueWin);
             }
+
+            IComponentModel componentModel = (IComponentModel)GetService(typeof(SComponentModel));
+            IOutputWindowService outputWindowService = componentModel.DefaultExportProvider.GetExportedValueOrDefault<IOutputWindowService>();
+            IOutputWindowPane gitHubPane = null;
+
+            // Warn users if dependencies aren't installed.
+            vsbaseWarningProvider = new ErrorListProvider(this);
+            if (outputWindowService != null)
+            {
+                gitHubPane = outputWindowService.TryGetPane(View.OutputWriter.GitHubOutputWindowPaneName);
+            }
+            else
+            {
+                ErrorTask task = new ErrorTask
+                {
+                    Category = TaskCategory.Misc,
+                    ErrorCategory = TaskErrorCategory.Error,
+                    Text = "The required VSBase Services debugging support extension is not installed; output window messages will not be shown. Click here for more information."
+                };
+                task.Navigate += HandleNavigateToVsBaseServicesExtension;
+                vsbaseWarningProvider.Tasks.Add(task);
+                vsbaseWarningProvider.Show();
+            }
+
+            // This code is a bit of a hack to bridge MEF created components and Ninject managed components
+            Factory.Rebind<IOutputWindowPane>().ToConstant(gitHubPane);
         }
 
         /// <summary>
@@ -190,6 +211,8 @@ namespace Alteridem.GitHub.Extension
             if (disposing)
             {
                 Cache.Save();
+                if (vsbaseWarningProvider != null)
+                    vsbaseWarningProvider.Dispose();
             }
 
             base.Dispose(disposing);
@@ -226,46 +249,23 @@ namespace Alteridem.GitHub.Extension
             //           out result));
         }
 
-        public int OnShellPropertyChange(int propid, object var)
+        private void HandleNavigateToVsBaseServicesExtension(object sender, EventArgs e)
         {
-            // when zombie state changes to false, finish package initialization
-            if ((int)__VSSPROPID.VSSPROPID_Zombie == propid && (bool)var == false)
+            string vsbaseDebugExtensionLocation = "https://visualstudiogallery.msdn.microsoft.com/fca95a59-3fc6-444e-b20c-cc67828774cd";
+            IVsWebBrowsingService webBrowsingService = GetService(typeof(SVsWebBrowsingService)) as IVsWebBrowsingService;
+            if (webBrowsingService != null)
             {
-                // zombie state dependent code
-                // This code is a bit of a hack to bridge MEF created components and Ninject mangaged components
-                OutputWindowPane gitHubPane = CreateOutputPane("GitHub");
-                Factory.Rebind<OutputWindowPane>().ToConstant(gitHubPane);
-
-                // eventlistener no longer needed
-                IVsShell shellService = GetService(typeof(SVsShell)) as IVsShell;
-
-                if (shellService != null)
-                    ErrorHandler.ThrowOnFailure(shellService.UnadviseShellPropertyChanges(cookie));
-
-                cookie = 0;
+                IVsWindowFrame windowFrame;
+                webBrowsingService.Navigate(vsbaseDebugExtensionLocation, 0, out windowFrame);
+                return;
             }
-            return VSConstants.S_OK;
-        }
 
-        private OutputWindowPane CreateOutputPane(string title)
-        {
-            DTE2 dte = GetService(typeof(SDTE)) as DTE2;
-            if (dte != null)
+            IVsUIShellOpenDocument openDocument = GetService(typeof(SVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
+            if (openDocument != null)
             {
-                OutputWindowPanes panes = dte.ToolWindows.OutputWindow.OutputWindowPanes;
-
-                try
-                {
-                    // If the pane exists already, return it.
-                    return panes.Item(title);
-                }
-                catch (ArgumentException)
-                {
-                    // Create a new pane.
-                    return panes.Add(title);
-                }
+                openDocument.OpenStandardPreviewer(0, vsbaseDebugExtensionLocation, VSPREVIEWRESOLUTION.PR_Default, 0);
+                return;
             }
-            return null;
         }
     }
 }
