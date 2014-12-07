@@ -24,7 +24,7 @@
 
 #region Using Directives
 
-using System;
+using System.ComponentModel.Composition.Hosting;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.Test.Mocks;
 using Alteridem.GitHub.Extension.ViewModel;
@@ -44,6 +44,12 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         [SetUp]
         public void SetUp()
         {
+            var issuesAssemblyCatalog = new AssemblyCatalog(typeof(Cache).Assembly);
+            var mockServicesCatalog = new TypeCatalog(typeof(Model.CacheTest.MockServiceProvider));
+            var catalog = new AggregateCatalog(issuesAssemblyCatalog, mockServicesCatalog);
+            var exportProvider = new CompositionContainer(catalog);
+
+            Factory.Rebind<Cache>().ToConstant(exportProvider.GetExportedValue<Cache>());
             Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
             Factory.Rebind<IAddComment>().To<AddCommentMock>();
             _gitHubViewModel = Factory.Get<AddCommentViewModel>();

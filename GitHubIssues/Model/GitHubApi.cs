@@ -51,7 +51,8 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApi(GitHubClient github, IOutputWriter logWriter)
+        public GitHubApi(GitHubClient github, IOutputWriter logWriter, Cache settingsCache)
+            : base(settingsCache)
         {
             _github = github;
             _log = logWriter;
@@ -89,7 +90,7 @@ namespace Alteridem.GitHub.Model
         {
             _log.Write(LogLevel.Info, "Logging out of GitHub");
             base.Logout();
-            Cache.Credentials = null;
+            SettingsCache.Credentials = null;
             User = null;
             Repositories.Clear();
             Organizations.Clear();
@@ -252,7 +253,7 @@ namespace Alteridem.GitHub.Model
 
         private async void LoginFromCache()
         {
-            var credentials = Cache.Credentials;
+            var credentials = SettingsCache.Credentials;
             if (credentials != null)
             {
                 if (!string.IsNullOrEmpty(credentials.AccessToken))
@@ -266,7 +267,7 @@ namespace Alteridem.GitHub.Model
         {
             _log.Write(LogLevel.Debug, "Logging in with credentials");
             _github.Credentials = credentials;
-            Cache.SaveCredentials(credentials.Login, credentials.Password, credentials.GetToken());
+            SettingsCache.SaveCredentials(credentials.Login, credentials.Password, credentials.GetToken());
             var newAuth = new NewAuthorization
             {
                 Scopes = new[] { "user", "repo" },
@@ -352,7 +353,7 @@ namespace Alteridem.GitHub.Model
         private void OnRepositoriesComplete()
         {
             _log.Write(LogLevel.Debug, "Finished fetching organizations for current user");
-            int id = Cache.Repository;
+            int id = SettingsCache.Repository;
 
             var wrapper = (from r in Repositories where r.Repository.Id == id select r).FirstOrDefault();
             if (wrapper != null)

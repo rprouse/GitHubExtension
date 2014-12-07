@@ -345,6 +345,8 @@
     <ProjectReference Include="..\GitHubIssues\GitHubIssues.csproj">
       <Project>{64740ce5-68c6-4b63-b607-831bf8c205f0}</Project>
       <Name>GitHubIssues</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
