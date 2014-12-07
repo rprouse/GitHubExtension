@@ -67,6 +67,12 @@ namespace Alteridem.GitHub.Extension
     public sealed class GitHubExtensionPackage : Package
     {
         /// <summary>
+        /// This error list provider is used to warn developers if the VSBase Services Debugging Support extension is
+        /// not installed.
+        /// </summary>
+        private ErrorListProvider vsbaseWarningProvider;
+
+        /// <summary>
         /// Default constructor of the package.
         /// Inside this method you can place any initialization code that does not require 
         /// any Visual Studio service because at this point the package object is created but 
@@ -170,8 +176,27 @@ namespace Alteridem.GitHub.Extension
             }
 
             IComponentModel componentModel = (IComponentModel)GetService(typeof(SComponentModel));
-            IOutputWindowService outputWindowService = componentModel.DefaultExportProvider.GetExportedValue<IOutputWindowService>();
-            IOutputWindowPane gitHubPane = outputWindowService.TryGetPane(View.OutputWriter.GitHubOutputWindowPaneName);
+            IOutputWindowService outputWindowService = componentModel.DefaultExportProvider.GetExportedValueOrDefault<IOutputWindowService>();
+            IOutputWindowPane gitHubPane = null;
+
+            // Warn users if dependencies aren't installed.
+            vsbaseWarningProvider = new ErrorListProvider(this);
+            if (outputWindowService != null)
+            {
+                gitHubPane = outputWindowService.TryGetPane(View.OutputWriter.GitHubOutputWindowPaneName);
+            }
+            else
+            {
+                ErrorTask task = new ErrorTask
+                {
+                    Category = TaskCategory.Misc,
+                    ErrorCategory = TaskErrorCategory.Error,
+                    Text = "The required VSBase Services debugging support extension is not installed; output window messages will not be shown. Click here for more information."
+                };
+                task.Navigate += HandleNavigateToVsBaseServicesExtension;
+                vsbaseWarningProvider.Tasks.Add(task);
+                vsbaseWarningProvider.Show();
+            }
 
             // This code is a bit of a hack to bridge MEF created components and Ninject managed components
             Factory.Rebind<IOutputWindowPane>().ToConstant(gitHubPane);
@@ -186,6 +211,8 @@ namespace Alteridem.GitHub.Extension
             if (disposing)
             {
                 Cache.Save();
+                if (vsbaseWarningProvider != null)
+                    vsbaseWarningProvider.Dispose();
             }
 
             base.Dispose(disposing);
@@ -220,6 +247,25 @@ namespace Alteridem.GitHub.Extension
             //           OLEMSGICON.OLEMSGICON_INFO,
             //           0,        // false
             //           out result));
+        }
+
+        private void HandleNavigateToVsBaseServicesExtension(object sender, EventArgs e)
+        {
+            string vsbaseDebugExtensionLocation = "https://visualstudiogallery.msdn.microsoft.com/fca95a59-3fc6-444e-b20c-cc67828774cd";
+            IVsWebBrowsingService webBrowsingService = GetService(typeof(SVsWebBrowsingService)) as IVsWebBrowsingService;
+            if (webBrowsingService != null)
+            {
+                IVsWindowFrame windowFrame;
+                webBrowsingService.Navigate(vsbaseDebugExtensionLocation, 0, out windowFrame);
+                return;
+            }
+
+            IVsUIShellOpenDocument openDocument = GetService(typeof(SVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
+            if (openDocument != null)
+            {
+                openDocument.OpenStandardPreviewer(0, vsbaseDebugExtensionLocation, VSPREVIEWRESOLUTION.PR_Default, 0);
+                return;
+            }
         }
     }
 }
