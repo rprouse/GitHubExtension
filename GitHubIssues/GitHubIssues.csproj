@@ -58,10 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="Octokit, Version=0.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Octokit.0.5.2\lib\net45\Octokit.dll</HintPath>
@@ -105,7 +101,9 @@
   <ItemGroup>
     <Compile Include="Converters\ColorExtensions.cs" />
     <Compile Include="Converters\StringToInverseColorConverter.cs" />
-    <Compile Include="Interfaces\IErrorReporter.cs" />
+    <Compile Include="Logging\BaseOutputWriter.cs" />
+    <Compile Include="Logging\IOutputWriter.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Model\Cache.cs" />
     <Compile Include="Converters\MarkdownConverter.cs" />
     <Compile Include="Converters\StringToColorConverter.cs" />
@@ -148,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GitHub.ico" />

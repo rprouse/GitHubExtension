@@ -22,23 +22,26 @@
 // 
 // **********************************************************************************
 
-using System;
+#region Using Directives
 
-namespace Alteridem.GitHub.Interfaces
+using Alteridem.GitHub.Extension.View;
+using Alteridem.GitHub.Logging;
+using EnvDTE;
+using Ninject.Modules;
+
+#endregion
+
+namespace Alteridem.GitHub.Extension.Modules
 {
-    public interface IErrorReporter
+    public class UtilityModules : NinjectModule
     {
         /// <summary>
-        /// Shows the specified message to the user.
+        /// Loads the module into the kernel.
         /// </summary>
-        /// <param name="message">The message.</param>
-        void Show( string message );
-
-        /// <summary>
-        /// Shows the specified message to the user along with the exception information.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="ex">The exception.</param>
-        void Show( string message, Exception ex );
+        public override void Load()
+        {
+            Bind<IOutputWriter>().To<OutputWriter>().InSingletonScope();
+            Bind<OutputWindowPane>().ToConstant((OutputWindowPane)null);
+        }
     }
 }

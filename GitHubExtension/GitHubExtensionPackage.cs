@@ -25,6 +25,7 @@
 #region Using Directives
 
 using System;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
@@ -32,6 +33,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Model;
+using EnvDTE;
+using EnvDTE80;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -54,7 +58,7 @@ namespace Alteridem.GitHub.Extension
     [PackageRegistration(UseManagedResourcesOnly = true)]
     // This attribute is used to register the information needed to show this package
     // in the Help/About dialog of Visual Studio.
-    [InstalledProductRegistration("#110", "#112", "0.1.6", IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", "0.2.0", IconResourceID = 400)]
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // This attribute registers a tool window exposed by this package.
@@ -62,8 +66,12 @@ namespace Alteridem.GitHub.Extension
     [ProvideToolWindow(typeof(IssueToolWindow))]
     [ProvideService(typeof(IIssueToolWindow))]
     [Guid(GuidList.guidGitHubExtensionPkgString)]
-    public sealed class GitHubExtensionPackage : Package
+    public sealed class GitHubExtensionPackage : Package, IVsShellPropertyEvents
     {
+        [Import] internal SVsServiceProvider ServiceProvider;
+
+        private uint cookie;
+
         /// <summary>
         /// Default constructor of the package.
         /// Inside this method you can place any initialization code that does not require 
@@ -149,6 +157,11 @@ namespace Alteridem.GitHub.Extension
             Debug.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", ToString()));
             base.Initialize();
 
+            // set an eventlistener for shell property changes
+            IVsShell shellService = GetService(typeof(SVsShell)) as IVsShell;
+            if (shellService != null)
+                ErrorHandler.ThrowOnFailure(shellService.AdviseShellPropertyChanges(this, out cookie));
+
             // Add our command handlers for menu (commands must exist in the .vsct file)
             var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if ( null != mcs )
@@ -209,5 +222,46 @@ namespace Alteridem.GitHub.Extension
             //           out result));
         }
 
+        public int OnShellPropertyChange(int propid, object var)
+        {
+            // when zombie state changes to false, finish package initialization
+            if ((int)__VSSPROPID.VSSPROPID_Zombie == propid && (bool)var == false)
+            {
+                // zombie state dependent code
+                // This code is a bit of a hack to bridge MEF created components and Ninject mangaged components
+                OutputWindowPane gitHubPane = CreateOutputPane("GitHub");
+                Factory.Rebind<OutputWindowPane>().ToConstant(gitHubPane);
+
+                // eventlistener no longer needed
+                IVsShell shellService = GetService(typeof(SVsShell)) as IVsShell;
+
+                if (shellService != null)
+                    ErrorHandler.ThrowOnFailure(shellService.UnadviseShellPropertyChanges(cookie));
+
+                cookie = 0;
+            }
+            return VSConstants.S_OK;
+        }
+
+        private OutputWindowPane CreateOutputPane(string title)
+        {
+            DTE2 dte = GetService(typeof(SDTE)) as DTE2;
+            if (dte != null)
+            {
+                OutputWindowPanes panes = dte.ToolWindows.OutputWindow.OutputWindowPanes;
+
+                try
+                {
+                    // If the pane exists already, return it.
+                    return panes.Item(title);
+                }
+                catch (ArgumentException)
+                {
+                    // Create a new pane.
+                    return panes.Add(title);
+                }
+            }
+            return null;
+        }
     }
 }

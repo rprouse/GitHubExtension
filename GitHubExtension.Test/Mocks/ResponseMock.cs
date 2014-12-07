@@ -22,24 +22,25 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Net;
+using Octokit;
 
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.View;
-using Ninject.Modules;
-
-#endregion
-
-namespace Alteridem.GitHub.Extension.Modules
+namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public class ViewModule : NinjectModule
+    public class ResponseMock : IResponse
     {
-        public override void Load()
+        public ResponseMock()
         {
-            Bind<ILoginView>().To<Login>();
-            Bind<IAddComment>().To<AddComment>();
-            Bind<IIssueEditor>().To<IssueEditor>();
-            Bind<ILabelPicker>().To<LabelPicker>();
+            Headers = new Dictionary<string, string>();
         }
+        public object BodyAsObject { get; set; }
+        public string Body { get; set; }
+        public Dictionary<string, string> Headers { get; private set; }
+        public Uri ResponseUri { get; set; }
+        public ApiInfo ApiInfo { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
+        public string ContentType { get; set; }
     }
 }

@@ -22,10 +22,8 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.Test.Mocks;
-using Alteridem.GitHub.Interfaces;
-using Alteridem.GitHub.Model;
+using Alteridem.GitHub.Logging;
 using Ninject.Modules;
 
 namespace Alteridem.GitHub.Extension.Test.Modules
@@ -39,7 +37,7 @@ namespace Alteridem.GitHub.Extension.Test.Modules
         {
             //Rebind<GitHubApiBase>().To<GitHubApiMock>().InSingletonScope();
             //Rebind<ILoginView>().To<LoginViewMock>();
-            Rebind<IErrorReporter>().To<ErrorReporterMock>().InSingletonScope();
+            Rebind<IOutputWriter>().To<OutputWriterMock>().InSingletonScope();
         }
     }
 }

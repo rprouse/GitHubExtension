@@ -27,7 +27,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
-using NLog;
 using Octokit;
 
 namespace Alteridem.GitHub.Model
@@ -35,8 +34,6 @@ namespace Alteridem.GitHub.Model
     public abstract class GitHubApiBase : INotifyPropertyChanged
     {
         #region Members
-
-        private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
         private string _token;
         private User _user;

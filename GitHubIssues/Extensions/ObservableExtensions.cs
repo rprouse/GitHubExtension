@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Reactive.Linq;
-using NLog;
+using Alteridem.GitHub.Logging;
 
 namespace Alteridem.GitHub.Extensions
 {
     public static class ObservableExtensions
     {
-        public static IObservable<T> LoggedCatch<T, TObj>(this IObservable<T> This, TObj logClass, IObservable<T> next = null, string message = null)
+        private static IOutputWriter _log = Factory.Get<IOutputWriter>();
+
+        public static IObservable<T> LoggedCatch<T>(this IObservable<T> This, LogLevel level = LogLevel.Warn, IObservable<T> next = null, string message = null)
         {
             next = next ?? Observable.Return<T>(default(T));
             return Observable.Catch<T, Exception>(This, ex =>
             {
-                Logger log = LogManager.GetLogger(typeof(TObj).FullName);
-                log.Warn(message ?? "", ex);
+                _log.Write(level, message ?? "", ex);
                 return next;
             });
         }

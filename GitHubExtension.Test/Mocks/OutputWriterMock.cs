@@ -24,22 +24,37 @@
 
 #region Using Directives
 
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.View;
-using Ninject.Modules;
+using Alteridem.GitHub.Logging;
 
 #endregion
 
-namespace Alteridem.GitHub.Extension.Modules
+namespace Alteridem.GitHub.Extension.Test.Mocks
 {
-    public class ViewModule : NinjectModule
+    public class OutputWriterMock : BaseOutputWriter
     {
-        public override void Load()
+        public bool WriteMessageCalled { get; set; }
+        public bool ShowMessageCalled { get; set; }
+        public string LastMessageWritten { get; set; }
+        public string LastMessageShown { get; set; }
+
+        /// <summary>
+        /// Logs the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected override void WriteMessage(string message)
         {
-            Bind<ILoginView>().To<Login>();
-            Bind<IAddComment>().To<AddComment>();
-            Bind<IIssueEditor>().To<IssueEditor>();
-            Bind<ILabelPicker>().To<LabelPicker>();
+            WriteMessageCalled = true;
+            LastMessageWritten = message;
+        }
+
+        /// <summary>
+        /// Shows the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected override void ShowMessage(string message)
+        {
+            ShowMessageCalled = true;
+            LastMessageShown = message;
         }
     }
 }

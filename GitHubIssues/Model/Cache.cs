@@ -22,14 +22,6 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
-using System;
-using NLog;
-using Octokit;
-
-#endregion
-
 namespace Alteridem.GitHub.Model
 {
     public static class Cache

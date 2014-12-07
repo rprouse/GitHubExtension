@@ -22,24 +22,36 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
+using System;
 
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.View;
-using Ninject.Modules;
-
-#endregion
-
-namespace Alteridem.GitHub.Extension.Modules
+namespace Alteridem.GitHub.Logging
 {
-    public class ViewModule : NinjectModule
+    /// <summary>
+    /// Interface for logging and showing messages to the user
+    /// </summary>
+    public interface IOutputWriter
     {
-        public override void Load()
-        {
-            Bind<ILoginView>().To<Login>();
-            Bind<IAddComment>().To<AddComment>();
-            Bind<IIssueEditor>().To<IssueEditor>();
-            Bind<ILabelPicker>().To<LabelPicker>();
-        }
+        /// <summary>
+        /// Shows the specified message to the user.
+        /// </summary>
+        /// <param name="level">The level at which to log the message</param>
+        /// <param name="message">The message.</param>
+        void Write(LogLevel level, string message);
+
+        /// <summary>
+        /// Shows the specified message to the user.
+        /// </summary>
+        /// <param name="level">The level at which to log the message</param>
+        /// <param name="message">The message.</param>
+        /// <param name="args">Arguments to the message</param>
+        void Write(LogLevel level, string message, params object[] args);
+
+        /// <summary>
+        /// Shows the specified message to the user along with the exception information.
+        /// </summary>
+        /// <param name="level">The level at which to log the message</param>
+        /// <param name="message">The message.</param>
+        /// <param name="ex">The exception.</param>
+        void Write(LogLevel level, string message, Exception ex);
     }
 }

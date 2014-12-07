@@ -24,14 +24,11 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using NLog;
 
 namespace Alteridem.GitHub.Extension.View
 {
     public class WebBrowserBehavior
     {
-        private static readonly Logger log = LogManager.GetCurrentClassLogger( );
-
         public static readonly DependencyProperty HtmlProperty = DependencyProperty.RegisterAttached(
                 "Html",
                 typeof(string),
@@ -41,13 +38,11 @@ namespace Alteridem.GitHub.Extension.View
         [AttachedPropertyBrowsableForType(typeof(WebBrowser))]
         public static string GetHtml(WebBrowser d)
         {
-            log.Info( "Getting HTML" );
             return (string)d.GetValue(HtmlProperty);
         }
 
         public static void SetHtml(WebBrowser d, string value)
         {
-            log.Info("Setting HTML");
             d.SetValue(HtmlProperty, value);
         }
 
@@ -57,8 +52,6 @@ namespace Alteridem.GitHub.Extension.View
             var str = e.NewValue as string;
             if (webBrowser != null && !string.IsNullOrWhiteSpace(str) )
                 webBrowser.NavigateToString(str);
-            
-            log.Info("HTML changed");
         }
     }
 }

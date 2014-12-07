@@ -22,24 +22,32 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
+using System;
+using Alteridem.GitHub.Logging;
+using EnvDTE;
 
-using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.View;
-using Ninject.Modules;
-
-#endregion
-
-namespace Alteridem.GitHub.Extension.Modules
+namespace Alteridem.GitHub.Extension.View
 {
-    public class ViewModule : NinjectModule
+    public class OutputWriter : BaseOutputWriter
     {
-        public override void Load()
+        /// <summary>
+        /// Logs the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected override void WriteMessage(string message)
         {
-            Bind<ILoginView>().To<Login>();
-            Bind<IAddComment>().To<AddComment>();
-            Bind<IIssueEditor>().To<IssueEditor>();
-            Bind<ILabelPicker>().To<LabelPicker>();
+            var pane = Factory.Get<OutputWindowPane>();
+            if (pane != null)
+                pane.OutputString(message + Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Shows the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected override void ShowMessage(string message)
+        {
+            VisualStudioMessageBox.Show(message);
         }
     }
 }
