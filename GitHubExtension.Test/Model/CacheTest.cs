@@ -48,8 +48,8 @@ namespace Alteridem.GitHub.Extension.Test.Model
     {
         private ExportProvider _exportProvider;
 
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
+        [SetUp]
+        public void SetUp()
         {
             var issuesAssemblyCatalog = new AssemblyCatalog(typeof(Cache).Assembly);
             var mockServicesCatalog = new TypeCatalog(typeof(MockServiceProvider));
