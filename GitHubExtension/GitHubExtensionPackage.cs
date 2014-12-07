@@ -53,7 +53,6 @@ namespace Alteridem.GitHub.Extension
     /// </summary>
     // This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is
     // a package.
-    [PackageRegistration(UseManagedResourcesOnly = true)]
     // This attribute is used to register the information needed to show this package
     // in the Help/About dialog of Visual Studio.
     [InstalledProductRegistration("#110", "#112", "0.2.0", IconResourceID = 400)]
@@ -64,6 +63,7 @@ namespace Alteridem.GitHub.Extension
     [ProvideToolWindow(typeof(IssueToolWindow))]
     [ProvideService(typeof(IIssueToolWindow))]
     [Guid(GuidList.guidGitHubExtensionPkgString)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable"), PackageRegistration(UseManagedResourcesOnly = true)]
     public sealed class GitHubExtensionPackage : Package
     {
         /// <summary>
