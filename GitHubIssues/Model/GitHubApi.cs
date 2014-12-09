@@ -45,9 +45,6 @@ namespace Alteridem.GitHub.Model
         private readonly GitHubClient _github;
         private readonly IOutputWriter _log;
         private bool _gettingIssues;
-        private readonly Label _allLabels;
-        private readonly Milestone _noMilestone;
-        private readonly Milestone _allMilestones;
 
         #endregion
 
@@ -56,10 +53,6 @@ namespace Alteridem.GitHub.Model
         {
             _github = github;
             _log = logWriter;
-
-            _allLabels = new Label { Color = "FFFFFFFF", Name = "All Labels" };
-            _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
-            _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
 
             // Get user and token from settings and log in using them
             LoginFromCache();
@@ -94,7 +87,8 @@ namespace Alteridem.GitHub.Model
             User = null;
             Repositories.Clear();
             Organizations.Clear();
-            Issues.Clear();
+            AllIssues.Clear();
+            OnPropertyChanged("Issues");
         }
 
         public override async void GetIssues()
@@ -103,25 +97,15 @@ namespace Alteridem.GitHub.Model
                 return;
 
             _gettingIssues = true;
-            Issues.Clear();
+            AllIssues.Clear();
+            OnPropertyChanged("Issues");
             var wrapper = Repository;
             if (wrapper != null && wrapper.Repository != null)
             {
                 var repository = wrapper.Repository;
-                // TODO: Filter issues
                 var request = new RepositoryIssueRequest();
                 request.State = ItemState.Open;
                 request.Filter = IssueFilter.All;
-                if (Label != null && Label != _allLabels)
-                    request.Labels.Add(Label.Name);
-
-                if (Milestone == _noMilestone)
-                    request.Milestone = "none";
-                else if (Milestone == _allMilestones)
-                    request.Milestone = "*";
-                else if (Milestone != null)
-                    request.Milestone = Milestone.Number.ToString(CultureInfo.InvariantCulture);
-
                 await GetIssues(repository.Owner.Login, repository.Name, request);
             }
             _gettingIssues = false;
@@ -181,8 +165,8 @@ namespace Alteridem.GitHub.Model
                 var updatedIssue = await _github.Issue.Update(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number, update);
                 if (updatedIssue.State == ItemState.Closed)
                 {
+                    AllIssues.Remove(issue);
                     Issue = null;
-                    Issues.Remove(issue);
                     IssueMarkdown = string.Empty;
                 }
             }
@@ -212,7 +196,7 @@ namespace Alteridem.GitHub.Model
                 Issue issue = await _github.Issue.Create(repository.Owner.Login, repository.Name, newIssue);
                 if (issue != null && Repository != null && repository.Id == Repository.Repository.Id)
                 {
-                    Issues.Insert(0, issue);
+                    AllIssues.Insert(0, issue);;
                     Issue = issue;
                 }
             }
@@ -229,12 +213,12 @@ namespace Alteridem.GitHub.Model
                 Issue issueUpdate = await _github.Issue.Update(repository.Owner.Login, repository.Name, id, update);
                 if (Repository != null && repository.Id == Repository.Repository.Id)
                 {
-                    foreach (var issue in Issues)
+                    foreach (var issue in AllIssues)
                     {
                         if (issue.Number == issueUpdate.Number)
                         {
-                            Issues.Remove(issue);
-                            Issues.Insert(0, issueUpdate);
+                            AllIssues.Remove(issue);
+                            AllIssues.Insert(0, issueUpdate);
                             Issue = issueUpdate;
                             break;
                         }
@@ -418,19 +402,20 @@ namespace Alteridem.GitHub.Model
 
         private async Task GetIssues(string owner, string name, RepositoryIssueRequest request)
         {
-            _log.Write(LogLevel.Debug, "Fetching repositories for {0}/{1}", owner, name);
+            _log.Write(LogLevel.Debug, "Fetching issues for {0}/{1}", owner, name);
             try
             {
                 var issues = await _github.Issue.GetForRepository(owner, name, request);
                 foreach (var issue in issues)
                 {
-                    Issues.Add(issue);
+                    AllIssues.Add(issue);
                 }
             }
             catch (Exception ex)
             {
                 _log.Write(LogLevel.Warn, "Failed to fetch issues", ex);
             }
+            OnPropertyChanged("Issues");
         }
 
         private void AppendComments(IEnumerable<IssueComment> comments)

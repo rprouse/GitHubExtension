@@ -97,9 +97,9 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
                     AvatarUrl = "https://avatars.githubusercontent.com/u/493828?v=1"
                 }
             };
+            AllIssues.Add(issue);
             Issue = issue;
             IssueMarkdown = issue.Body;
-            Issues.Add(issue);
         }
 
         protected override void GetLabels()
@@ -141,8 +141,8 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
                 Title = newIssue.Title,
                 Body = newIssue.Body
             };
+            AllIssues.Add(issue);
             Issue = issue;
-            Issues.Add(issue);
         }
 
         public override Task<IReadOnlyList<User>> GetAssignees(Repository repository)
