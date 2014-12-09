@@ -377,7 +377,7 @@ namespace Alteridem.GitHub.Model
                 {
                     var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
                     Labels.Add(_allLabels);
-                    foreach (var label in labels)
+                    foreach (var label in labels.OrderBy(l => l.Name))
                         Labels.Add(label);
 
                     Label = _allLabels;

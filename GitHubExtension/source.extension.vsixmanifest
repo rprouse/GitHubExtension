@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="dae607b6-043f-400a-bd24-ffda143b13f4" Version="0.2.0" Language="en-US" Publisher="Rob Prouse" />
+        <Identity Id="dae607b6-043f-400a-bd24-ffda143b13f4" Version="0.3.0" Language="en-US" Publisher="Rob Prouse" />
         <DisplayName>GitHub Extension</DisplayName>
         <Description xml:space="preserve">Manage GitHub issues for repositories that you have commit access to. You can filter and view issues for a repository, edit issues, add comments and close issues.</Description>
         <MoreInfo>https://github.com/rprouse/GitHubExtension</MoreInfo>
