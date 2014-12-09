@@ -24,6 +24,7 @@
 
 #region Using Directives
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
@@ -86,7 +87,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public BindingList<Organization> Organizations { get { return GitHubApi.Organizations; } }
 
         [NotNull]
-        public BindingList<Issue> Issues { get { return GitHubApi.Issues; } }
+        public IEnumerable<Issue> Issues { get { return GitHubApi.Issues; } }
 
         public void OpenIssueViewer()
         {

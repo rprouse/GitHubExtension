@@ -25,6 +25,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
@@ -44,6 +46,9 @@ namespace Alteridem.GitHub.Model
         private Milestone _milestone;
         private Issue _issue;
         private string _markdown = string.Empty;
+        protected readonly Label _allLabels;
+        protected readonly Milestone _noMilestone;
+        protected readonly Milestone _allMilestones;
 
         #endregion
 
@@ -52,11 +57,15 @@ namespace Alteridem.GitHub.Model
             if (settingsCache == null)
                 throw new ArgumentNullException("settingsCache");
 
+            _allLabels = new Label { Color = "FFFFFFFF", Name = "All Labels" };
+            _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
+            _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
+
             SettingsCache = settingsCache;
             _filter = IssueFilter.Assigned;
             Repositories = new BindingList<RepositoryWrapper>();
             Organizations = new BindingList<Organization>();
-            Issues = new BindingList<Issue>();
+            AllIssues = new BindingList<Issue>();
             Labels = new BindingList<Label>();
             Milestones = new BindingList<Milestone>();
         }
@@ -107,8 +116,8 @@ namespace Alteridem.GitHub.Model
             {
                 if (Equals(value, _label)) return;
                 _label = value;
-                GetIssues();
                 OnPropertyChanged();
+                OnPropertyChanged("Issues");
             }
         }
 
@@ -119,8 +128,8 @@ namespace Alteridem.GitHub.Model
             {
                 if (Equals(value, _milestone)) return;
                 _milestone = value;
-                GetIssues();
                 OnPropertyChanged();
+                OnPropertyChanged("Issues");
             }
         }
 
@@ -149,8 +158,35 @@ namespace Alteridem.GitHub.Model
         [NotNull]
         public BindingList<Organization> Organizations { get; set; }
 
+        /// <summary>
+        /// The filtered list of issues
+        /// </summary>
         [NotNull]
-        public BindingList<Issue> Issues { get; set; }
+        public IEnumerable<Issue> Issues
+        {
+            get
+            {
+                IEnumerable<Issue> issues = AllIssues;
+
+                if (Label != null && Label != _allLabels)
+                    issues = issues.Where(i => i.Labels.Any(l => l.Name == Label.Name));
+
+                if (Milestone == _noMilestone)
+                    issues = issues.Where(i => i.Milestone == null);
+                else if (Milestone == _allMilestones)
+                    issues = issues.Where(i => i.Milestone != null);
+                else if (Milestone != null)
+                    issues = issues.Where(i => i.Milestone != null && i.Milestone.Number == Milestone.Number);
+
+                return issues;
+            }
+        }
+
+        /// <summary>
+        /// All of the open issues for a repository
+        /// </summary>
+        [NotNull]
+        public BindingList<Issue> AllIssues { get; set; }
 
         /// <summary>
         /// Should we fetch open, closed, assigned, etc issues
@@ -162,8 +198,8 @@ namespace Alteridem.GitHub.Model
             {
                 if (Equals(value, _filter)) return;
                 _filter = value;
-                GetIssues();
                 OnPropertyChanged();
+                OnPropertyChanged("Issues");
             }
         }
 
