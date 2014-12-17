@@ -30,6 +30,7 @@ using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
+using Alteridem.GitHub.Filters;
 using Alteridem.GitHub.Model;
 using Microsoft.VisualStudio.Shell;
 using Octokit;
@@ -72,6 +73,20 @@ namespace Alteridem.GitHub.Extension.ViewModel
         {
             get { return GitHubApi.Issue; }
             set { GitHubApi.Issue = value; }
+        }
+
+        /// <summary>
+        /// Gets a list of the possible user filters
+        /// </summary>
+        public IList<UserFilterType> UserFilters { get { return GitHubApi.UserFilters; } }
+
+        /// <summary>
+        /// Should we fetch issues assigned to the user, unassigned, etc.
+        /// </summary>
+        public UserFilterType UserFilter
+        {
+            get { return GitHubApi.UserFilter; }
+            set { GitHubApi.UserFilter = value; }
         }
 
         [NotNull]

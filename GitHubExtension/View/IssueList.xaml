@@ -9,12 +9,14 @@
              xmlns:view="clr-namespace:Alteridem.GitHub.Extension.View"
              xmlns:viewModel="clr-namespace:Alteridem.GitHub.Extension.ViewModel"
              xmlns:controls="clr-namespace:Alteridem.GitHub.Extension.View.Controls"
+             xmlns:converters="clr-namespace:Alteridem.GitHub.Converters;assembly=Alteridem.GitHub"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModel:IssueListViewModel}"
              d:DesignHeight="800" 
              d:DesignWidth="400">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <converters:EnumToStringConverter x:Key="EnumToString" />
         <DataTemplate x:Key="RepositoryTemplate">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -114,11 +116,6 @@
                     Grid.Column="0" 
                     Grid.ColumnSpan="2" 
                     Margin="6,3">
-            <!--<ComboBox x:Name="Filter" Margin="3,6"
-                      Width="120" Height="26"
-                      ItemsSource="{Binding Source={StaticResource IssueFilterDataProvider}}"
-                      SelectedItem="{Binding Path=Filter}" >
-      </ComboBox>-->
             
             <!-- Label Filter -->
             <ComboBox Margin="0,0,3,0"
@@ -138,6 +135,21 @@
                       ItemsSource="{Binding Path=Milestones}"
                       SelectedItem="{Binding Path=Milestone}"
                       ItemTemplate="{StaticResource MilestoneTemplate}" />
+
+            <!-- User Filter -->
+            <ComboBox Margin="3,0"
+                      Width="120"
+                      FontSize="10"
+                      FontFamily="Verdana"
+                      HorizontalContentAlignment="Stretch"
+                      ItemsSource="{Binding Path=UserFilters}"
+                      SelectedItem="{Binding Path=UserFilter}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </StackPanel>
 
         <controls:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right" Margin="0,6,0,0"/>

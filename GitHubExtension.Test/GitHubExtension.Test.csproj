@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblySetup.cs" />
+    <Compile Include="Converters\EnumToStringConverterTest.cs" />
     <Compile Include="Converters\MarkdownConverterTest.cs" />
     <Compile Include="Converters\StringToColorConverterTest.cs" />
     <Compile Include="Mocks\ResponseMock.cs" />

@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Filters;
 using Octokit;
 
 namespace Alteridem.GitHub.Model
@@ -41,7 +41,6 @@ namespace Alteridem.GitHub.Model
         private string _token;
         private User _user;
         private RepositoryWrapper _repository;
-        private IssueFilter _filter;
         private Label _label;
         private Milestone _milestone;
         private Issue _issue;
@@ -49,6 +48,7 @@ namespace Alteridem.GitHub.Model
         protected readonly Label _allLabels;
         protected readonly Milestone _noMilestone;
         protected readonly Milestone _allMilestones;
+        private UserFilterType _userFilterType;
 
         #endregion
 
@@ -57,12 +57,18 @@ namespace Alteridem.GitHub.Model
             if (settingsCache == null)
                 throw new ArgumentNullException("settingsCache");
 
+            _userFilterType = UserFilterType.All;
+            UserFilters = new List<UserFilterType>();
+            foreach (UserFilterType value in Enum.GetValues(typeof(UserFilterType)))
+            {
+                UserFilters.Add(value);
+            }
+
             _allLabels = new Label { Color = "FFFFFFFF", Name = "All Labels" };
             _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
             _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
 
             SettingsCache = settingsCache;
-            _filter = IssueFilter.Assigned;
             Repositories = new BindingList<RepositoryWrapper>();
             Organizations = new BindingList<Organization>();
             AllIssues = new BindingList<Issue>();
@@ -178,6 +184,8 @@ namespace Alteridem.GitHub.Model
                 else if (Milestone != null)
                     issues = issues.Where(i => i.Milestone != null && i.Milestone.Number == Milestone.Number);
 
+                issues = issues.Filter(User, UserFilter);
+
                 return issues;
             }
         }
@@ -186,18 +194,23 @@ namespace Alteridem.GitHub.Model
         /// All of the open issues for a repository
         /// </summary>
         [NotNull]
-        public BindingList<Issue> AllIssues { get; set; }
+        public BindingList<Issue> AllIssues { get; private set; }
 
         /// <summary>
-        /// Should we fetch open, closed, assigned, etc issues
+        /// Gets a list of the possible user filters
         /// </summary>
-        public IssueFilter Filter
+        public IList<UserFilterType> UserFilters { get; private set; } 
+
+        /// <summary>
+        /// Should we fetch issues assigned to the user, unassigned, etc.
+        /// </summary>
+        public UserFilterType UserFilter
         {
-            get { return _filter; }
+            get { return _userFilterType; }
             set
             {
-                if (Equals(value, _filter)) return;
-                _filter = value;
+                if (value == _userFilterType) return;
+                _userFilterType = value;
                 OnPropertyChanged();
                 OnPropertyChanged("Issues");
             }
