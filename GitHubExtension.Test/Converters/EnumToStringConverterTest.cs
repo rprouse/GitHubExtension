@@ -66,12 +66,6 @@ namespace Alteridem.GitHub.Extension.Test.Converters
         }
 
         [Test]
-        public void NotEnumValueThrowsArgumentExceptions()
-        {
-            Assert.That(() => _converter.Convert(12, typeof(string), null, CultureInfo.InvariantCulture), Throws.ArgumentException);
-        }
-
-        [Test]
         public void NullValueThrowsArgumentNullExceptions()
         {
             Assert.That(() => _converter.ConvertBack(null, typeof(string), null, CultureInfo.InvariantCulture), Throws.InstanceOf<ArgumentNullException>());

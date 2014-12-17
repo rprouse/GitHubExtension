@@ -138,12 +138,18 @@
 
             <!-- User Filter -->
             <ComboBox Margin="3,0"
-                      Width="100"
+                      Width="120"
                       FontSize="10"
                       FontFamily="Verdana"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding Path=UserFilters}"
-                      SelectedItem="{Binding Path=UserFilter}"/>
+                      SelectedItem="{Binding Path=UserFilter}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumToString}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </StackPanel>
 
         <controls:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right" Margin="0,6,0,0"/>

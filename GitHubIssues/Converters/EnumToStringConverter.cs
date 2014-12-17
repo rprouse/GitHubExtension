@@ -50,11 +50,7 @@ namespace Alteridem.GitHub.Converters
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return string.Empty;
-
-            if (!value.GetType().IsEnum) throw new ArgumentException("value must be an enumerated type");
-
-            string retVal = value.ToString();
+            string retVal = value == null ? string.Empty : value.ToString();
             var builder = new StringBuilder();
             foreach (var word in SplitOnCapitals(retVal))
             {
