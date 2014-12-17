@@ -68,15 +68,12 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        public override async Task<bool> Login(string username, string password, string accessToken)
+        public override async Task Login(string username, string password, string accessToken)
         {
-            Credentials credentials;
             if (!string.IsNullOrEmpty(accessToken))
-                credentials = new Credentials(accessToken);
+                await LoginWithAccessToken(new Credentials(accessToken));
             else
-                credentials = new Credentials(username, password);
-
-            return await Login(credentials);
+                await LoginWithUsernameAndPassword(new Credentials(username, password));
         }
 
         public override void Logout()
@@ -111,7 +108,7 @@ namespace Alteridem.GitHub.Model
             _gettingIssues = false;
         }
 
-        public override async void GetComments(Issue issue)
+        protected override async void GetComments(Issue issue)
         {
             if (issue == null)
                 return;
@@ -240,37 +237,41 @@ namespace Alteridem.GitHub.Model
             var credentials = SettingsCache.Credentials;
             if (credentials != null)
             {
-                if (!string.IsNullOrEmpty(credentials.AccessToken))
-                    await Login(new Credentials(credentials.AccessToken));
-                else if (!string.IsNullOrEmpty(credentials.Logon))
-                    await Login(new Credentials(credentials.Logon, credentials.Password));
+                try
+                {
+                    if (!string.IsNullOrEmpty(credentials.AccessToken))
+                        await LoginWithAccessToken(new Credentials(credentials.AccessToken));
+                    else if (!string.IsNullOrEmpty(credentials.Logon))
+                        await LoginWithUsernameAndPassword(new Credentials(credentials.Logon, credentials.Password));
+                }
+                catch (Exception exception)
+                {
+                    Logout();
+                    _log.Write(LogLevel.Error, "Failed to log in with cached credentials.", exception);
+                }
             }
         }
 
-        private async Task<bool> Login([NotNull] Credentials credentials)
+        private async Task LoginWithUsernameAndPassword([NotNull] Credentials credentials)
         {
             _log.Write(LogLevel.Debug, "Logging in with credentials");
             _github.Credentials = credentials;
-            SettingsCache.SaveCredentials(credentials.Login, credentials.Password, credentials.GetToken());
-            var newAuth = new NewAuthorization
-            {
-                Scopes = new[] { "user", "repo" },
-                Note = "GitHub Visual Studio Extension",
-                NoteUrl = "http://www.alteridem.net"
-            };
 
             try
             {
-                Token = credentials.GetToken();
-                if (string.IsNullOrEmpty(Token))
+                SettingsCache.SaveCredentials(credentials.Login, credentials.Password);
+                var newAuth = new NewAuthorization
                 {
-                    var auth = await _github.Authorization.GetOrCreateApplicationAuthentication(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth);
-                    _log.Write(LogLevel.Info, "Successfully logged in to GitHub");
-                    Token = auth.Token;
-                }
+                    Scopes = new[] { "user", "repo" },
+                    Note = "GitHub Visual Studio Extension",
+                    NoteUrl = "http://www.alteridem.net"
+                };
 
-                LoadData();
-                return true;
+                var auth = await _github.Authorization.GetOrCreateApplicationAuthentication( Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth );
+                _log.Write( LogLevel.Info, "Successfully logged in to GitHub" );
+                Token = auth.Token;
+
+                await LoadData();
             }
             catch (Exception ex)
             {
@@ -280,13 +281,32 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        private void LoadData()
+        private async Task LoginWithAccessToken( [NotNull] Credentials credentials )
         {
-            GetUser();
-            GetRepositories();
+            _log.Write( LogLevel.Debug, "Logging in with access token" );
+            _github.Credentials = credentials;
+
+            try
+            {
+                SettingsCache.SaveToken( credentials.GetToken() );
+                Token = credentials.GetToken();
+                await LoadData();
+            }
+            catch ( Exception ex )
+            {
+                _log.Write( LogLevel.Warn, "Failed to login", ex );
+                Logout();
+                throw;
+            }
         }
 
-        private async void GetUser()
+        private async Task LoadData()
+        {
+            await GetUser();
+            await GetRepositories();
+        }
+
+        private async Task GetUser()
         {
             _log.Write(LogLevel.Debug, "Fetching current user");
             try
@@ -297,10 +317,11 @@ namespace Alteridem.GitHub.Model
             catch (Exception ex)
             {
                 _log.Write(LogLevel.Warn, "Failed to fetch current user", ex);
+                throw;
             }
         }
 
-        private async void GetRepositories()
+        private async Task GetRepositories()
         {
             _log.Write(LogLevel.Debug, "Fetching repositories for current user");
             Repositories.Clear();

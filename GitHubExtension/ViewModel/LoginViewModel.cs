@@ -119,8 +119,9 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
             try
             {
-                if ( await GitHubApi.Login(Username, pass.Password, AccessToken) )
-                    _view.Close();
+                // This will throw if authentication fails
+                await GitHubApi.Login(Username, pass.Password, AccessToken);
+                _view.Close();
             }
             catch (Exception e)
             {

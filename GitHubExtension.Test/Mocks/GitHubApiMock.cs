@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Model;
 using NUnit.Framework;
@@ -70,7 +71,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             }
         }
 
-        public override Task<bool> Login(string username, string password, string accessToken)
+        public override Task Login(string username, string password, string accessToken)
         {
             Token = username + password;
             User = new User
@@ -79,7 +80,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
                 Name = username,
                 AvatarUrl = "https://avatars.githubusercontent.com/u/493828?v=1"
             };
-            return new Task<bool>(() => true);
+            return new Task(() => Console.WriteLine("Logging In"));
         }
 
         public override void GetIssues()
@@ -161,7 +162,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             IssueMarkdown += comment;
         }
 
-        public override void GetComments(Issue issue)
+        protected override void GetComments(Issue issue)
         {
             IssueMarkdown += "\r\nComment";
         }
