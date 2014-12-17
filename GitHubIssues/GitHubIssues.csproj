@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\ColorExtensions.cs" />
+    <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\StringToInverseColorConverter.cs" />
     <Compile Include="Logging\BaseOutputWriter.cs" />
     <Compile Include="Logging\IOutputWriter.cs" />
