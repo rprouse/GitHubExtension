@@ -39,7 +39,7 @@ namespace Alteridem.GitHub.Converters
     /// <summary>
     /// Converts an enum to a friendly string by breaking apart words on capital letters
     /// </summary>
-    public class EnumToStringConverter: IValueConverter
+    public class EnumToStringConverter : IValueConverter
     {
         /// <summary>
         /// Converts an Enum to a friendly string. 
@@ -51,6 +51,8 @@ namespace Alteridem.GitHub.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return string.Empty;
+
+            if (!value.GetType().IsEnum) throw new ArgumentException("value must be an enumerated type");
 
             string retVal = value.ToString();
             var builder = new StringBuilder();
@@ -71,12 +73,16 @@ namespace Alteridem.GitHub.Converters
         /// <param name="value">The value that is produced by the binding target.</param><param name="targetType">The type to convert to.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value == null) throw new ArgumentNullException("value");
+            if (!targetType.IsEnum) throw new ArgumentException("targetType must be an enum");
+
+            var str = value.ToString();
+            return Enum.Parse(targetType, str.Replace(" ", ""));
         }
 
         private static IEnumerable<string> SplitOnCapitals(string text)
         {
-            Regex regex = new Regex(@"\p{Lu}\p{Ll}*");
+            var regex = new Regex(@"\p{Lu}\p{Ll}*");
             return from Match match in regex.Matches(text) select match.Value;
         }
     }

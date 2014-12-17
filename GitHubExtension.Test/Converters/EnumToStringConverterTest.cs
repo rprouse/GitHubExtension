@@ -24,7 +24,9 @@
 
 #region Using Directives
 
+using System;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using Alteridem.GitHub.Converters;
 using NUnit.Framework;
 
@@ -35,6 +37,8 @@ namespace Alteridem.GitHub.Extension.Test.Converters
     [TestFixture]
     public class EnumToStringConverterTest
     {
+        private readonly EnumToStringConverter _converter = new EnumToStringConverter();
+
         public enum TestEnum
         {
             None,
@@ -45,15 +49,44 @@ namespace Alteridem.GitHub.Extension.Test.Converters
         [TestCase(TestEnum.ThreeBlindMice, "Three Blind Mice")]
         public void CanConvertEnumToString(TestEnum value, string expected)
         {
-            var converter = new EnumToStringConverter();
-            Assert.That(converter.Convert(value, typeof(string), null, CultureInfo.InvariantCulture), Is.EqualTo(expected));
+            Assert.That(_converter.Convert(value, typeof(string), null, CultureInfo.InvariantCulture), Is.EqualTo(expected));
+        }
+
+        [TestCase(TestEnum.None, "None")]
+        [TestCase(TestEnum.ThreeBlindMice, "Three Blind Mice")]
+        public void CanConvertStringToEnum(TestEnum expected, string value)
+        {
+            Assert.That(_converter.ConvertBack(value, typeof(TestEnum), null, CultureInfo.InvariantCulture), Is.EqualTo(expected));
         }
 
         [Test]
         public void NullConvertsToEmptyString()
         {
-            var converter = new EnumToStringConverter();
-            Assert.That(converter.Convert(null, typeof(string), null, CultureInfo.InvariantCulture), Is.EqualTo(string.Empty));
+            Assert.That(_converter.Convert(null, typeof(string), null, CultureInfo.InvariantCulture), Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void NotEnumValueThrowsArgumentExceptions()
+        {
+            Assert.That(() => _converter.Convert(12, typeof(string), null, CultureInfo.InvariantCulture), Throws.ArgumentException);
+        }
+
+        [Test]
+        public void NullValueThrowsArgumentNullExceptions()
+        {
+            Assert.That(() => _converter.ConvertBack(null, typeof(string), null, CultureInfo.InvariantCulture), Throws.InstanceOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void NotEnumTypeThrowsArgumentExceptions()
+        {
+            Assert.That(() => _converter.ConvertBack("Three Blind Mice", typeof(int), null, CultureInfo.InvariantCulture), Throws.ArgumentException);
+        }
+
+        [Test]
+        public void InvalidEnumValueThrowsFormatException()
+        {
+            Assert.That(() => _converter.ConvertBack("Bad Value", typeof(TestEnum), null, CultureInfo.InvariantCulture), Throws.ArgumentException);
         }
     }
 }
