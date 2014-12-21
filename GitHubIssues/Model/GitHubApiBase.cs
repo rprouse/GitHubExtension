@@ -179,9 +179,7 @@ namespace Alteridem.GitHub.Model
 
                 if (Milestone == _noMilestone)
                     issues = issues.Where(i => i.Milestone == null);
-                else if (Milestone == _allMilestones)
-                    issues = issues.Where(i => i.Milestone != null);
-                else if (Milestone != null)
+                else if (Milestone != null && Milestone != _allMilestones)
                     issues = issues.Where(i => i.Milestone != null && i.Milestone.Number == Milestone.Number);
 
                 issues = issues.Filter(User, UserFilter);
