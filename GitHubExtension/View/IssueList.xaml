@@ -62,7 +62,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="6,6,6,3">
-            
+
             <!-- Refresh List Button -->
             <Button 
                 Command="{Binding Path=RefreshCommand}"
@@ -75,11 +75,11 @@
                 ToolTip="Refresh List" 
                 IsEnabled="True"
                 FocusVisualStyle="{x:Null}" >
-              <Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                  <ContentPresenter />
-                </ControlTemplate>
-              </Button.Template>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
 
             <!-- Add Issue Button -->
@@ -94,11 +94,11 @@
                 ToolTip="New Issue" 
                 IsEnabled="True"
                 FocusVisualStyle="{x:Null}" >
-              <Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                  <ContentPresenter />
-                </ControlTemplate>
-              </Button.Template>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
 
             <!-- Repository Filter -->
@@ -108,27 +108,28 @@
                       FontSize="11"
                       ItemsSource="{Binding Path=Repositories}" 
                       SelectedItem="{Binding Path=Repository}" 
-                      ItemTemplate="{StaticResource RepositoryTemplate}" MinWidth="100"/>
+                      ItemTemplate="{StaticResource RepositoryTemplate}" 
+                      MinWidth="100"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" 
-                    Grid.Row="1" 
-                    Grid.Column="0" 
-                    Grid.ColumnSpan="2" 
-                    Margin="6,3">
-            
+        <WrapPanel Orientation="Horizontal" 
+                   Grid.Row="1" 
+                   Grid.Column="0" 
+                   Grid.ColumnSpan="2" 
+                   Margin="6,3" >
+
             <!-- Label Filter -->
-            <ComboBox Margin="0,0,3,0"
-                      Width="120"
+            <ComboBox Margin="0,0,3,3"
+                      MinWidth="80"
                       FontSize="10"
                       FontFamily="Verdana"
                       ItemsSource="{Binding Path=Labels}"
                       SelectedItem="{Binding Path=Label}"
                       ItemTemplate="{StaticResource LabelTemplate}" />
-            
+
             <!-- Milestones Filter -->
-            <ComboBox Margin="3,0"
-                      Width="120"
+            <ComboBox Margin="0,0,3,3"
+                      MinWidth="80"
                       FontSize="10"
                       FontFamily="Verdana"
                       HorizontalContentAlignment="Stretch"
@@ -137,8 +138,8 @@
                       ItemTemplate="{StaticResource MilestoneTemplate}" />
 
             <!-- User Filter -->
-            <ComboBox Margin="3,0"
-                      Width="120"
+            <ComboBox Margin="0,0,3,3"
+                      MinWidth="80"
                       FontSize="10"
                       FontFamily="Verdana"
                       HorizontalContentAlignment="Stretch"
@@ -150,14 +151,24 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-        </StackPanel>
+            
+            <!-- Searchbox -->
+            <TextBox Margin="0,0,3,3"
+                     Width="80"
+                     Text="{Binding Path=SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+                <controls:WatermarkService.Watermark>
+                    <TextBlock>Search</TextBlock>
+                </controls:WatermarkService.Watermark>
+            </TextBox>
+            
+        </WrapPanel>
 
         <controls:UserView Grid.Row="0" Grid.Column="1" Width="Auto" HorizontalAlignment="Right" Margin="0,6,0,0"/>
 
-        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+        <Button Grid.Row="2" Grid.Column="0"
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Center"
-                Margin="6,6,6,6"
+                Margin="145,267,101,300"
                 FontSize="128" 
                 Content="&#xf090;"
                 ToolTip="Log In"
@@ -173,7 +184,7 @@
                 <Style TargetType="Button" BasedOn="{StaticResource FontAwesome}" />
             </Button.Style>
         </Button>
-        
+
         <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                   Margin="6,0,6,6"
                   ItemsSource="{Binding Path=Issues}"
@@ -185,7 +196,7 @@
                   Visibility="{Binding Path=LoggedIn, Converter={StaticResource BoolToVis}}"
                   Background="{DynamicResource {x:Static view:Theme.BackgroundKey}}"
                   Foreground="{DynamicResource {x:Static view:Theme.ForegroundKey}}"
-                  BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" >
+                  BorderBrush="{DynamicResource {x:Static view:Theme.ControlBorderKey}}" Grid.RowSpan="2" >
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment"

@@ -75,6 +75,12 @@ namespace Alteridem.GitHub.Extension.ViewModel
             set { GitHubApi.Issue = value; }
         }
 
+        public string SearchText
+        {
+            get { return GitHubApi.SearchText; }
+            set { GitHubApi.SearchText = value; }
+        }
+
         /// <summary>
         /// Gets a list of the possible user filters
         /// </summary>

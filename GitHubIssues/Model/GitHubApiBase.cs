@@ -49,6 +49,7 @@ namespace Alteridem.GitHub.Model
         protected readonly Milestone _noMilestone;
         protected readonly Milestone _allMilestones;
         private UserFilterType _userFilterType;
+        private string _searchText;
 
         #endregion
 
@@ -174,15 +175,25 @@ namespace Alteridem.GitHub.Model
             {
                 IEnumerable<Issue> issues = AllIssues;
 
+                // Labels
                 if (Label != null && Label != _allLabels)
                     issues = issues.Where(i => i.Labels.Any(l => l.Name == Label.Name));
 
+                // Milestones
                 if (Milestone == _noMilestone)
                     issues = issues.Where(i => i.Milestone == null);
                 else if (Milestone != null && Milestone != _allMilestones)
                     issues = issues.Where(i => i.Milestone != null && i.Milestone.Number == Milestone.Number);
 
+                // Users
                 issues = issues.Filter(User, UserFilter);
+
+                // Search Text
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    string search = SearchText.ToLower();
+                    issues = issues.Where(i => i.Title.ToLower().Contains(search) || i.Body.ToLower().Contains(search));
+                }
 
                 return issues;
             }
@@ -240,6 +251,21 @@ namespace Alteridem.GitHub.Model
                 _issue = value;
                 GetComments( _issue );
                 OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Text to search the issues for
+        /// </summary>
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (value == _searchText) return;
+                _searchText = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Issues");
             }
         }
 
