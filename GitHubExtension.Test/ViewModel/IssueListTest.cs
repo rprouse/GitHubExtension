@@ -48,7 +48,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
             var catalog = new AggregateCatalog(issuesAssemblyCatalog, mockServicesCatalog);
             var exportProvider = new CompositionContainer(catalog);
 
-            Factory.Rebind<Cache>().ToConstant(exportProvider.GetExportedValue<Cache>());
+            Factory.Rebind<ICache>().ToConstant(exportProvider.GetExportedValue<Cache>());
             Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
             Factory.Rebind<IIssueEditor>().To<IssueEditorMock>();
             _viewModel = Factory.Get<IssueListViewModel>();

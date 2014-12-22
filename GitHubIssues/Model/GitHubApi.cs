@@ -48,7 +48,7 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApi(GitHubClient github, IOutputWriter logWriter, Cache settingsCache)
+        public GitHubApi(GitHubClient github, IOutputWriter logWriter, ICache settingsCache)
             : base(settingsCache)
         {
             _github = github;

@@ -53,7 +53,7 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        protected GitHubApiBase(Cache settingsCache)
+        protected GitHubApiBase(ICache settingsCache)
         {
             if (settingsCache == null)
                 throw new ArgumentNullException("settingsCache");
@@ -270,7 +270,7 @@ namespace Alteridem.GitHub.Model
         }
 
         [NotNull]
-        protected Cache SettingsCache
+        protected ICache SettingsCache
         {
             get;
             private set;
