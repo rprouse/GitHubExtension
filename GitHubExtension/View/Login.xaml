@@ -46,7 +46,7 @@
                 <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="12,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Username/Password" FontWeight="Bold"/>
 
                 <TextBlock Grid.Column="0" Grid.Row="2" Text="Username:" VerticalAlignment="Center" Margin="18,10,6,10" Height="16" />
-                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Margin="6,6,12,6" Text="{Binding Path=Username, Mode=OneWayToSource}" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
+                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ToolTip="GitHub username or email address" Margin="6,6,12,6" Text="{Binding Path=Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
 
                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Password:" VerticalAlignment="Center" Margin="18,10,6,10" Height="16" />
                 <PasswordBox x:Name="PassText" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" ToolTip="Password"  Margin="6,6,12,6" IsEnabled="{Binding Path=HasClientId, Mode=OneWay}" />
@@ -54,7 +54,7 @@
                 <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Margin="12,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Or Access Token" FontWeight="Bold"/>
 
                 <TextBlock Grid.Column="0" Grid.Row="5" Text="Token:" VerticalAlignment="Center" Margin="18,10,6,10" Height="16" />
-                <TextBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" ToolTip="User-specified Access Token" Margin="6,6,12,6" Text="{Binding Path=AccessToken, Mode=OneWayToSource}"/>
+                <TextBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" ToolTip="User-specified Access Token" Margin="6,6,12,6" Text="{Binding Path=AccessToken, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" Margin="6,6,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Text="{Binding Path=Message, Mode=OneWay}"/>
 

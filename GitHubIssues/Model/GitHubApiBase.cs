@@ -266,11 +266,11 @@ namespace Alteridem.GitHub.Model
             Token = string.Empty;
         }
 
-        public abstract Task<bool> Login(string username, string password, string accessToken);
+        public abstract Task Login(string username, string password, string accessToken);
 
         public abstract void GetIssues();
 
-        public abstract void GetComments(Issue issue);
+        protected abstract void GetComments(Issue issue);
 
         public abstract void AddComment(Issue issue, string comment);
 

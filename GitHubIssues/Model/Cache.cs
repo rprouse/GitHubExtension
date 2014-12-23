@@ -83,12 +83,14 @@ namespace Alteridem.GitHub.Model
             }
         }
 
-        public void SaveCredentials(string logon, string password, string accessToken)
+        public void SaveCredentials(string logon, string password)
         {
-            if(!string.IsNullOrEmpty(logon) && !string.IsNullOrEmpty(password))
-                Credentials = new CredentialCache { Logon = logon, Password = password, AccessToken = string.Empty };
-            else
-                Credentials = new CredentialCache { Logon = string.Empty, Password = string.Empty, AccessToken = accessToken };
+            Credentials = new CredentialCache { Logon = logon, Password = password, AccessToken = string.Empty };
+        }
+
+        public void SaveToken( string accessToken )
+        {
+            Credentials = new CredentialCache { Logon = string.Empty, Password = string.Empty, AccessToken = accessToken };
         }
     }
 }
