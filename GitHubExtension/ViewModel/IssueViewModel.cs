@@ -24,10 +24,12 @@
 
 #region Using Directives
 
+using System;
+using System.Diagnostics;
 using System.Windows.Input;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
-using Octokit;
+using Alteridem.GitHub.Logging;
 using Issue = Octokit.Issue;
 
 #endregion
@@ -38,11 +40,15 @@ namespace Alteridem.GitHub.Extension.ViewModel
     {
         private ICommand _addCommentCommand;
         private ICommand _editIssueCommand;
+        private ICommand _openOnGitHubCommand;
+        private readonly IOutputWriter _log;
 
-        public IssueViewModel()
+        public IssueViewModel(IOutputWriter log)
         {
-            AddCommentCommand = new RelayCommand(p => AddComment(), p => CanAddComment());
+            _log = log;
+            AddCommentCommand = new RelayCommand(p => AddComment(), p => IssueIsNotNull());
             EditIssueCommand = new RelayCommand(p => EditIssue(), p => CanEditIssue());
+            OpenOnGitHubCommand = new RelayCommand(p => OpenOnGitHub(), p => IssueIsNotNull());
         }
 
         public Issue Issue { get { return GitHubApi.Issue; } }
@@ -71,13 +77,24 @@ namespace Alteridem.GitHub.Extension.ViewModel
             }
         }
 
+        public ICommand OpenOnGitHubCommand
+        {
+            get { return _openOnGitHubCommand; }
+            set
+            {
+                if (Equals(value, _openOnGitHubCommand)) return;
+                _openOnGitHubCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void AddComment()
         {
             var dlg = Factory.Get<IAddComment>();
             dlg.ShowModal();
         }
 
-        public bool CanAddComment()
+        public bool IssueIsNotNull()
         {
             return GitHubApi.Issue != null;
         }
@@ -92,6 +109,22 @@ namespace Alteridem.GitHub.Extension.ViewModel
         public bool CanEditIssue()
         {
             return GitHubApi.Issue != null;
+        }
+
+        public void OpenOnGitHub()
+        {
+            var url = GitHubApi.Issue != null ? GitHubApi.Issue.HtmlUrl : null;
+            if (url != null)
+            {
+                try
+                {
+                    Process.Start(url.ToString());
+                }
+                catch (Exception e)
+                {
+                    _log.Write(LogLevel.Error, "Failed to open issue.", e);
+                }
+            }
         }
     }
 }

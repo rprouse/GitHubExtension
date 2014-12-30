@@ -66,7 +66,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         [Test]
         public void TestCanAddComment()
         {
-            Assert.That(_gitHubViewModel.CanAddComment(), Is.True);
+            Assert.That(_gitHubViewModel.IssueIsNotNull(), Is.True);
         }
 
         [Test]
