@@ -46,8 +46,6 @@ namespace Alteridem.GitHub.Model
         private Issue _issue;
         private string _markdown = string.Empty;
         protected readonly Label _allLabels;
-        protected readonly Milestone _noMilestone;
-        protected readonly Milestone _allMilestones;
         private UserFilterType _userFilterType;
         private string _searchText;
 
@@ -66,8 +64,8 @@ namespace Alteridem.GitHub.Model
             }
 
             _allLabels = new Label { Color = "FFFFFFFF", Name = "All Labels" };
-            _allMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
-            _noMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
+            AllMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
+            NoMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
 
             SettingsCache = settingsCache;
             Repositories = new BindingList<RepositoryWrapper>();
@@ -180,9 +178,9 @@ namespace Alteridem.GitHub.Model
                     issues = issues.Where(i => i.Labels.Any(l => l.Name == Label.Name));
 
                 // Milestones
-                if (Milestone == _noMilestone)
+                if (Milestone == NoMilestone)
                     issues = issues.Where(i => i.Milestone == null);
-                else if (Milestone != null && Milestone != _allMilestones)
+                else if (Milestone != AllMilestones && Milestone != null)
                     issues = issues.Where(i => i.Milestone != null && i.Milestone.Number == Milestone.Number);
 
                 // Users
@@ -192,7 +190,7 @@ namespace Alteridem.GitHub.Model
                 if (!string.IsNullOrWhiteSpace(SearchText))
                 {
                     string search = SearchText.ToLower();
-                    issues = issues.Where(i => i.Title.ToLower().Contains(search) || i.Body.ToLower().Contains(search));
+                    issues = issues.Where(i => i.Title.ToLower().Contains(search) || i.Body.ToLower().Contains(search) );
                 }
 
                 return issues;
@@ -275,6 +273,18 @@ namespace Alteridem.GitHub.Model
             get;
             private set;
         }
+
+        /// <summary>
+        /// The milestone that indicates we search on all milestones.
+        /// </summary>
+        /// <remarks>Public for testing</remarks>
+        public Milestone AllMilestones { get; private set; }
+
+        /// <summary>
+        /// The milestone that indicates we search only issues with no milestone.
+        /// </summary>
+        /// <remarks>Public for testing</remarks>
+        public Milestone NoMilestone { get; private set; }
 
         #endregion
 

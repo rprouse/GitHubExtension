@@ -57,11 +57,18 @@ namespace Alteridem.GitHub.Extension.Test.Model
                 Name = "One"
             };
 
+            _milestone = new Milestone
+            {
+                Number = 1,
+                Title = "1.0"
+            };
+
             _issue = new Issue
             {
-                Title = "One",
-                Body =  "One",
-                Labels = new[] { _label }
+                Title = "Title one",
+                Body =  "Body one",
+                Labels = new[] { _label },
+                Milestone = _milestone
             };
             _api.AllIssues.Add(_issue);
 
@@ -69,7 +76,12 @@ namespace Alteridem.GitHub.Extension.Test.Model
             {
                 Title = "Two",
                 Body = "Two",
-                Labels = new Label[]{}
+                Labels = new Label[]{},
+                Milestone = new Milestone
+                {
+                    Number = 2,
+                    Title = "2.0"
+                }
             };
             _api.AllIssues.Add(issue2);
 
@@ -88,6 +100,48 @@ namespace Alteridem.GitHub.Extension.Test.Model
             _api.Label = _label;
             Assert.That(_api.Issues.Count(), Is.EqualTo(1));
             Assert.That(_api.Issues, Contains.Item(_issue));
+        }
+
+        [Test]
+        public void IssuesAreSearchedByTitleCaseInsensitive()
+        {
+            _api.SearchText = "title";
+            Assert.That(_api.Issues.Count(), Is.EqualTo(1));
+            Assert.That(_api.Issues, Contains.Item(_issue));
+        }
+
+        [Test]
+        public void IssuesAreSearchedByBodyCaseInsensitive()
+        {
+            _api.SearchText = "body";
+            Assert.That(_api.Issues.Count(), Is.EqualTo(1));
+            Assert.That(_api.Issues, Contains.Item(_issue));
+        }
+
+        [Test]
+        public void IssuesCanBeFilteredByAllMilestones()
+        {
+            _api.Milestone = _api.AllMilestones;
+            Assert.That(_api.Issues.Count(), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void IssuesCanBeFilteredByMilestone()
+        {
+            _api.Milestone = _milestone;
+            Assert.That(_api.Issues.Count(), Is.EqualTo(1));
+            Assert.That(_api.Issues, Contains.Item(_issue));
+        }
+
+        [Test]
+        public void IssuesCanBeFilteredByNoMilestone()
+        {
+            _api.Milestone = _api.NoMilestone;
+            Assert.That(_api.Issues.Count(), Is.EqualTo(1));
+            var issue = _api.Issues.FirstOrDefault();
+            Assert.That(issue, Is.Not.Null);
+            Assert.That(issue.Milestone, Is.Null);
+            Assert.That(issue.Title, Is.EqualTo("Three"));
         }
     }
 }
