@@ -28,6 +28,7 @@ namespace Alteridem.GitHub.Model
     {
         CredentialCache Credentials { get; set; }
         int Repository { get; set; }
-        void SaveCredentials(string logon, string password, string accessToken);
+        void SaveCredentials(string logon, string password);
+        void SaveToken(string accessToken);
     }
 }
