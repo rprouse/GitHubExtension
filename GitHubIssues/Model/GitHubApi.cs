@@ -48,7 +48,7 @@ namespace Alteridem.GitHub.Model
 
         #endregion
 
-        public GitHubApi(GitHubClient github, IOutputWriter logWriter, Cache settingsCache)
+        public GitHubApi(GitHubClient github, IOutputWriter logWriter, ICache settingsCache)
             : base(settingsCache)
         {
             _github = github;
@@ -400,8 +400,8 @@ namespace Alteridem.GitHub.Model
             Milestone = null;
             if (Repository != null && Repository.Repository != null)
             {
-                Milestones.Add(_allMilestones);
-                Milestones.Add(_noMilestone);
+                Milestones.Add(AllMilestones);
+                Milestones.Add(NoMilestone);
                 var request = new MilestoneRequest();
                 request.State = ItemState.Open;
                 request.SortProperty = MilestoneSort.DueDate;
@@ -412,7 +412,7 @@ namespace Alteridem.GitHub.Model
                     foreach (var milestone in milestones)
                         Milestones.Add(milestone);
 
-                    Milestone = _allMilestones;
+                    Milestone = AllMilestones;
                 }
                 catch ( Exception exception )
                 {

@@ -34,7 +34,7 @@ using Microsoft.VisualStudio.Shell.Settings;
 namespace Alteridem.GitHub.Model
 {
     [Export]
-    public class Cache
+    public class Cache : ICache
     {
         private readonly SVsServiceProvider _serviceProvider;
 

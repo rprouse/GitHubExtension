@@ -34,7 +34,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
 {
     public class GitHubApiMock : GitHubApiBase
     {
-        public GitHubApiMock(Cache settingsCache)
+        public GitHubApiMock(ICache settingsCache)
             : base(settingsCache)
         {
             // Log in

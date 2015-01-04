@@ -225,6 +225,8 @@
     <Compile Include="View\Controls\IssueListItem.xaml.cs">
       <DependentUpon>IssueListItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Controls\WatermarkAdorner.cs" />
+    <Compile Include="View\Controls\WatermarkService.cs" />
     <Compile Include="View\OutputWriter.cs" />
     <Compile Include="View\IssueEditor.xaml.cs">
       <DependentUpon>IssueEditor.xaml</DependentUpon>

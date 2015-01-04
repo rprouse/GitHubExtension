@@ -200,7 +200,7 @@ namespace Alteridem.GitHub.Extension
 
             // This code is a bit of a hack to bridge MEF created components and Ninject managed components
             Factory.Rebind<IOutputWindowPane>().ToConstant(gitHubPane);
-            Factory.Rebind<Cache>().ToConstant(componentModel.DefaultExportProvider.GetExportedValue<Cache>());
+            Factory.Rebind<ICache>().ToConstant(componentModel.DefaultExportProvider.GetExportedValue<Cache>());
         }
 
         /// <summary>
