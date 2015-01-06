@@ -2,6 +2,8 @@
 
 ## Build
 
+- On Master branch
+- Git fetch and pull to get latest
 - Secrets.cs has the keys set
 - Version is updated in all locations
 - Release build
