@@ -147,6 +147,7 @@
     <Compile Include="ViewModel\AddCommentTest.cs" />
     <Compile Include="Mocks\IssueEditorMock.cs" />
     <Compile Include="ViewModel\IssueEditorTest.cs" />
+    <Compile Include="ViewModel\IssueListRefreshTest.cs" />
     <Compile Include="ViewModel\IssueListTest.cs" />
     <Compile Include="ViewModel\IssueTest.cs" />
     <Compile Include="ViewModel\LoginTest.cs" />

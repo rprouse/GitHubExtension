@@ -103,7 +103,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             IssueMarkdown = issue.Body;
         }
 
-        protected override void GetLabels()
+        public override void GetLabels()
         {
             var label = new Label
             {
@@ -114,7 +114,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             Labels.Add(label);
         }
 
-        protected override void GetMilestones()
+        public override void GetMilestones()
         {
             var milestone = new Milestone
             {

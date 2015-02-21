@@ -45,6 +45,8 @@ namespace Alteridem.GitHub.Model
         private readonly GitHubClient _github;
         private readonly IOutputWriter _log;
         private bool _gettingIssues;
+        private bool _gettingMilestones;
+        private bool _gettingLabels;
 
         #endregion
 
@@ -106,6 +108,65 @@ namespace Alteridem.GitHub.Model
                 await GetIssues(repository.Owner.Login, repository.Name, request);
             }
             _gettingIssues = false;
+        }
+
+        public override async void GetMilestones()
+        {
+            if (_gettingMilestones)
+                return;
+
+            _gettingMilestones = true;
+            Milestones.Clear();
+            Milestone = null;
+            if (Repository != null && Repository.Repository != null)
+            {
+                Milestones.Add(AllMilestones);
+                Milestones.Add(NoMilestone);
+                var request = new MilestoneRequest();
+                request.State = ItemState.Open;
+                request.SortProperty = MilestoneSort.DueDate;
+                request.SortDirection = SortDirection.Ascending;
+                try
+                {
+                    var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name, request);
+                    foreach (var milestone in milestones)
+                        Milestones.Add(milestone);
+
+                    Milestone = AllMilestones;
+                }
+                catch (Exception exception)
+                {
+                    _log.Write(LogLevel.Warn, "Failed to get milestones for repository", exception);
+                }
+            }
+            _gettingMilestones = false;
+        }
+
+        public override async void GetLabels()
+        {
+            if (_gettingLabels)
+                return;
+
+            _gettingLabels = true;
+            Labels.Clear();
+            Label = null;
+            if (Repository != null && Repository.Repository != null)
+            {
+                try
+                {
+                    var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
+                    Labels.Add(_allLabels);
+                    foreach (var label in labels.OrderBy(l => l.Name))
+                        Labels.Add(label);
+
+                    Label = _allLabels;
+                }
+                catch (Exception exception)
+                {
+                    _log.Write(LogLevel.Warn, "Failed to get labels for repository", exception);
+                }
+            }
+            _gettingLabels = false;
         }
 
         protected override async void GetComments(Issue issue)
@@ -370,55 +431,6 @@ namespace Alteridem.GitHub.Model
         private void SetDefaultRepository()
         {
             Repository = Repositories.Count > 0 ? Repositories[0] : null;
-        }
-
-        protected override async void GetLabels()
-        {
-            Labels.Clear();
-            Label = null;
-            if (Repository != null && Repository.Repository != null)
-            {
-                try
-                {
-                    var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
-                    Labels.Add(_allLabels);
-                    foreach (var label in labels.OrderBy(l => l.Name))
-                        Labels.Add(label);
-
-                    Label = _allLabels;
-                }
-                catch ( Exception exception )
-                {
-                    _log.Write(LogLevel.Warn, "Failed to get labels for repository", exception);
-                }
-            }
-        }
-
-        protected override async void GetMilestones()
-        {
-            Milestones.Clear();
-            Milestone = null;
-            if (Repository != null && Repository.Repository != null)
-            {
-                Milestones.Add(AllMilestones);
-                Milestones.Add(NoMilestone);
-                var request = new MilestoneRequest();
-                request.State = ItemState.Open;
-                request.SortProperty = MilestoneSort.DueDate;
-                request.SortDirection = SortDirection.Ascending;
-                try
-                {
-                    var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name, request);
-                    foreach (var milestone in milestones)
-                        Milestones.Add(milestone);
-
-                    Milestone = AllMilestones;
-                }
-                catch ( Exception exception )
-                {
-                    _log.Write(LogLevel.Warn, "Failed to get milestones for repository", exception);
-                }
-            }
         }
 
         private async Task GetIssues(string owner, string name, RepositoryIssueRequest request)

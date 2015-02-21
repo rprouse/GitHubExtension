@@ -304,6 +304,10 @@ namespace Alteridem.GitHub.Model
 
         public abstract void GetIssues();
 
+        public abstract void GetMilestones();
+
+        public abstract void GetLabels();
+
         protected abstract void GetComments(Issue issue);
 
         public abstract void AddComment(Issue issue, string comment);
@@ -326,10 +330,6 @@ namespace Alteridem.GitHub.Model
             GetMilestones();
             GetIssues();
         }
-
-        protected abstract void GetLabels();
-
-        protected abstract void GetMilestones();
 
         #endregion
 
