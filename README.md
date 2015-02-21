@@ -1,6 +1,8 @@
 GitHub Visual Studio Extension
 ===============
 
+[![Join the chat at https://gitter.im/rprouse/GitHubExtension](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rprouse/GitHubExtension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/cq3t38xds110oxb8/branch/master?svg=true)](https://ci.appveyor.com/project/rprouse/githubextension/branch/master)
 
 A visual studio extension for working with issues on GitHub. 
