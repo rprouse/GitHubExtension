@@ -122,6 +122,8 @@ namespace Alteridem.GitHub.Extension.ViewModel
         private void Refresh()
         {
             GitHubApi.GetIssues();
+            GitHubApi.GetMilestones();
+            GitHubApi.GetLabels();
         }
 
         private bool CanRefresh()
