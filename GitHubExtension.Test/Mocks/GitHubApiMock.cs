@@ -102,7 +102,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
 
         public override void UpdateIssue(Repository repository, int id, IssueUpdate update)
         {
-            Issue = new Issue(null, null, 0, ItemState.Open, update.Title, update.Body, null, null, null, null, 0, null, null, DateTimeOffset.Now, null );
+            Issue = new Issue(null, null, id, ItemState.Open, update.Title, update.Body, null, null, null, null, 0, null, null, DateTimeOffset.Now, null );
         }
 
         public override void SaveIssue(Repository repository, NewIssue newIssue)
