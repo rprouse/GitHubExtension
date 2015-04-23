@@ -137,6 +137,7 @@
     <Compile Include="Mocks\OutputWriterMock.cs" />
     <Compile Include="Mocks\GitHubApiMock.cs" />
     <Compile Include="Mocks\LoginViewMock.cs" />
+    <Compile Include="Model\AuthenticationHelpersTests.cs" />
     <Compile Include="Model\CacheTest.cs" />
     <Compile Include="Model\CredentialCacheTest.cs" />
     <Compile Include="Model\GitHubApiBaseTest.cs" />

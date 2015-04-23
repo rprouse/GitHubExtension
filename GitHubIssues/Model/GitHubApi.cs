@@ -325,7 +325,8 @@ namespace Alteridem.GitHub.Model
                 {
                     Scopes = new[] { "user", "repo" },
                     Note = "GitHub Visual Studio Extension",
-                    NoteUrl = "http://www.alteridem.net"
+                    NoteUrl = "http://www.alteridem.net",
+                    Fingerprint = AuthenticationHelpers.GetFingerprint()
                 };
 
                 var auth = await _github.Authorization.GetOrCreateApplicationAuthentication( Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth );
