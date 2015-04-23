@@ -3,6 +3,7 @@
 ## [v0.4.0]
 ### 23/04/15
 - *Closed issue:* Update to the new GitHub Authorizations API (breaking change) [\#119](https://github.com/rprouse/GitHubExtension/issues/119)
+- *Closed issue:* Refresh doesn't update milestones [\#97](https://github.com/rprouse/GitHubExtension/issues/97)
 
 ## [v0.3.0] 
 #### 06/01/15

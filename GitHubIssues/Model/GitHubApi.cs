@@ -331,7 +331,7 @@ namespace Alteridem.GitHub.Model
 
                 var auth = await _github.Authorization.GetOrCreateApplicationAuthentication( Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth );
                 _log.Write( LogLevel.Info, "Successfully logged in to GitHub" );
-                Token = auth.Token;
+                Token = auth.HashedToken;
 
                 await LoadData();
             }
