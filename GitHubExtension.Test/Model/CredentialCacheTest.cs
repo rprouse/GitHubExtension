@@ -41,8 +41,8 @@ namespace Alteridem.GitHub.Extension.Test.Model
             var credentials = new CredentialCache { Logon = "user", Password = "password", AccessToken = string.Empty };
             var cache = credentials.ToString();
             Assert.That(cache, Is.Not.Null);
-            Assert.That(cache, Is.StringContaining("user"));
-            Assert.That(cache, Is.Not.StringContaining("password"));
+            Assert.That(cache, Does.Contain("user"));
+            Assert.That(cache, Does.Not.Contain("password"));
 
             var parsed = CredentialCache.FromString(cache);
             Assert.That(parsed, Is.Not.Null);

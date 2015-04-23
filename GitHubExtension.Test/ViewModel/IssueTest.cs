@@ -91,8 +91,6 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         {
             var api = Factory.Get<GitHubApiBase>();
             Assert.That(api.Issue, Is.Not.Null);
-            api.Issue.Title = "title";
-            api.Issue.Body = "body";
 
             _gitHubViewModel.EditIssue();
 

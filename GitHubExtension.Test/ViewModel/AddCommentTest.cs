@@ -88,7 +88,7 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
         {
             var dlg = Factory.Get<IAddComment>();
             var api = Factory.Get<GitHubApiBase>();
-            api.Issue.State = ItemState.Open;
+            //api.Issue.State = ItemState.Open;
             api.IssueMarkdown = "Issue body";
 
             _gitHubViewModel.Comment = "TestCommentOnIssue";

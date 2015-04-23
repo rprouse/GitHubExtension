@@ -40,7 +40,7 @@ namespace Alteridem.GitHub.Extension.Test.Model
         private RepositoryWrapper _two;
         private RepositoryWrapper _three;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             _one = CreateWrapper(1, "test");
@@ -50,11 +50,9 @@ namespace Alteridem.GitHub.Extension.Test.Model
 
         private RepositoryWrapper CreateWrapper(int id, string name)
         {
-            var repository = new Repository
-            {
-                Id = id,
-                Name = name
-            };
+            var repository = new Repository(null, null, null, null, null, null, null, id, null, name, "", "", "", "",
+                false, false, 0, 0, 0, "master", 1, null, DateTimeOffset.Now, DateTimeOffset.Now, null, null, null, null,
+                true, true, true);
             return new RepositoryWrapper(repository);
             
         }

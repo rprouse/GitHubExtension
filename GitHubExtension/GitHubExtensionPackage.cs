@@ -55,7 +55,7 @@ namespace Alteridem.GitHub.Extension
     // a package.
     // This attribute is used to register the information needed to show this package
     // in the Help/About dialog of Visual Studio.
-    [InstalledProductRegistration("#110", "#112", "0.3.0", IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", "0.4.0", IconResourceID = 400)]
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // This attribute registers a tool window exposed by this package.

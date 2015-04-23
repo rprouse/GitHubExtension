@@ -52,45 +52,20 @@ namespace Alteridem.GitHub.Extension.Test.Model
             _moq = new Mock<GitHubApiBase>(cache);
             _api = _moq.Object;
 
-            _label = new Label
-            {
-                Name = "One"
-            };
+            _label = new Label(null, "One", "");
 
-            _milestone = new Milestone
-            {
-                Number = 1,
-                Title = "1.0"
-            };
+            _milestone = new Milestone(null, 1, ItemState.All, "1.0", "", null, 1, 1, DateTimeOffset.Now, null);
 
-            _issue = new Issue
-            {
-                Title = "Title one",
-                Body =  "Body one",
-                Labels = new[] { _label },
-                Milestone = _milestone
-            };
+            _issue = new Issue(null, null, 1, ItemState.Open, "Title one", "Body one", null, new List<Label>(new[] {_label}), 
+                null, _milestone, 1, null, null, DateTimeOffset.Now, null);
             _api.AllIssues.Add(_issue);
 
-            var issue2 = new Issue
-            {
-                Title = "Two",
-                Body = "Two",
-                Labels = new Label[]{},
-                Milestone = new Milestone
-                {
-                    Number = 2,
-                    Title = "2.0"
-                }
-            };
+            var issue2 = new Issue(null, null, 2, ItemState.Open, "Two", "Two", null, new List<Label>(),
+                null, new Milestone(null, 2, ItemState.All, "2.0", "", null, 1, 1, DateTimeOffset.Now, null), 1, null, null, DateTimeOffset.Now, null);
             _api.AllIssues.Add(issue2);
 
-            var issue3 = new Issue
-            {
-                Title = "Three",
-                Body = "Three",
-                Labels = new Label[] { }
-            };
+            var issue3 = new Issue(null, null, 3, ItemState.Open, "Three", "Three", null, new List<Label>(),
+                null, null, 1, null, null, DateTimeOffset.Now, null);
             _api.AllIssues.Add(issue3);
         }
 

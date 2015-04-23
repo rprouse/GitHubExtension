@@ -31,7 +31,7 @@ namespace Alteridem.GitHub.Extension.Test
     [SetUpFixture]
     public class AssemblySetup
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             Factory.AddAssembly(Assembly.GetAssembly(typeof(BaseGitHubViewModel)));

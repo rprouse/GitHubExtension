@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using Octokit;
 
@@ -33,11 +34,11 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
     {
         public ResponseMock()
         {
-            Headers = new Dictionary<string, string>();
+            Headers = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
         }
         public object BodyAsObject { get; set; }
-        public string Body { get; set; }
-        public Dictionary<string, string> Headers { get; private set; }
+        public object Body { get; set; }
+        public IReadOnlyDictionary<string, string> Headers { get; private set; }
         public Uri ResponseUri { get; set; }
         public ApiInfo ApiInfo { get; set; }
         public HttpStatusCode StatusCode { get; set; }

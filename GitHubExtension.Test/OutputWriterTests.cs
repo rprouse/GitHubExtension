@@ -90,71 +90,71 @@ namespace Alteridem.GitHub.Extension.Test
         public void WritenMessageContainsMessage()
         {
             _log.Write(LogLevel.Info, "Test message");
-            Assert.That(_log.LastMessageWritten, Is.StringEnding("Test message"));
+            Assert.That(_log.LastMessageWritten, Does.EndWith("Test message"));
         }
 
         [Test]
         public void ShownMessageContainsMessage()
         {
             _log.Write(LogLevel.Error, "Test message");
-            Assert.That(_log.LastMessageShown, Is.StringContaining("Test message"));
+            Assert.That(_log.LastMessageShown, Does.Contain("Test message"));
         }
 
         [Test]
         public void WritenMessageContainsLogLevel()
         {
             _log.Write(LogLevel.Info, "Test message");
-            Assert.That(_log.LastMessageWritten, Is.StringContaining("Info"));
+            Assert.That(_log.LastMessageWritten, Does.Contain("Info"));
         }
 
         [Test]
         public void WritenMessageContainsDate()
         {
             _log.Write(LogLevel.Info, "Test message");
-            Assert.That(_log.LastMessageWritten, Is.StringStarting(DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'")));
+            Assert.That(_log.LastMessageWritten, Does.StartWith(DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'")));
         }
 
         [Test]
         public void WritenMessageWithArgsContainsLogLevel()
         {
             _log.Write(LogLevel.Info, "Test {0}", "message");
-            Assert.That(_log.LastMessageWritten, Is.StringContaining("Info"));
+            Assert.That(_log.LastMessageWritten, Does.Contain("Info"));
         }
 
         [Test]
         public void WritenMessageWithArgsContainsDate()
         {
             _log.Write(LogLevel.Info, "Test {0}", "message");
-            Assert.That(_log.LastMessageWritten, Is.StringStarting(DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'")));
+            Assert.That(_log.LastMessageWritten, Does.StartWith(DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'")));
         }
 
         [Test]
         public void WritenMessageWithExceptionContainsLogLevel()
         {
             _log.Write(LogLevel.Info, "Test message", new ApplicationException("Exception message"));
-            Assert.That(_log.LastMessageWritten, Is.StringContaining("Info"));
+            Assert.That(_log.LastMessageWritten, Does.Contain("Info"));
         }
 
         [Test]
         public void WritenMessageWithExceptionContainsDate()
         {
             _log.Write(LogLevel.Info, "Test message", new ApplicationException("Exception message"));
-            Assert.That(_log.LastMessageWritten, Is.StringStarting(DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'")));
+            Assert.That(_log.LastMessageWritten, Does.StartWith(DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'")));
         }
 
         [Test]
         public void WritenMessageWithParamsContainsMessage()
         {
             _log.Write(LogLevel.Info, "Test {0}", "message");
-            Assert.That(_log.LastMessageWritten, Is.StringEnding("Test message"));
+            Assert.That(_log.LastMessageWritten, Does.EndWith("Test message"));
         }
 
         [Test]
         public void WritenMessageWithExceptionContainsExceptionNameAndMessage()
         {
             _log.Write(LogLevel.Info, "Test message", new ApplicationException("Exception message"));
-            Assert.That(_log.LastMessageWritten, Is.StringContaining("ApplicationException"));
-            Assert.That(_log.LastMessageWritten, Is.StringContaining("Exception message"));
+            Assert.That(_log.LastMessageWritten, Does.Contain("ApplicationException"));
+            Assert.That(_log.LastMessageWritten, Does.Contain("Exception message"));
         }
 
         [Test]
@@ -169,23 +169,23 @@ namespace Alteridem.GitHub.Extension.Test
             };
             var apiException = new ApiException(response);
             _log.Write(LogLevel.Info, "Test message", apiException);
-            Assert.That(_log.LastMessageWritten, Is.StringContaining("ApiException"));
-            Assert.That(_log.LastMessageWritten, Is.StringContaining("Status: NotFound"));
+            Assert.That(_log.LastMessageWritten, Does.Contain("ApiException"));
+            Assert.That(_log.LastMessageWritten, Does.Contain("Status: NotFound"));
         }
 
         [Test]
         public void ShownMessageWithParamsContainsMessage()
         {
             _log.Write(LogLevel.Error, "Test {0}", "message");
-            Assert.That(_log.LastMessageWritten, Is.StringEnding("Test message"));
+            Assert.That(_log.LastMessageWritten, Does.EndWith("Test message"));
         }
 
         [Test]
         public void ShownMessageWithExceptionContainsExceptionNameAndMessage()
         {
             _log.Write(LogLevel.Error, "Test message", new ApplicationException("Exception message"));
-            Assert.That(_log.LastMessageShown, Is.StringContaining("ApplicationException"));
-            Assert.That(_log.LastMessageShown, Is.StringContaining("Exception message"));
+            Assert.That(_log.LastMessageShown, Does.Contain("ApplicationException"));
+            Assert.That(_log.LastMessageShown, Does.Contain("Exception message"));
         }
 
 
