@@ -25,6 +25,7 @@
 #region Using Directives
 
 using System;
+using System.Threading;
 using System.Windows.Controls;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.Test.Mocks;
@@ -37,7 +38,7 @@ using NUnit.Framework;
 namespace Alteridem.GitHub.Extension.Test.ViewModel
 {
     [TestFixture]
-    [RequiresSTA]
+    [Apartment(ApartmentState.STA)]
     public class LoginTest
     {
         private LoginViewModel _gitHubViewModel;

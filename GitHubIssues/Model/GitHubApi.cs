@@ -128,7 +128,7 @@ namespace Alteridem.GitHub.Model
                 request.SortDirection = SortDirection.Ascending;
                 try
                 {
-                    var milestones = await _github.Issue.Milestone.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name, request);
+                    var milestones = await _github.Issue.Milestone.GetAllForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name, request);
                     foreach (var milestone in milestones)
                         Milestones.Add(milestone);
 
@@ -154,7 +154,7 @@ namespace Alteridem.GitHub.Model
             {
                 try
                 {
-                    var labels = await _github.Issue.Labels.GetForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
+                    var labels = await _github.Issue.Labels.GetAllForRepository(Repository.Repository.Owner.Login, Repository.Repository.Name);
                     Labels.Add(_allLabels);
                     foreach (var label in labels.OrderBy(l => l.Name))
                         Labels.Add(label);
@@ -181,7 +181,7 @@ namespace Alteridem.GitHub.Model
 
             try
             {
-                IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetForIssue(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number);
+                IReadOnlyList<IssueComment> comments = await _github.Issue.Comment.GetAllForIssue(Repository.Repository.Owner.Login, Repository.Repository.Name, issue.Number);
                 AppendComments(comments);
             }
             catch ( Exception exception )
@@ -238,7 +238,7 @@ namespace Alteridem.GitHub.Model
         {
             try
             {
-                return await _github.Issue.Assignee.GetForRepository(repository.Owner.Login, repository.Name);
+                return await _github.Issue.Assignee.GetAllForRepository(repository.Owner.Login, repository.Name);
             }
             catch ( Exception exception )
             {
@@ -438,7 +438,7 @@ namespace Alteridem.GitHub.Model
             _log.Write(LogLevel.Debug, "Fetching issues for {0}/{1}", owner, name);
             try
             {
-                var issues = await _github.Issue.GetForRepository(owner, name, request);
+                var issues = await _github.Issue.GetAllForRepository(owner, name, request);
                 foreach (var issue in issues)
                 {
                     AllIssues.Add(issue);

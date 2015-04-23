@@ -63,9 +63,9 @@ namespace Alteridem.GitHub.Model
                 UserFilters.Add(value);
             }
 
-            _allLabels = new Label { Color = "FFFFFFFF", Name = "All Labels" };
-            AllMilestones = new Milestone { Number = 0, Title = "All Milestones", OpenIssues = 0 };
-            NoMilestone = new Milestone { Number = -1, Title = "No Milestone", OpenIssues = 0 };
+            _allLabels = new Label(null, "All Labels", "FFFFFFFF");
+            AllMilestones = new Milestone(null, 0, ItemState.All, "All Milestones", "", null, 0, 0, DateTimeOffset.UtcNow, null);
+            NoMilestone = new Milestone(null, -1, ItemState.All, "No Milestone", "", null, 0, 0, DateTimeOffset.UtcNow, null);
 
             SettingsCache = settingsCache;
             Repositories = new BindingList<RepositoryWrapper>();
