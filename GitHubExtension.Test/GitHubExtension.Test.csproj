@@ -129,6 +129,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GitHubIssues\AssemblyInfoCommon.cs">
+      <Link>AssemblyInfoCommon.cs</Link>
+    </Compile>
     <Compile Include="AssemblySetup.cs" />
     <Compile Include="Converters\EnumToStringConverterTest.cs" />
     <Compile Include="Converters\MarkdownConverterTest.cs" />
