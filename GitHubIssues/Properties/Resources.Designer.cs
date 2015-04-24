@@ -78,13 +78,10 @@ namespace Alteridem.GitHub.Properties {
         ///&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
         ///&lt;meta http-equiv=&quot;x-ua-compatible&quot; content=&quot;IE=edge&quot;&gt;
         ///&lt;style type=&quot;text/css&quot;&gt;
-        ////* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
-        ////* Author: Nicolas Hery - http://nicolashery.com */
-        ////* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
-        ////* Source: https://github.com/nicolahery/markdownpad-github */
-        ///
-        ////* RESET
-        ///=============================================== [rest of string was truncated]&quot;;.
+        ///{0}
+        ///&lt;/style&gt;
+        ///&lt;/head&gt;
+        ///&lt;body&gt;.
         /// </summary>
         internal static string IssueHtmlHeader {
             get {

@@ -29,16 +29,12 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 
+using Alteridem.GitHub.Styles;
+
 #endregion
 
 namespace Alteridem.GitHub.Model
 {
-    public enum IssueTheme
-    {
-        Light,
-        Dark
-    }
-
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [ComVisible(true)]
     public class OptionsPage : DialogPage
