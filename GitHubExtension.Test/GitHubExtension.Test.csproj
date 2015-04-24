@@ -133,6 +133,7 @@
     <Compile Include="Converters\EnumToStringConverterTest.cs" />
     <Compile Include="Converters\MarkdownConverterTest.cs" />
     <Compile Include="Converters\StringToColorConverterTest.cs" />
+    <Compile Include="Mocks\OptionsProviderMock.cs" />
     <Compile Include="Mocks\ResponseMock.cs" />
     <Compile Include="Mocks\OutputWriterMock.cs" />
     <Compile Include="Mocks\GitHubApiMock.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="OutputWriterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mocks\AddCommentMock.cs" />
+    <Compile Include="Styles\StyleLoaderTests.cs" />
     <Compile Include="ViewModel\AddCommentTest.cs" />
     <Compile Include="Mocks\IssueEditorMock.cs" />
     <Compile Include="ViewModel\IssueEditorTest.cs" />

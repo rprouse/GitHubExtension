@@ -26,6 +26,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using Alteridem.GitHub.Logging;
+using Alteridem.GitHub.Styles;
 
 namespace Alteridem.GitHub.Converters
 {
@@ -52,7 +53,7 @@ namespace Alteridem.GitHub.Converters
                     md.NewWindowForExternalLinks = true;
                     md.NewWindowForLocalLinks = true;
                     var body = md.Transform( markdown );
-                    var html = Properties.Resources.IssueHtmlHeader + body + Properties.Resources.IssueHtmlFooter;
+                    var html = GetHtmlHeader() + body + Properties.Resources.IssueHtmlFooter;
                     return html;
                 }
             }
@@ -73,6 +74,12 @@ namespace Alteridem.GitHub.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private string GetHtmlHeader()
+        {
+            var css = StyleLoader.LoadCss();
+            return string.Format(Properties.Resources.IssueHtmlHeader, css);
         }
     }
 }

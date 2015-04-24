@@ -28,6 +28,8 @@ using System;
 using System.Globalization;
 using Alteridem.GitHub.Converters;
 using NUnit.Framework;
+using Alteridem.GitHub.Styles;
+using Alteridem.GitHub.Interfaces;
 
 #endregion
 
@@ -37,8 +39,14 @@ namespace Alteridem.GitHub.Extension.Test.Converters
     public class MarkdownConverterTest
     {
         [Test]
-        public void TestConvert()
+        public void TestConvert([Values]IssueTheme theme)
         {
+            var options = Factory.Get<IOptionsProvider>();
+            Assert.That(options, Is.Not.Null);
+            Assert.That(options.Options, Is.Not.Null);
+
+            options.Options.IssueTheme = theme;
+
             var converter = new MarkdownConverter();
             string html = converter.Convert("##Header##", typeof(string), null, CultureInfo.CurrentCulture) as string;
             Assert.That(html, Is.Not.Null);
