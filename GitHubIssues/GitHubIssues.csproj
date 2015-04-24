@@ -170,7 +170,9 @@
     <Compile Include="Converters\ColorExtensions.cs" />
     <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\StringToInverseColorConverter.cs" />
+    <Compile Include="Filters\RepositoryFilter.cs" />
     <Compile Include="Filters\UserFilter.cs" />
+    <Compile Include="Interfaces\IOptionsProvider.cs" />
     <Compile Include="Logging\BaseOutputWriter.cs" />
     <Compile Include="Logging\IOutputWriter.cs" />
     <Compile Include="Logging\LogLevel.cs" />
@@ -184,6 +186,9 @@
     <Compile Include="Model\GitHubApi.cs" />
     <Compile Include="Model\GitHubApiBase.cs" />
     <Compile Include="Model\ICache.cs" />
+    <Compile Include="Model\OptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />

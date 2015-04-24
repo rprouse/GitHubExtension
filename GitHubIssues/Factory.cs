@@ -11,7 +11,7 @@ namespace Alteridem.GitHub
     /// </summary>
     public static class Factory
     {
-        private static IKernel _kernel = new StandardKernel();
+        private static readonly IKernel _kernel = new StandardKernel();
 
         static Factory()
         {
