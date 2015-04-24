@@ -31,6 +31,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Interfaces;
 using Alteridem.GitHub.Model;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
@@ -61,10 +62,11 @@ namespace Alteridem.GitHub.Extension
     // This attribute registers a tool window exposed by this package.
     [ProvideToolWindow(typeof(IssueListToolWindow))]
     [ProvideToolWindow(typeof(IssueToolWindow))]
+    [ProvideOptionPage(typeof(OptionsPage), "GitHub", "General", 0, 0, true)]
     [ProvideService(typeof(IIssueToolWindow))]
     [Guid(GuidList.guidGitHubExtensionPkgString)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable"), PackageRegistration(UseManagedResourcesOnly = true)]
-    public sealed class GitHubExtensionPackage : Package
+    public sealed class GitHubExtensionPackage : Package, IOptionsProvider
     {
         /// <summary>
         /// This error list provider is used to warn developers if the VSBase Services Debugging Support extension is
@@ -144,6 +146,11 @@ namespace Alteridem.GitHub.Extension
             return window;
         }
 
+        public OptionsPage Options
+        {
+            get { return GetDialogPage(typeof (OptionsPage)) as OptionsPage; }
+        }
+
         /////////////////////////////////////////////////////////////////////////////
         // Overridden Package Implementation
         #region Package Members
@@ -201,6 +208,7 @@ namespace Alteridem.GitHub.Extension
             // This code is a bit of a hack to bridge MEF created components and Ninject managed components
             Factory.Rebind<IOutputWindowPane>().ToConstant(gitHubPane);
             Factory.Rebind<ICache>().ToConstant(componentModel.DefaultExportProvider.GetExportedValue<Cache>());
+            Factory.Rebind<IOptionsProvider>().ToConstant(this);
         }
 
         /// <summary>

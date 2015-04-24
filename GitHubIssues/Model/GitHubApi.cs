@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Filters;
 using Alteridem.GitHub.Logging;
 using Octokit;
 
@@ -409,11 +410,10 @@ namespace Alteridem.GitHub.Model
 
         private void AddRepositories([NotNull] IEnumerable<Repository> repositories)
         {
-            foreach (var repository in repositories)
+            foreach (var repository in repositories.Filter())
             {
                 _log.Write(LogLevel.Debug, "Fetched repository {0}", repository.FullName);
-                if (repository.HasIssues)
-                    Repositories.Add(new RepositoryWrapper(repository));
+                Repositories.Add(new RepositoryWrapper(repository));
             }
         }
 
