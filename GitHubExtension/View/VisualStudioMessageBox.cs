@@ -22,6 +22,7 @@
 // 
 // **********************************************************************************
 
+using Alteridem.GitHub.Extension.Extensions;
 using System;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -32,7 +33,7 @@ namespace Alteridem.GitHub.Extension.View
     {
         public static int Show(string message)
         {
-            var uiShell = ServiceProvider.GlobalProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+            var uiShell = ServiceProvider.GlobalProvider.GetService<SVsUIShell, IVsUIShell>();
             if (uiShell == null)
                 return -1;
 

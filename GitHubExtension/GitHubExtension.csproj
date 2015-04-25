@@ -182,6 +182,7 @@
     <Compile Include="..\GitHubIssues\AssemblyInfoCommon.cs">
       <Link>AssemblyInfoCommon.cs</Link>
     </Compile>
+    <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Interfaces\IAddComment.cs" />
     <Compile Include="Interfaces\IClosable.cs" />
     <Compile Include="Interfaces\IEnableable.cs" />
