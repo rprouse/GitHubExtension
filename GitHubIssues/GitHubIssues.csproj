@@ -190,6 +190,7 @@
     <Compile Include="Model\OptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Model\RepositoryHelper.cs" />
     <Compile Include="Model\RepositoryWrapper.cs" />
     <Compile Include="Model\Secrets.cs" />
     <Compile Include="Model\CredentialCache.cs" />

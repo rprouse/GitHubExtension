@@ -45,6 +45,7 @@
       <Private>False</Private>
       <HintPath>..\packages\VSSDK.OLE.Interop.7.0.4\lib\net20\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Shell.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\VSSDK.Shell.11.11.0.4\lib\net45\Microsoft.VisualStudio.Shell.11.0.dll</HintPath>
@@ -141,10 +142,11 @@
     <Compile Include="Mocks\OutputWriterMock.cs" />
     <Compile Include="Mocks\GitHubApiMock.cs" />
     <Compile Include="Mocks\LoginViewMock.cs" />
-    <Compile Include="Model\AuthenticationHelpersTests.cs" />
+    <Compile Include="Model\AuthenticationHelpersTest.cs" />
     <Compile Include="Model\CacheTest.cs" />
     <Compile Include="Model\CredentialCacheTest.cs" />
     <Compile Include="Model\GitHubApiBaseTest.cs" />
+    <Compile Include="Model\RepositoryHelperTest.cs" />
     <Compile Include="Model\RepositoryWrapperTest.cs" />
     <Compile Include="Modules\MocksModule.cs" />
     <Compile Include="OutputWriterTests.cs" />
