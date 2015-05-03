@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Alteridem.GitHub.Extension.Test.Model
@@ -9,6 +10,18 @@ namespace Alteridem.GitHub.Extension.Test.Model
     [TestFixture]
     public class RepositoryHelperTest
     {
+        [Test]
+        public void CanGetGitRemotes()
+        {
+            // Gets the Git remotes for the repository that this source is
+            // maintained in. Assumes that one of the remotes is on GitHub
+            var path = Assembly.GetExecutingAssembly().Location;
+            var root = RepositoryHelper.GetRemotes(path).ToArray();
+
+            Assert.That(root, Is.Not.Null);
+            Assert.That(root.Length, Is.GreaterThan(0));
+        }
+
         [Test]
         public void CanFindRootOfRepositoryFromFile()
         {

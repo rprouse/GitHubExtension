@@ -23,8 +23,10 @@
 // **********************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using LibGit2Sharp;
 
 namespace Alteridem.GitHub.Model
 {
@@ -33,6 +35,28 @@ namespace Alteridem.GitHub.Model
     /// </summary>
     public static class RepositoryHelper
     {
+
+        /// <summary>
+        /// Given a filename or directory, returns a list of Git remotes
+        /// for the repository that the filename or directory is contained in.
+        /// </summary>
+        /// <param name="path">The path to a file or directory</param>
+        /// <returns>A list of all of the remotes for the given repository if there
+        /// are any. If it is not a Git repository, the list will be empty.</returns>
+        public static IEnumerable<string> GetRemotes(string path)
+        {
+            var root = FindRepositoryRoot(path);
+            if (root != null)
+            {
+                var repository = new Repository(root.FullName);
+                var remotes = from c in repository.Config
+                              where c.Key.StartsWith("remote") && c.Key.EndsWith("url")
+                              select c.Value;
+                foreach (var remote in remotes)
+                    yield return remote;
+            }
+        }
+
         /// <summary>
         /// Given a file or directory, finds the root of a Git repository
         /// by searching for the .git directory
