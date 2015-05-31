@@ -178,6 +178,7 @@
     <Compile Include="Converters\ColorExtensions.cs" />
     <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\StringToInverseColorConverter.cs" />
+    <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Filters\RepositoryFilter.cs" />
     <Compile Include="Filters\UserFilter.cs" />
     <Compile Include="Interfaces\IOptionsProvider.cs" />

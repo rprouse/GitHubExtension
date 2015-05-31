@@ -256,10 +256,12 @@ namespace Alteridem.GitHub.Extension
         void OnSolutionOpened()
         {
             var dte = GetService<DTE>();
-            if (dte != null)
+            var gitHubApi = Factory.Get<GitHubApiBase>();
+            if (dte != null && gitHubApi != null)
             {
-                // TODO: Switch the repository to that of the solution
+                // Switch the repository to that of the solution
                 Debug.WriteLine(dte.Solution.FullName, "Opened solution");
+                gitHubApi.SetRepositoryForSolution(dte.Solution.FullName);
             }
         }
 

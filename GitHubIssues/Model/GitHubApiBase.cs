@@ -319,11 +319,27 @@ namespace Alteridem.GitHub.Model
         public abstract void SaveIssue(Repository repository, NewIssue newIssue);
 
         public abstract void UpdateIssue(Repository repository, int id, IssueUpdate update);
+        
+        public bool SetRepositoryForSolution(string solutionName)
+        {
+            if (string.IsNullOrWhiteSpace(solutionName))
+                return false;
+
+            var remotes = RepositoryHelper.GetRemotes(solutionName);
+            var repo = Repositories.Where(r => r.HasRemote(remotes))
+                                   .FirstOrDefault();
+            if(repo != null)
+            {
+                Repository = repo;
+                return true;
+            }
+            return false;
+        }
 
         #endregion
 
         #region Abstract proteced API
-        
+
         protected virtual void GetRepositoryInfo()
         {
             GetLabels();

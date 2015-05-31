@@ -28,7 +28,7 @@ using Microsoft.VisualStudio.Shell;
 
 #endregion
 
-namespace Alteridem.GitHub.Extension.Extensions
+namespace Alteridem.GitHub.Extensions
 {
     /// <summary>
     /// Methods to make working with ServiceProviders a bit easier

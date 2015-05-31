@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
-using Alteridem.GitHub.Extension.Extensions;
+using Alteridem.GitHub.Extensions;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Filters;

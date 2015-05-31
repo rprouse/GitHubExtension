@@ -22,7 +22,7 @@
 // 
 // **********************************************************************************
 
-using Alteridem.GitHub.Extension.Extensions;
+using Alteridem.GitHub.Extensions;
 using System;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
