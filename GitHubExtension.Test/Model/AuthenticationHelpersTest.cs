@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Alteridem.GitHub.Extension.Test.Model
 {
     [TestFixture]
-    public class AuthenticationHelpersTests
+    public class AuthenticationHelpersTest
     {
         [Test]
         public void CanGetFingerprint()
