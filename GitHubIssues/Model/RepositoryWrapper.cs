@@ -23,8 +23,10 @@
 // **********************************************************************************
 
 using System;
+using System.Linq;
 using Alteridem.GitHub.Annotations;
 using Octokit;
+using System.Collections.Generic;
 
 namespace Alteridem.GitHub.Model
 {
@@ -38,6 +40,29 @@ namespace Alteridem.GitHub.Model
         public RepositoryWrapper([NotNull] Repository repository)
         {
             Repository = repository;
+        }
+
+        /// <summary>
+        /// Checks if any of the passed in remotes matches any of the remotes on the contained
+        /// Repository
+        /// </summary>
+        /// <param name="remotes">A collection of remotes to check</param>
+        /// <returns>True if any of the remotes match</returns>
+        public bool HasRemote(IEnumerable<string> remotes)
+        {
+            return remotes.Any(r => HasRemote(r));
+        }
+
+        /// <summary>
+        /// Checks if the passed in remote matches any of the remotes on the contained
+        /// Repository
+        /// </summary>
+        /// <param name="remotes">A remote to check</param>
+        /// <returns>True if the remote matches</returns>
+        private bool HasRemote(string remote)
+        {
+            return Repository.GitUrl.Equals(remote, StringComparison.InvariantCultureIgnoreCase) ||
+                   Repository.SshUrl.Equals(remote, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>

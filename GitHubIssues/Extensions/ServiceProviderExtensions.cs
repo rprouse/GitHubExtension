@@ -24,35 +24,33 @@
 
 #region Using Directives
 
-using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
-
-using Alteridem.GitHub.Styles;
 
 #endregion
 
-namespace Alteridem.GitHub.Model
+namespace Alteridem.GitHub.Extensions
 {
-    [ClassInterface(ClassInterfaceType.AutoDual)]
-    [ComVisible(true)]
-    public class OptionsPage : DialogPage
+    /// <summary>
+    /// Methods to make working with ServiceProviders a bit easier
+    /// </summary>
+    public static class ServiceProviderExtensions
     {
-        [Category("Interface")]
-        [DisplayName("Issue Theme")]
-        [Description("A light or dark background for the Issue window")]
-        public IssueTheme IssueTheme { get; set; }
+        /// <summary>
+        /// Simplify getting services
+        /// </summary>
+        public static T GetService<T>(this ServiceProvider provider) where T: class
+        {
+            return provider.GetService(typeof (T)) as T;
+        }
 
-        [Category("Interface")]
-        [DisplayName("Hide Repositories Without Issues")]
-        [Description("Hides all repositories from the selection list that do not have open or closed issues")]
-        public bool HideRepositoriesWithNoIssues { get; set; }
-
-        [Category("Repositories")]
-        [DisplayName("Auto-Select Repository")]
-        [Description("Automatically selects the repository based on the code you are working on")]
-        [DefaultValue(true)]
-        public bool AutoSelectRepository { get; set; }
+        /// <summary>
+        /// Simplify getting services
+        /// </summary>
+        public static TReturn GetService<TGet, TReturn>(this ServiceProvider provider) 
+            where TGet : class
+            where TReturn : class
+        {
+            return provider.GetService(typeof(TGet)) as TReturn;
+        }
     }
 }

@@ -34,6 +34,9 @@ using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Filters;
 using Alteridem.GitHub.Logging;
 using Octokit;
+using EnvDTE;
+
+using Alteridem.GitHub.Extensions;
 
 #endregion
 
@@ -421,6 +424,13 @@ namespace Alteridem.GitHub.Model
         {
             _log.Write(LogLevel.Debug, "Finished fetching organizations for current user");
             int id = SettingsCache.Repository;
+
+            var dte = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider.GetService<DTE>();
+            if(dte != null && dte.Solution != null)
+            {
+                if (SetRepositoryForSolution(dte.Solution.FullName))
+                    return;
+            }
 
             var wrapper = (from r in Repositories where r.Repository.Id == id select r).FirstOrDefault();
             if (wrapper != null)

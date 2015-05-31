@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Alteridem.GitHub.Annotations;
+using Alteridem.GitHub.Extensions;
 using Alteridem.GitHub.Extension.Interfaces;
 using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Filters;
@@ -112,7 +113,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
 
         public void OpenIssueViewer()
         {
-            var viewer = ServiceProvider.GlobalProvider.GetService(typeof(IIssueToolWindow)) as IIssueToolWindow;
+            var viewer = ServiceProvider.GlobalProvider.GetService<IIssueToolWindow>();
             if (viewer != null)
             {
                 viewer.Show();

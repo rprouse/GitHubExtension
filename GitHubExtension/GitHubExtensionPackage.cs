@@ -27,12 +27,13 @@
 using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Alteridem.GitHub.Extension.Interfaces;
+using Alteridem.GitHub.Extension.View;
 using Alteridem.GitHub.Interfaces;
 using Alteridem.GitHub.Model;
+using EnvDTE;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -75,6 +76,11 @@ namespace Alteridem.GitHub.Extension
         private ErrorListProvider vsbaseWarningProvider;
 
         /// <summary>
+        /// The solution events. We must keep a reference to this, or the events will not fire
+        /// </summary>
+        private SolutionEvents _solutionEvents;
+
+        /// <summary>
         /// Default constructor of the package.
         /// Inside this method you can place any initialization code that does not require 
         /// any Visual Studio service because at this point the package object is created but 
@@ -84,7 +90,7 @@ namespace Alteridem.GitHub.Extension
         public GitHubExtensionPackage()
         {
             Factory.AddAssembly(Assembly.GetExecutingAssembly());
-            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this));
+            Debug.WriteLine(ToString(), "Entering constructor for");
             
             var container = this as IServiceContainer;
             var callback = new ServiceCreatorCallback(CreateIssueViewer);
@@ -161,54 +167,12 @@ namespace Alteridem.GitHub.Extension
         /// </summary>
         protected override void Initialize()
         {
-            Debug.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", ToString()));
+            Debug.WriteLine (ToString(), "Entering Initialize() of");
             base.Initialize();
 
-            // Add our command handlers for menu (commands must exist in the .vsct file)
-            var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if ( null != mcs )
-            {
-                // Create the command for the menu item.
-                var menuCommandID = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidNewIssue);
-                var menuItem = new MenuCommand(MenuItemCallback, menuCommandID );
-                mcs.AddCommand( menuItem );
-                // Create the commands for the tool windows
-                var issueListWndCommandID = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidIssues);
-                var menuIssueListWin = new MenuCommand(ShowIssueListToolWindow, issueListWndCommandID);
-                mcs.AddCommand(menuIssueListWin);
-
-                var issueWndCommandID = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidIssueWindow);
-                var menuIssueWin = new MenuCommand(ShowIssueToolWindow, issueWndCommandID);
-                mcs.AddCommand(menuIssueWin);
-            }
-
-            IComponentModel componentModel = (IComponentModel)GetService(typeof(SComponentModel));
-            IOutputWindowService outputWindowService = componentModel.DefaultExportProvider.GetExportedValueOrDefault<IOutputWindowService>();
-            IOutputWindowPane gitHubPane = null;
-
-            // Warn users if dependencies aren't installed.
-            vsbaseWarningProvider = new ErrorListProvider(this);
-            if (outputWindowService != null)
-            {
-                gitHubPane = outputWindowService.TryGetPane(View.OutputWriter.GitHubOutputWindowPaneName);
-            }
-            else
-            {
-                ErrorTask task = new ErrorTask
-                {
-                    Category = TaskCategory.Misc,
-                    ErrorCategory = TaskErrorCategory.Error,
-                    Text = "The required VSBase Services debugging support extension is not installed; output window messages will not be shown. Click here for more information."
-                };
-                task.Navigate += HandleNavigateToVsBaseServicesExtension;
-                vsbaseWarningProvider.Tasks.Add(task);
-                vsbaseWarningProvider.Show();
-            }
-
-            // This code is a bit of a hack to bridge MEF created components and Ninject managed components
-            Factory.Rebind<IOutputWindowPane>().ToConstant(gitHubPane);
-            Factory.Rebind<ICache>().ToConstant(componentModel.DefaultExportProvider.GetExportedValue<Cache>());
-            Factory.Rebind<IOptionsProvider>().ToConstant(this);
+            CreateMenuHandlers();
+            HookupEvents();
+            SetupServices();
         }
 
         /// <summary>
@@ -238,29 +202,12 @@ namespace Alteridem.GitHub.Extension
             var add = Factory.Get<IIssueEditor>();
             add.SetIssue(null);
             add.ShowModal();
-
-            // Show a Message Box to prove we were here
-            //var uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
-            //Guid clsid = Guid.Empty;
-            //int result;
-            //Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(
-            //           0,
-            //           ref clsid,
-            //           "GitHub Extension",
-            //           string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", ToString()),
-            //           string.Empty,
-            //           0,
-            //           OLEMSGBUTTON.OLEMSGBUTTON_OK,
-            //           OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-            //           OLEMSGICON.OLEMSGICON_INFO,
-            //           0,        // false
-            //           out result));
         }
 
         private void HandleNavigateToVsBaseServicesExtension(object sender, EventArgs e)
         {
-            string vsbaseDebugExtensionLocation = "https://visualstudiogallery.msdn.microsoft.com/fca95a59-3fc6-444e-b20c-cc67828774cd";
-            IVsWebBrowsingService webBrowsingService = GetService(typeof(SVsWebBrowsingService)) as IVsWebBrowsingService;
+            const string vsbaseDebugExtensionLocation = "https://visualstudiogallery.msdn.microsoft.com/fca95a59-3fc6-444e-b20c-cc67828774cd";
+            IVsWebBrowsingService webBrowsingService = GetService<SVsWebBrowsingService, IVsWebBrowsingService>();
             if (webBrowsingService != null)
             {
                 IVsWindowFrame windowFrame;
@@ -268,12 +215,104 @@ namespace Alteridem.GitHub.Extension
                 return;
             }
 
-            IVsUIShellOpenDocument openDocument = GetService(typeof(SVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
+            IVsUIShellOpenDocument openDocument = GetService<SVsUIShellOpenDocument, IVsUIShellOpenDocument>();
             if (openDocument != null)
             {
                 openDocument.OpenStandardPreviewer(0, vsbaseDebugExtensionLocation, VSPREVIEWRESOLUTION.PR_Default, 0);
-                return;
             }
+        }
+
+        private void CreateMenuHandlers()
+        {
+            // Add our command handlers for menu (commands must exist in the .vsct file)
+            var mcs = GetService<IMenuCommandService, OleMenuCommandService>();
+            if (null != mcs)
+            {
+                // Create the command for the menu item.
+                var menuCommandID = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidNewIssue);
+                var menuItem = new MenuCommand(MenuItemCallback, menuCommandID);
+                mcs.AddCommand(menuItem);
+                // Create the commands for the tool windows
+                var issueListWndCommandID = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidIssues);
+                var menuIssueListWin = new MenuCommand(ShowIssueListToolWindow, issueListWndCommandID);
+                mcs.AddCommand(menuIssueListWin);
+
+                var issueWndCommandID = new CommandID(GuidList.guidGitHubExtensionCmdSet, (int)PkgCmdIDList.cmdidIssueWindow);
+                var menuIssueWin = new MenuCommand(ShowIssueToolWindow, issueWndCommandID);
+                mcs.AddCommand(menuIssueWin);
+            }
+        }
+
+        private void HookupEvents()
+        {
+            var dte = GetService<DTE>();
+            if (dte != null)
+            {
+                _solutionEvents = dte.Events.SolutionEvents;
+                _solutionEvents.Opened += OnSolutionOpened;
+            }
+        }
+
+        void OnSolutionOpened()
+        {
+            var dte = GetService<DTE>();
+            var gitHubApi = Factory.Get<GitHubApiBase>();
+            if (dte != null && gitHubApi != null)
+            {
+                // Switch the repository to that of the solution
+                Debug.WriteLine(dte.Solution.FullName, "Opened solution");
+                gitHubApi.SetRepositoryForSolution(dte.Solution.FullName);
+            }
+        }
+
+        private void SetupServices()
+        {
+            var componentModel = GetService<SComponentModel, IComponentModel>();
+            var outputWindowService = componentModel.DefaultExportProvider.GetExportedValueOrDefault<IOutputWindowService>();
+            IOutputWindowPane gitHubPane = null;
+
+            // Warn users if dependencies aren't installed.
+            vsbaseWarningProvider = new ErrorListProvider(this);
+            if (outputWindowService != null)
+            {
+                gitHubPane = outputWindowService.TryGetPane(OutputWriter.GitHubOutputWindowPaneName);
+            }
+            else
+            {
+                var task = new ErrorTask
+                {
+                    Category = TaskCategory.Misc,
+                    ErrorCategory = TaskErrorCategory.Error,
+                    Text =
+                        "The required VSBase Services debugging support extension is not installed; output window messages will not be shown. Click here for more information."
+                };
+                task.Navigate += HandleNavigateToVsBaseServicesExtension;
+                vsbaseWarningProvider.Tasks.Add(task);
+                vsbaseWarningProvider.Show();
+            }
+
+            // This code is a bit of a hack to bridge MEF created components and Ninject managed components
+            Factory.Rebind<IOutputWindowPane>().ToConstant(gitHubPane);
+            Factory.Rebind<ICache>().ToConstant(componentModel.DefaultExportProvider.GetExportedValue<Cache>());
+            Factory.Rebind<IOptionsProvider>().ToConstant(this);
+        }
+
+        /// <summary>
+        /// Simplify getting services
+        /// </summary>
+        private T GetService<T>() where T : class
+        {
+            return GetService(typeof(T)) as T;
+        }
+
+        /// <summary>
+        /// Simplify getting services
+        /// </summary>
+        private TReturn GetService<TGet, TReturn>()
+            where TGet : class
+            where TReturn : class
+        {
+            return GetService(typeof(TGet)) as TReturn;
         }
     }
 }
