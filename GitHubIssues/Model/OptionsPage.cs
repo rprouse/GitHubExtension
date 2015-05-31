@@ -50,9 +50,8 @@ namespace Alteridem.GitHub.Model
         public bool HideRepositoriesWithNoIssues { get; set; }
 
         [Category("Repositories")]
-        [DisplayName("Auto-Select Repository")]
-        [Description("Automatically selects the repository based on the code you are working on")]
-        [DefaultValue(true)]
-        public bool AutoSelectRepository { get; set; }
+        [DisplayName("Disable Auto-Select Repository")]
+        [Description("Disables automatically selecting the repository based on the code you are working on")]
+        public bool DisableAutoSelectRepository { get; set; }
     }
 }
