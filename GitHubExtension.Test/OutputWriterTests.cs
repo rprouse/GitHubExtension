@@ -49,7 +49,7 @@ namespace Alteridem.GitHub.Extension.Test
             _log.LastMessageShown = string.Empty;
             _log.LastMessageWritten = string.Empty;
         }
-
+        
         [TestCase(LogLevel.Debug, false, false)]
         [TestCase(LogLevel.Info, true, false)]
         [TestCase(LogLevel.Warn, true, false)]
