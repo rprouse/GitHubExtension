@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using Alteridem.GitHub.Annotations;
 using Alteridem.GitHub.Filters;
 using Octokit;
+using Alteridem.GitHub.Interfaces;
 
 namespace Alteridem.GitHub.Model
 {
@@ -324,6 +325,12 @@ namespace Alteridem.GitHub.Model
         {
             if (string.IsNullOrWhiteSpace(solutionName))
                 return false;
+            
+            var options = Factory.Get<IOptionsProvider>();
+            if (options != null && options.Options != null && options.Options.DisableAutoSelectRepository)
+            {
+                return false;
+            }
 
             var remotes = RepositoryHelper.GetRemotes(solutionName);
             var repo = Repositories.Where(r => r.HasRemote(remotes))

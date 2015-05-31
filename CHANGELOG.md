@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.5.0]
+### 31/05/15
+- *Closed issue:* Provide Dark Theme for Issue Viewer [\#121](https://github.com/rprouse/GitHubExtension/issues/121)
+- *Closed issue:* Create a settings page in VS Options [\#117](https://github.com/rprouse/GitHubExtension/issues/117)
+- *Closed issue:* Option to filter repositories with no issues [\#99](https://github.com/rprouse/GitHubExtension/issues/99)
+- *Closed issue:* Default repository to that of the code being worked on [\#16](https://github.com/rprouse/GitHubExtension/issues/16)
+
 ## [v0.4.0]
 ### 23/04/15
 - *Closed issue:* Update to the new GitHub Authorizations API (breaking change) [\#119](https://github.com/rprouse/GitHubExtension/issues/119)
