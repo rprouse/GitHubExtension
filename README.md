@@ -1,4 +1,4 @@
-GitHub Visual Studio Extension
+GitHub Issues Visual Studio Extension
 ===============
 
 [![Join the chat at https://gitter.im/rprouse/GitHubExtension](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rprouse/GitHubExtension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

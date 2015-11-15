@@ -65,8 +65,8 @@ namespace Alteridem.GitHub.Model
             }
 
             _allLabels = new Label(null, "All Labels", "FFFFFFFF");
-            AllMilestones = new Milestone(null, 0, ItemState.All, "All Milestones", "", null, 0, 0, DateTimeOffset.UtcNow, null);
-            NoMilestone = new Milestone(null, -1, ItemState.All, "No Milestone", "", null, 0, 0, DateTimeOffset.UtcNow, null);
+            AllMilestones = new Milestone(null, 0, ItemState.All, "All Milestones", "", null, 0, 0, DateTimeOffset.UtcNow, null, null);
+            NoMilestone = new Milestone(null, -1, ItemState.All, "No Milestone", "", null, 0, 0, DateTimeOffset.UtcNow, null, null);
 
             SettingsCache = settingsCache;
             Repositories = new BindingList<RepositoryWrapper>();

@@ -76,7 +76,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
 
         public override void GetIssues()
         {
-            var issue = new Issue(null, null, 1, ItemState.Open, "title", "##body##",
+            var issue = new Issue(null, null, null, 1, ItemState.Open, "title", "##body##",
                 new User("https://avatars.githubusercontent.com/u/493828?v=1", null, null, 1, null, DateTimeOffset.Now,
                     1, "nobody@nobody.com", 1, 1, true, null, 1,
                     1, null, "user", "name", 1, null, 0, 0, 0, null, false), null, null, null, 1, null, null,
@@ -95,19 +95,19 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
 
         public override void GetMilestones()
         {
-            var milestone = new Milestone(null, 1, ItemState.All, "v1.0", "The first release", null, 1, 0, DateTimeOffset.Now, DateTimeOffset.Now.AddDays(1));
+            var milestone = new Milestone(null, 1, ItemState.All, "v1.0", "The first release", null, 1, 0, DateTimeOffset.Now, DateTimeOffset.Now.AddDays(1), null);
             Milestone = milestone;
             Milestones.Add(milestone);
         }
 
         public override void UpdateIssue(Repository repository, int id, IssueUpdate update)
         {
-            Issue = new Issue(null, null, id, ItemState.Open, update.Title, update.Body, null, null, null, null, 0, null, null, DateTimeOffset.Now, null );
+            Issue = new Issue(null, null, null, id, ItemState.Open, update.Title, update.Body, null, null, null, null, 0, null, null, DateTimeOffset.Now, null );
         }
 
         public override void SaveIssue(Repository repository, NewIssue newIssue)
         {
-            var issue = new Issue(null, null, 69, ItemState.Open, newIssue.Title, newIssue.Body, null, null, null, null, 0, null, null, DateTimeOffset.Now, null);
+            var issue = new Issue(null, null, null, 69, ItemState.Open, newIssue.Title, newIssue.Body, null, null, null, null, 0, null, null, DateTimeOffset.Now, null);
             AllIssues.Add(issue);
             Issue = issue;
         }
@@ -126,7 +126,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
         public override void CloseIssue(Issue issue, string comment)
         {
             AddComment(issue, comment);
-            Issue = new Issue(null, null, Issue.Number, ItemState.Closed, Issue.Title, Issue.Body, null, null, null, null, 1, null, null, Issue.CreatedAt, null);
+            Issue = new Issue(null, null, null, Issue.Number, ItemState.Closed, Issue.Title, Issue.Body, null, null, null, null, 1, null, null, Issue.CreatedAt, null);
             //issue.State = ItemState.Closed;
         }
 
