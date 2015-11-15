@@ -15,7 +15,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
 
         public bool? ShowModal()
         {
-            _issue = new Issue(null, null, _issue.Number, ItemState.Open, "new title", "new body", null, null, null, null, 1, null, null, DateTimeOffset.Now, null);
+            _issue = new Issue(null, null, null, _issue.Number, ItemState.Open, "new title", "new body", null, null, null, null, 1, null, null, DateTimeOffset.Now, null);
 
             var api = Factory.Get<GitHubApiBase>();
             api.Issue = _issue;
