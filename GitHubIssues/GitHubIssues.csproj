@@ -174,7 +174,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfoCommon.cs" />
+    <Compile Include="Properties\AssemblyInfoCommon.cs" />
     <Compile Include="Converters\ColorExtensions.cs" />
     <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\StringToInverseColorConverter.cs" />

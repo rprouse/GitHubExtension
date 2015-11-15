@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.6.0]
+### xx/xx/xx
+- Renamed the extension to GitHub Issues Extension
+
 ## [v0.5.0]
 ### 31/05/15
 - *Closed issue:* Provide Dark Theme for Issue Viewer [\#121](https://github.com/rprouse/GitHubExtension/issues/121)
