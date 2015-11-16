@@ -39,7 +39,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             : base(settingsCache)
         {
             // Log in
-            Login("test", "test", null);
+            Login("test");
 
             // Set up a repository
             var repository = new Repository(null, null, null, null, null, null, null, 1, null, "test", "test\\test",
@@ -66,11 +66,11 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
             }
         }
 
-        public override Task Login(string username, string password, string accessToken)
+        public override Task Login(string accessToken)
         {
-            Token = username + password;
+            LoggedIn = true;
             User = new User("https://avatars.githubusercontent.com/u/493828?v=1", null, null, 1, null, DateTimeOffset.Now, 1, "nobody@nobody.com", 1, 1, true, null, 1,
-                1, null, username, username, 1, null, 0, 0, 0, null, false);
+                1, null, "test", "test", 1, null, 0, 0, 0, null, false);
             return new Task(() => Console.WriteLine("Logging In"));
         }
 

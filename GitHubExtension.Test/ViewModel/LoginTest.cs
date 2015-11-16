@@ -41,36 +41,36 @@ namespace Alteridem.GitHub.Extension.Test.ViewModel
     [Apartment(ApartmentState.STA)]
     public class LoginTest
     {
-        private LoginViewModel _gitHubViewModel;
+        //private LoginViewModel _gitHubViewModel;
 
-        [SetUp]
-        public void SetUp()
-        {
-            Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
-            Factory.Rebind<ILoginView>().To<LoginViewMock>();
-            _gitHubViewModel = Factory.Get<LoginViewModel>();
-        }
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    Factory.Rebind<GitHubApiBase>().To<GitHubApiMock>().InScope(o => this);
+        //    Factory.Rebind<ILoginView>().To<LoginViewMock>();
+        //    _gitHubViewModel = Factory.Get<LoginViewModel>();
+        //}
 
-        [Test]
-        public void TestCanLogon()
-        {
-            _gitHubViewModel.Username = "";
-            Assert.That(_gitHubViewModel.CanLogon(), Is.False);
-            _gitHubViewModel.Username = "user";
-            Assert.That(_gitHubViewModel.CanLogon(), Is.True);
-        }
+        //[Test]
+        //public void TestCanLogon()
+        //{
+        //    _gitHubViewModel.Username = "";
+        //    Assert.That(_gitHubViewModel.CanLogon(), Is.False);
+        //    _gitHubViewModel.Username = "user";
+        //    Assert.That(_gitHubViewModel.CanLogon(), Is.True);
+        //}
 
-        [Test]
-        public void TestLogon()
-        {
-            var api = Factory.Get<GitHubApiBase>();
-            api.Logout();
-            Assert.That(api.LoggedIn, Is.False);
+        //[Test]
+        //public void TestLogon()
+        //{
+        //    var api = Factory.Get<GitHubApiBase>();
+        //    api.Logout();
+        //    Assert.That(api.LoggedIn, Is.False);
 
-            _gitHubViewModel.Username = "user";
-            _gitHubViewModel.Logon(new PasswordBox());
+        //    _gitHubViewModel.Username = "user";
+        //    _gitHubViewModel.Logon(new PasswordBox());
 
-            Assert.That(api.LoggedIn, Is.True);
-        }
+        //    Assert.That(api.LoggedIn, Is.True);
+        //}
     }
 }

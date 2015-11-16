@@ -66,20 +66,33 @@ namespace Alteridem.GitHub.Model
 
         #region Public API
 
-        public override bool HasClientId
+        public override bool HasClientId => !string.IsNullOrEmpty(Secrets.CLIENT_ID);
+
+        public override async Task Login(string accessToken)
         {
-            get
-            {
-                return !string.IsNullOrEmpty(Secrets.CLIENT_ID);
-            }
+            _log.Write(LogLevel.Debug, "Logging in with access token");
+            var oauthTokenRequest = new OauthTokenRequest(Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, accessToken);
+            var oauthToken = await _github.Oauth.CreateAccessToken(oauthTokenRequest);
+            await LoginWithOAuthToken(oauthToken.AccessToken);
         }
 
-        public override async Task Login(string username, string password, string accessToken)
+        private async Task LoginWithOAuthToken(string token)
         {
-            if (!string.IsNullOrEmpty(accessToken))
-                await LoginWithAccessToken(new Credentials(accessToken));
-            else
-                await LoginWithUsernameAndPassword(new Credentials(username, password));
+            _github.Credentials = new Credentials(token);
+
+            LoggedIn = true;
+            try
+            {
+                await LoadData();
+                SettingsCache.SaveToken(token);
+            }
+            catch (Exception ex)
+            {
+                _log.Write(LogLevel.Warn, "Failed to login", ex);
+                Logout();
+                throw;
+            }
+
         }
 
         public override void Logout()
@@ -305,64 +318,13 @@ namespace Alteridem.GitHub.Model
                 try
                 {
                     if (!string.IsNullOrEmpty(credentials.AccessToken))
-                        await LoginWithAccessToken(new Credentials(credentials.AccessToken));
-                    else if (!string.IsNullOrEmpty(credentials.Logon))
-                        await LoginWithUsernameAndPassword(new Credentials(credentials.Logon, credentials.Password));
+                        await LoginWithOAuthToken(credentials.AccessToken);
                 }
                 catch (Exception exception)
                 {
                     Logout();
                     _log.Write(LogLevel.Error, "Failed to log in with cached credentials.", exception);
                 }
-            }
-        }
-
-        private async Task LoginWithUsernameAndPassword([NotNull] Credentials credentials)
-        {
-            _log.Write(LogLevel.Debug, "Logging in with credentials");
-            _github.Credentials = credentials;
-
-            try
-            {
-                SettingsCache.SaveCredentials(credentials.Login, credentials.Password);
-                var newAuth = new NewAuthorization
-                {
-                    Scopes = new[] { "user", "repo" },
-                    Note = "GitHub Visual Studio Extension",
-                    NoteUrl = "http://www.alteridem.net",
-                    Fingerprint = AuthenticationHelpers.GetFingerprint()
-                };
-
-                var auth = await _github.Authorization.GetOrCreateApplicationAuthentication( Secrets.CLIENT_ID, Secrets.CLIENT_SECRET, newAuth );
-                _log.Write( LogLevel.Info, "Successfully logged in to GitHub" );
-                Token = auth.HashedToken;
-
-                await LoadData();
-            }
-            catch (Exception ex)
-            {
-                _log.Write(LogLevel.Warn, "Failed to login", ex);
-                Logout();
-                throw;
-            }
-        }
-
-        private async Task LoginWithAccessToken( [NotNull] Credentials credentials )
-        {
-            _log.Write( LogLevel.Debug, "Logging in with access token" );
-            _github.Credentials = credentials;
-
-            try
-            {
-                SettingsCache.SaveToken( credentials.GetToken() );
-                Token = credentials.GetToken();
-                await LoadData();
-            }
-            catch ( Exception ex )
-            {
-                _log.Write( LogLevel.Warn, "Failed to login", ex );
-                Logout();
-                throw;
             }
         }
 

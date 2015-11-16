@@ -214,6 +214,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="ViewModel\AddCommentViewModel.cs" />
+    <Compile Include="ViewModel\AuthViewModel.cs" />
     <Compile Include="ViewModel\BaseUserViewModel.cs" />
     <Compile Include="ViewModel\BaseGitHubViewModel.cs" />
     <Compile Include="ViewModel\AvatarViewModel.cs" />
@@ -222,10 +223,12 @@
     <Compile Include="ViewModel\IssueListViewModel.cs" />
     <Compile Include="ViewModel\IssueViewModel.cs" />
     <Compile Include="ViewModel\LabelModel.cs" />
-    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="View\AddComment.xaml.cs">
       <DependentUpon>AddComment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AuthDialog.xaml.cs">
+      <DependentUpon>AuthDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Avatar.xaml.cs">
       <DependentUpon>Avatar.xaml</DependentUpon>
@@ -255,9 +258,6 @@
     </Compile>
     <Compile Include="View\IssueList.xaml.cs">
       <DependentUpon>IssueList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\VisualStudioMessageBox.cs" />
     <Compile Include="View\WebBrowserBehavior.cs" />
@@ -311,6 +311,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\AuthDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Avatar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -338,10 +342,6 @@
     <Page Include="View\LightTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Login.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\IssueList.xaml">
       <Generator>MSBuild:Compile</Generator>

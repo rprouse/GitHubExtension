@@ -32,7 +32,7 @@ namespace Alteridem.GitHub.Extension.Test.Mocks
         public bool? ShowModal()
         {
             var api = Factory.Get<GitHubApiBase>();
-            api.Login("user", "pass", null);
+            api.Login("test");
             return true;
         }
 

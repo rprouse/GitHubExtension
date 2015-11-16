@@ -36,7 +36,7 @@ namespace Alteridem.GitHub.Extension.Modules
     {
         public override void Load()
         {
-            Bind<ILoginView>().To<Login>();
+            Bind<ILoginView>().To<AuthDialog>();
             Bind<IAddComment>().To<AddComment>();
             Bind<IIssueEditor>().To<IssueEditor>();
             Bind<ILabelPicker>().To<LabelPicker>();

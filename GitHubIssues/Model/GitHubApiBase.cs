@@ -39,7 +39,7 @@ namespace Alteridem.GitHub.Model
     {
         #region Members
 
-        private string _token;
+        private bool _loggedIn;
         private User _user;
         private RepositoryWrapper _repository;
         private Label _label;
@@ -80,8 +80,19 @@ namespace Alteridem.GitHub.Model
 
         public bool LoggedIn
         {
-            get { return !string.IsNullOrWhiteSpace(Token); }
+            get { return _loggedIn; }
+            set
+            {
+                _loggedIn = value;
+                OnPropertyChanged();
+            }
         }
+
+        public Uri AuthorizeUrl => 
+            new Uri(string.Format("https://github.com/login/oauth/authorize?client_id={0}&scope={1}",
+                Secrets.CLIENT_ID, Scopes));
+
+        public string Scopes => "user,repo,gist";
 
         [CanBeNull]
         public User User
@@ -136,19 +147,6 @@ namespace Alteridem.GitHub.Model
                 _milestone = value;
                 OnPropertyChanged();
                 OnPropertyChanged("Issues");
-            }
-        }
-
-        [CanBeNull]
-        protected string Token
-        {
-            get { return _token; }
-            set
-            {
-                if (Equals(value, _token)) return;
-                _token = value;
-                OnPropertyChanged();
-                OnPropertyChanged("LoggedIn");
             }
         }
 
@@ -298,10 +296,10 @@ namespace Alteridem.GitHub.Model
 
         public virtual void Logout()
         {
-            Token = string.Empty;
+            LoggedIn = false;
         }
 
-        public abstract Task Login(string username, string password, string accessToken);
+        public abstract Task Login(string accessToken);
 
         public abstract void GetIssues();
 

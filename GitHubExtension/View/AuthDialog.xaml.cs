@@ -1,7 +1,7 @@
 ﻿// **********************************************************************************
 // The MIT License (MIT)
 // 
-// Copyright (c) 2014 Rob Prouse
+// Copyright (c) 2015 Rob Prouse
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of
 // this software and associated documentation files (the "Software"), to deal in
@@ -22,26 +22,36 @@
 // 
 // **********************************************************************************
 
-#region Using Directives
-
-using System.Windows;
 using Alteridem.GitHub.Extension.Interfaces;
-using Alteridem.GitHub.Extension.ViewModel;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Navigation;
+using System;
 using Microsoft.VisualStudio.PlatformUI;
-
-#endregion
+using Alteridem.GitHub.Model;
+using System.Diagnostics;
+using Alteridem.GitHub.Extension.ViewModel;
 
 namespace Alteridem.GitHub.Extension.View
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for AuthDialog.xaml
     /// </summary>
-    public partial class Login : DialogWindow, ILoginView
+    public partial class AuthDialog : DialogWindow, ILoginView
     {
-        public Login()
+        public AuthViewModel _viewModel { get; set; }
+
+        public AuthDialog()
         {
             InitializeComponent();
-            DataContext = new LoginViewModel(this);
+            _viewModel = new AuthViewModel(this);
+            DataContext = _viewModel;
+            browser.Navigate(_viewModel.AuthorizeUrl);
+        }
+
+        async void OnLoadCompleted(object sender, NavigationEventArgs e)
+        {
+            await _viewModel.Logon(e.Uri);
         }
     }
 }
