@@ -1,11 +1,11 @@
 GitHub Issues Visual Studio Extension
 ===============
 
-[![Join the chat at https://gitter.im/rprouse/GitHubExtension](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rprouse/GitHubExtension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build status](https://ci.appveyor.com/api/projects/status/cq3t38xds110oxb8/branch/master?svg=true)](https://ci.appveyor.com/project/rprouse/githubextension/branch/master) [![Latest Release](https://img.shields.io/github/release/rprouse/GitHubExtension.svg)](https://visualstudiogallery.msdn.microsoft.com/e4ba5ebd-bcd5-4e20-8375-bb8cbdd71d7e) [![Join the chat at https://gitter.im/rprouse/GitHubExtension](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rprouse/GitHubExtension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/cq3t38xds110oxb8/branch/master?svg=true)](https://ci.appveyor.com/project/rprouse/githubextension/branch/master)
+[![Follow Rob Prouse](https://img.shields.io/twitter/follow/rprouse.svg?style=social)](https://twitter.com/rprouse)
 
-A visual studio extension for working with issues on GitHub. 
+A visual studio extension for working with issues on GitHub by [Rob Prouse](http://www.alteridem.net). 
 
 Access and manage GitHub issues for repositories that you have commit access to. You can filter and view issues for a repository, edit issues, add comments and close issue. This is the first Alpha release, more features are coming. 
 
