@@ -1,24 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-    <Metadata>
-        <Identity Id="dae607b6-043f-400a-bd24-ffda143b13f4" Version="0.6" Language="en-US" Publisher="Rob Prouse" />
-        <DisplayName>GitHub Issues Extension</DisplayName>
-        <Description xml:space="preserve">Manage GitHub issues for repositories that you have commit access to. You can filter and view issues for a repository, edit issues, add comments and close issues.</Description>
-        <MoreInfo>https://github.com/rprouse/GitHubExtension</MoreInfo>
-        <License>License.rtf</License>
-        <Icon>Resources\Package.ico</Icon>
-        <PreviewImage>Resources\Preview.png</PreviewImage>
-        <Tags>bug tracking, integration, github, issue tracking</Tags>
-    </Metadata>
-    <Installation InstalledByMsi="false">
-        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[11.0,]" />
-    </Installation>
-    <Dependencies>
-        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-        <Dependency Id="Tvl.VisualStudio.OutputWindow.3EF11167-A319-43DB-B1B4-A9778A90FAE0" DisplayName="Visual Studio Output Window Services" d:Source="File" Version="[2.0.1,)" d:InstallSource="Embed" Location="Tvl.VisualStudio.OutputWindow.vsix"/>
-    </Dependencies>
-    <Assets>
-        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="GitHubIssues" Path="|GitHubIssues|" />
-    </Assets>
+  <Metadata>
+    <Identity Id="dae607b6-043f-400a-bd24-ffda143b13f4" Version="0.6" Language="en-US" Publisher="Rob Prouse" />
+    <DisplayName>GitHub Issues Extension</DisplayName>
+    <Description xml:space="preserve">Manage GitHub issues for repositories that you have commit access to. You can filter and view issues for a repository, edit issues, add comments and close issues.</Description>
+    <MoreInfo>https://github.com/rprouse/GitHubExtension</MoreInfo>
+    <License>License.rtf</License>
+    <Icon>Resources\Package.ico</Icon>
+    <PreviewImage>Resources\Preview.png</PreviewImage>
+    <Tags>bug tracking, integration, github, issue tracking</Tags>
+  </Metadata>
+  <Installation InstalledByMsi="false">
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[11.0,16.0)" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    <Dependency Id="Tvl.VisualStudio.OutputWindow.3EF11167-A319-43DB-B1B4-A9778A90FAE0" DisplayName="Visual Studio Output Window Services" d:Source="File" Version="[2.0.1,)" d:InstallSource="Embed" Location="Tvl.VisualStudio.OutputWindow.vsix"/>
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="GitHubIssues" Path="|GitHubIssues|" />
+  </Assets>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0.25904.2,16.0)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
 </PackageManifest>
