@@ -29,7 +29,7 @@
                             Grid.RowSpan="2" 
                             Margin="0,0,6,0">
             <Label Content="{Binding Path=Number}" 
-                                   Width="30"
+                                   Width="40"
                                    FontWeight="Bold"
                                    Padding="0"
                                    HorizontalContentAlignment="Center"/>
