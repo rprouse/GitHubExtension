@@ -104,13 +104,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.0.5795.22824, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.0.0-rc-3\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octokit.0.16.0\lib\net45\Octokit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Octokit, Version=0.29.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.0.29.0\lib\net45\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -144,6 +142,7 @@
     <Compile Include="Converters\EnumToStringConverterTest.cs" />
     <Compile Include="Converters\MarkdownConverterTest.cs" />
     <Compile Include="Converters\StringToColorConverterTest.cs" />
+    <Compile Include="Mocks\MockData.cs" />
     <Compile Include="Mocks\OptionsProviderMock.cs" />
     <Compile Include="Mocks\ResponseMock.cs" />
     <Compile Include="Mocks\OutputWriterMock.cs" />

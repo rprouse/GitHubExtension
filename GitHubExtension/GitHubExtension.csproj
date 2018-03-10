@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.props')" />
+  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.props')" />
   <Import Project="..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props" Condition="Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" />
   <Import Project="..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.props" Condition="Exists('..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -140,9 +140,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octokit.0.16.0\lib\net45\Octokit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Octokit, Version=0.29.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.0.29.0\lib\net45\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="stdole">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -379,11 +378,11 @@
     <Error Condition="!Exists('..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.props'))" />
     <Error Condition="!Exists('..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.targets'))" />
     <Error Condition="!Exists('..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.0.21.0.176\build\net40\LibGit2Sharp.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.targets'))" />
   </Target>
   <Import Project="..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.targets" Condition="Exists('..\packages\Tvl.VisualStudio.OutputWindow.2.0.1\build\Tvl.VisualStudio.OutputWindow.targets')" />
-  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.0.25907-RC2\build\Microsoft.VSSDK.BuildTools.targets')" />
+  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.6.167\build\Microsoft.VSSDK.BuildTools.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

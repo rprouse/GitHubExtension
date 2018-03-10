@@ -27,7 +27,7 @@ namespace Alteridem.GitHub.Model
     public interface ICache
     {
         CredentialCache Credentials { get; set; }
-        int Repository { get; set; }
+        long Repository { get; set; }
         void SaveCredentials(string logon, string password);
         void SaveToken(string accessToken);
     }

@@ -107,7 +107,7 @@ namespace Alteridem.GitHub.Model
             {
                 var repository = wrapper.Repository;
                 var request = new RepositoryIssueRequest();
-                request.State = ItemState.Open;
+                request.State = ItemStateFilter.Open;
                 request.Filter = IssueFilter.All;
                 await GetIssues(repository.Owner.Login, repository.Name, request);
             }
@@ -127,7 +127,7 @@ namespace Alteridem.GitHub.Model
                 Milestones.Add(AllMilestones);
                 Milestones.Add(NoMilestone);
                 var request = new MilestoneRequest();
-                request.State = ItemState.Open;
+                request.State = ItemStateFilter.Open;
                 request.SortProperty = MilestoneSort.DueDate;
                 request.SortDirection = SortDirection.Ascending;
                 try
@@ -423,7 +423,7 @@ namespace Alteridem.GitHub.Model
         private void OnRepositoriesComplete()
         {
             _log.Write(LogLevel.Debug, "Finished fetching organizations for current user");
-            int id = SettingsCache.Repository;
+            var id = SettingsCache.Repository;
 
             var dte = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider.GetService<DTE>();
             if(dte != null && dte.Solution != null)

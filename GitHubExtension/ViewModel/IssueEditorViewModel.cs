@@ -302,7 +302,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             var issue = new NewIssue(Title);
             issue.Body = Body;
             if (Assignee != null)
-                issue.Assignee = Assignee.Login;
+                issue.Assignees.Add(Assignee.Login);
             if (Milestone != null)
                 issue.Milestone = Milestone.Number;
 
@@ -317,7 +317,7 @@ namespace Alteridem.GitHub.Extension.ViewModel
             var issue = new IssueUpdate();
             issue.Title = Title;
             issue.Body = Body;
-            issue.Assignee = Assignee != null ? Assignee.Login : null;
+            if (Assignee != null) issue.Assignees.Add(Assignee.Login);
             issue.Milestone = Milestone != null ? (int?)Milestone.Number : null;
 
             foreach (var label in SelectedLabels)
